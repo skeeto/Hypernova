@@ -8,7 +8,6 @@ public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;
 
     private Ship player;
-    private double turn = 0.0;
     private Thread thread = new Thread(this);
 
     private List<Ship> ships = new ArrayList<Ship>();
@@ -34,7 +33,7 @@ public class Universe extends Observable implements Runnable {
     @Override
     public void run() {
         while (true) {
-            player.addAz(turn);
+            for (Ship s : ships) s.step(1.0);
             setChanged();
             notifyObservers();
             try {
@@ -43,14 +42,5 @@ public class Universe extends Observable implements Runnable {
                 /* We don't care, really. */
             }
         }
-    }
-
-    /* Player controls */
-    public void setTurn(double val) {
-        turn = val;
-    }
-
-    public void addTurn(double rate) {
-        turn += rate;
     }
 }

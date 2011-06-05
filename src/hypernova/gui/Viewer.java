@@ -39,24 +39,26 @@ public class Viewer extends JComponent implements Observer {
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
+                Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    universe.addTurn(-TURN);
+                    player.addAdot(-TURN);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    universe.addTurn(TURN);
+                    player.addAdot(TURN);
                     break;
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
+                Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    universe.addTurn(TURN);
+                    player.addAdot(TURN);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    universe.addTurn(-TURN);
+                    player.addAdot(-TURN);
                     break;
                 }
             }
@@ -108,7 +110,7 @@ public class Viewer extends JComponent implements Observer {
         /* Ship details */
         double x = s.getX();
         double y = s.getY();
-        double az = s.getAz();
+        double az = s.getA();
 
         /* Center pixel. */
         int cx = (int) ((x - xoff) * scale);
