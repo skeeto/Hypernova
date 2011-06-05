@@ -3,15 +3,15 @@ package hypernova;
 public class Mass {
     private double x, y, a;
     private double xdot, ydot, adot;
+    private boolean solid;
 
-    public Mass(double x, double y, double angle) {
+    protected final Universe universe;
+
+    public Mass(Universe universe, double x, double y, double angle) {
+        this.universe = universe;
         this.x = x;
         this.y = y;
         this.a = angle;
-    }
-
-    public Mass(double x, double y) {
-        this(x, y, 0.0);
     }
 
     public void step(double t) {
@@ -21,6 +21,26 @@ public class Mass {
     }
 
     /* Getters and setters. */
+
+    public boolean isSolid() {
+        return solid;
+    }
+
+    public void setSolid(boolean set) {
+        solid = set;
+    }
+
+    public void setState(int x, int y, int angle) {
+        this.x = x;
+        this.y = y;
+        this.a = angle;
+    }
+
+    public void setDot(int xdot, int ydot, int adot) {
+        this.xdot = xdot;
+        this.ydot = ydot;
+        this.adot = adot;
+    }
 
     public void setX(double val) {
         x = val;

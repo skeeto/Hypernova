@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
+import hypernova.Ship;
 import hypernova.Mass;
 import hypernova.Universe;
 
@@ -39,7 +40,7 @@ public class Viewer extends JComponent implements Observer {
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
-                Mass player = universe.getPlayer();
+                Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     player.addAdot(-TURN);
@@ -52,7 +53,7 @@ public class Viewer extends JComponent implements Observer {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                Mass player = universe.getPlayer();
+                Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     player.addAdot(TURN);
@@ -64,7 +65,10 @@ public class Viewer extends JComponent implements Observer {
             }
 
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+                Ship player = universe.getPlayer();
+                player.fire(0);
+            }
         });
     }
 
@@ -118,7 +122,7 @@ public class Viewer extends JComponent implements Observer {
 
         g.drawOval(cx - size / 2, cy - size / 2, size, size);
         g.drawLine(cx, cy,
-                   (int) (Math.cos(az) * scale * reach),
-                   (int) (Math.sin(az) * scale * reach));
+                   (int) (Math.cos(az) * scale * reach) + cx,
+                   (int) (Math.sin(az) * scale * reach) + cy);
     }
 }
