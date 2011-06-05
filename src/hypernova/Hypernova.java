@@ -19,5 +19,8 @@ public class Hypernova {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        viewer.requestFocusInWindow();
+
+        universe.start();
     }
 }

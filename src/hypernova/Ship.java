@@ -13,6 +13,14 @@ public class Ship {
         this(x, y, 0.0);
     }
 
+    public void setAz(double val) {
+        az = val;
+    }
+
+    public void addAz(double rate) {
+        az += rate;
+    }
+
     public double getX() {
         return x;
     }

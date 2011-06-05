@@ -1,31 +1,69 @@
 package hypernova.gui;
 
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Dimension;
+import java.util.Observer;
+import java.util.Observable;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JComponent;
 
 import hypernova.Ship;
 import hypernova.Universe;
 
-public class Viewer extends JComponent {
+public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
+
+    public static final double TURN = 0.2;
 
     /* Starting size. */
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
-    private Universe universe;
+    private final Universe universe;
     private double scale = 1.0;
     private int quality = 2; /* 0 - 2 quality setting. */
 
-    public Viewer(Universe universe) {
+    public Viewer(Universe state) {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setOpaque(false);
-        this.universe = universe;
+        universe = state;
+        universe.addObserver(this);
+
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                case KeyEvent.VK_LEFT:
+                    universe.addTurn(-TURN);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    universe.addTurn(TURN);
+                    break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                case KeyEvent.VK_LEFT:
+                    universe.addTurn(TURN);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    universe.addTurn(-TURN);
+                    break;
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        });
     }
 
     public void setQuality(int q) {
@@ -36,6 +74,12 @@ public class Viewer extends JComponent {
         return quality;
     }
 
+    @Override
+    public void update(Observable o, Object msg) {
+        repaint();
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(getBackground());
@@ -59,7 +103,7 @@ public class Viewer extends JComponent {
     public void drawShip(Graphics2D g, Ship s, double xoff, double yoff) {
         g.setColor(Color.GREEN);
         int size = 25;
-        int reach = 40;
+        int reach = 25;
 
         /* Ship details */
         double x = s.getX();
