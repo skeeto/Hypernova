@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Ship extends Mass {
 
     private List<Weapon> weapons = new ArrayList<Weapon>();
+    private boolean[] firestate = new boolean[0];
 
     public Ship(Universe universe, double x, double y, double angle) {
         super(universe, x, y, angle);
@@ -13,11 +14,31 @@ public class Ship extends Mass {
 
     public void addWeapon(Weapon w) {
         weapons.add(w);
+        firestate = new boolean[weapons.size()];
     }
 
+    public void step(double t) {
+        super.step(t);
+        for (int i = 0; i < weapons.size(); i++) {
+            weapons.get(i).step(t);
+            if (firestate[i]) fire(i);
+        }
+    }
+
+    /** Fire a single shot.
+     * @param n  weapon number
+     */
     public void fire(int n) {
         if (n >= weapons.size())
             return;
         weapons.get(n).fire(universe, getX(), getY(), getA());
+    }
+
+    /** Set a weapon as currently firing or not.
+     * @param n  weapon number
+     */
+    public void setFire(int n, boolean set) {
+        firestate[n] = set;
+        fire(n);
     }
 }

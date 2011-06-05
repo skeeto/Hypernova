@@ -48,6 +48,9 @@ public class Viewer extends JComponent implements Observer {
                 case KeyEvent.VK_RIGHT:
                     player.addAdot(TURN);
                     break;
+                case KeyEvent.VK_SPACE:
+                    player.setFire(0, true);
+                    break;
                 }
             }
 
@@ -61,14 +64,14 @@ public class Viewer extends JComponent implements Observer {
                 case KeyEvent.VK_RIGHT:
                     player.addAdot(-TURN);
                     break;
+                case KeyEvent.VK_SPACE:
+                    player.setFire(0, false);
+                    break;
                 }
             }
 
             @Override
-            public void keyTyped(KeyEvent e) {
-                Ship player = universe.getPlayer();
-                player.fire(0);
-            }
+            public void keyTyped(KeyEvent e) {}
         });
     }
 
