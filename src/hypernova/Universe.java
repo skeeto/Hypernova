@@ -7,33 +7,33 @@ import java.util.Observable;
 public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;
 
-    private Ship player;
+    private Mass player;
     private Thread thread = new Thread(this);
 
-    private List<Ship> ships = new ArrayList<Ship>();
+    private List<Mass> objects = new ArrayList<Mass>();
 
     public Universe() {
         /* Set up player ship. */
-        player = new Ship(0, 0, Math.PI / 8);
-        ships.add(player);
+        player = new Mass(0, 0, Math.PI / 8);
+        objects.add(player);
     }
 
     public void start() {
         thread.start();
     }
 
-    public List<Ship> getShips() {
-        return ships;
+    public List<Mass> getObjects() {
+        return objects;
     }
 
-    public Ship getPlayer() {
+    public Mass getPlayer() {
         return player;
     }
 
     @Override
     public void run() {
         while (true) {
-            for (Ship s : ships) s.step(1.0);
+            for (Mass m : objects) m.step(1.0);
             setChanged();
             notifyObservers();
             try {

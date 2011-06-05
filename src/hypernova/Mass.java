@@ -1,16 +1,16 @@
 package hypernova;
 
-public class Ship {
+public class Mass {
     private double x, y, a;
     private double xdot, ydot, adot;
 
-    public Ship(double x, double y, double angle) {
+    public Mass(double x, double y, double angle) {
         this.x = x;
         this.y = y;
         this.a = angle;
     }
 
-    public Ship(double x, double y) {
+    public Mass(double x, double y) {
         this(x, y, 0.0);
     }
 

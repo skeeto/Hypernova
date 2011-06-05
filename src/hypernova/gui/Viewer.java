@@ -13,7 +13,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
-import hypernova.Ship;
+import hypernova.Mass;
 import hypernova.Universe;
 
 public class Viewer extends JComponent implements Observer {
@@ -39,7 +39,7 @@ public class Viewer extends JComponent implements Observer {
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
-                Ship player = universe.getPlayer();
+                Mass player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     player.addAdot(-TURN);
@@ -52,7 +52,7 @@ public class Viewer extends JComponent implements Observer {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                Ship player = universe.getPlayer();
+                Mass player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     player.addAdot(TURN);
@@ -94,23 +94,23 @@ public class Viewer extends JComponent implements Observer {
                                  RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
-        Ship player = universe.getPlayer();
+        Mass player = universe.getPlayer();
         double xoff = player.getX();
         double yoff = player.getX();
-        for (Ship s : universe.getShips()) {
-            drawShip(g2d, s, xoff, yoff);
+        for (Mass m : universe.getObjects()) {
+            drawMass(g2d, m, xoff, yoff);
         }
     }
 
-    public void drawShip(Graphics2D g, Ship s, double xoff, double yoff) {
+    public void drawMass(Graphics2D g, Mass m, double xoff, double yoff) {
         g.setColor(Color.GREEN);
         int size = 25;
         int reach = 25;
 
         /* Ship details */
-        double x = s.getX();
-        double y = s.getY();
-        double az = s.getA();
+        double x = m.getX();
+        double y = m.getY();
+        double az = m.getA();
 
         /* Center pixel. */
         int cx = (int) ((x - xoff) * scale);
