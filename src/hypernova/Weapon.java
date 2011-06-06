@@ -9,9 +9,13 @@ public class Weapon {
         this.rate = rate;
     }
 
-    public void fire(Universe u, double x, double y, double a) {
+    public void fire(Universe u, Mass src) {
         if (timeout <= 0) {
-            Mass shot = new Shot(u, x, y, a, "shot", speed);
+            System.out.println("fire");
+            Mass shot = new Shot(u, src.getX(0), src.getY(0), src.getA(0),
+                                 "shot", speed);
+            shot.addX(src.getX(1), 1);
+            shot.addY(src.getY(1), 1);
             u.add(shot);
             timeout = rate;
         }

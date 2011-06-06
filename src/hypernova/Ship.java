@@ -46,7 +46,7 @@ public class Ship extends Mass {
     public void fire(int n) {
         if (n >= weapons.size())
             return;
-        weapons.get(n).fire(universe, getX(0), getY(0), getA(0));
+        weapons.get(n).fire(universe, this);
     }
 
     /** Set a weapon as currently firing or not.
