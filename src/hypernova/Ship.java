@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Ship extends Mass {
-    public static final double DEFAULT_POWER = 6.0;
+    public static final double DEFAULT_POWER = 0.5;
 
     private List<Weapon> weapons = new ArrayList<Weapon>();
     private boolean[] firestate = new boolean[0];
@@ -26,8 +26,11 @@ public class Ship extends Mass {
 
     public void step(double t) {
         if (engines) {
-            setXdot(power * Math.cos(getA()));
-            setYdot(power * Math.sin(getA()));
+            setX(power * Math.cos(getA(0)), 2);
+            setY(power * Math.sin(getA(0)), 2);
+        } else {
+            setX(0, 2);
+            setY(0, 2);
         }
         super.step(t);
         for (int i = 0; i < weapons.size(); i++) {
@@ -42,7 +45,7 @@ public class Ship extends Mass {
     public void fire(int n) {
         if (n >= weapons.size())
             return;
-        weapons.get(n).fire(universe, getX(), getY(), getA());
+        weapons.get(n).fire(universe, getX(0), getY(0), getA(0));
     }
 
     /** Set a weapon as currently firing or not.

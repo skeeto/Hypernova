@@ -1,23 +1,28 @@
 package hypernova;
 
 public class Mass {
-    private double x, y, a;
-    private double xdot, ydot, adot;
+    /* State vectors -- {pos, vel, acc}. */
+    private double[] x = new double[3];
+    private double[] y = new double[3];
+    private double[] a = new double[3];
     private boolean solid;
 
     protected final Universe universe;
 
-    public Mass(Universe universe, double x, double y, double angle) {
+    public Mass(Universe universe, double px, double py, double angle) {
         this.universe = universe;
-        this.x = x;
-        this.y = y;
-        this.a = angle;
+        x[0] = px;
+        y[0] = py;
+        a[0] = angle;
     }
 
     public void step(double t) {
-        x += xdot * t;
-        y += ydot * t;
-        a += adot * t;
+        x[1] += x[2] * t;
+        y[1] += y[2] * t;
+        a[1] += a[2] * t;
+        x[0] += x[1] * t;
+        y[0] += y[1] * t;
+        a[0] += a[1] * t;
     }
 
     /* Getters and setters. */
@@ -30,75 +35,39 @@ public class Mass {
         solid = set;
     }
 
-    public void setState(int x, int y, int angle) {
-        this.x = x;
-        this.y = y;
-        this.a = angle;
+    public void setX(double val, int deriv) {
+        x[deriv] = val;
     }
 
-    public void setDot(int xdot, int ydot, int adot) {
-        this.xdot = xdot;
-        this.ydot = ydot;
-        this.adot = adot;
+    public void setY(double val, int deriv) {
+        y[deriv] = val;
     }
 
-    public void setX(double val) {
-        x = val;
+    public void setA(double val, int deriv) {
+        a[deriv] = val;
     }
 
-    public void setY(double val) {
-        y = val;
+    public void addX(double val, int deriv) {
+        x[deriv] += val;
     }
 
-    public void setA(double val) {
-        a = val;
+    public void addY(double val, int deriv) {
+        y[deriv] += val;
     }
 
-    public void setXdot(double rate) {
-        xdot = rate;
+    public void addA(double val, int deriv) {
+        a[deriv] += val;
     }
 
-    public void setYdot(double rate) {
-        ydot = rate;
+    public double getX(int deriv) {
+        return x[deriv];
     }
 
-    public void setAdot(double rate) {
-        adot = rate;
+    public double getY(int deriv) {
+        return y[deriv];
     }
 
-    public void addXdot(double rate) {
-        xdot += rate;
-    }
-
-    public void addYdot(double rate) {
-        ydot += rate;
-    }
-
-    public void addAdot(double rate) {
-        adot += rate;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getA() {
-        return a;
-    }
-
-    public double getXdot() {
-        return xdot;
-    }
-
-    public double getYdot() {
-        return ydot;
-    }
-
-    public double getAdot() {
-        return adot;
+    public double getA(int deriv) {
+        return a[deriv];
     }
 }

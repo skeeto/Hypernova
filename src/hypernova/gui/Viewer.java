@@ -43,10 +43,10 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addAdot(-PLAYER_TURN);
+                    player.addA(-PLAYER_TURN, 1);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addAdot(PLAYER_TURN);
+                    player.addA(PLAYER_TURN, 1);
                     break;
                 case KeyEvent.VK_UP:
                     player.setEngines(true);
@@ -62,10 +62,10 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addAdot(PLAYER_TURN);
+                    player.addA(PLAYER_TURN, 1);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addAdot(-PLAYER_TURN);
+                    player.addA(-PLAYER_TURN, 1);
                     break;
                 case KeyEvent.VK_UP:
                     player.setEngines(false);
@@ -108,8 +108,8 @@ public class Viewer extends JComponent implements Observer {
         }
 
         Mass player = universe.getPlayer();
-        double xoff = player.getX();
-        double yoff = player.getY();
+        double xoff = player.getX(0);
+        double yoff = player.getY(0);
         List<Mass> objects = universe.getObjects();
         synchronized (objects) {
             for (Mass m : objects) {
@@ -124,9 +124,9 @@ public class Viewer extends JComponent implements Observer {
         int reach = 25;
 
         /* Ship details */
-        double x = m.getX();
-        double y = m.getY();
-        double az = m.getA();
+        double x = m.getX(0);
+        double y = m.getY(0);
+        double a = m.getA(0);
 
         /* Center pixel. */
         int cx = (int) ((x - xoff) * scale);
@@ -134,7 +134,7 @@ public class Viewer extends JComponent implements Observer {
 
         g.drawOval(cx - size / 2, cy - size / 2, size, size);
         g.drawLine(cx, cy,
-                   (int) (Math.cos(az) * scale * reach) + cx,
-                   (int) (Math.sin(az) * scale * reach) + cy);
+                   (int) (Math.cos(a) * scale * reach) + cx,
+                   (int) (Math.sin(a) * scale * reach) + cy);
     }
 }
