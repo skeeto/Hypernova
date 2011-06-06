@@ -160,11 +160,11 @@ public class Viewer extends JComponent implements Observer {
     }
 
     public void drawStars(Graphics2D g, int xoff, int yoff, int scale) {
-        int size = 100 / scale;
+        int size = 128 / scale;
         int sx = (xoff / size) * size - size;
         int sy = (yoff / size) * size - size;
-        for (int i = sx; i <= getWidth() + sx + size; i += size) {
-            for (int j = sy; j <= getHeight() + sy + size; j += size) {
+        for (int i = sx; i <= getWidth() + sx + size * 3; i += size) {
+            for (int j = sy; j <= getHeight() + sy + size * 3; j += size) {
                 int hash = mix(STAR_SEED, i, j);
                 if ((hash & 1) == 1) {
                     int px = (hash % size) + (i - xoff);
