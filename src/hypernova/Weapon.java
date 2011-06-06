@@ -11,7 +11,6 @@ public class Weapon {
 
     public void fire(Universe u, Mass src) {
         if (timeout <= 0) {
-            System.out.println("fire");
             Mass shot = new Shot(u, src.getX(0), src.getY(0), src.getA(0),
                                  "shot", speed);
             shot.addX(src.getX(1), 1);

@@ -54,6 +54,5 @@ public class Ship extends Mass {
      */
     public void setFire(int n, boolean set) {
         firestate[n] = set;
-        fire(n);
     }
 }
