@@ -2,7 +2,6 @@ package hypernova;
 
 import java.util.List;
 import java.util.Vector;
-import java.util.ArrayList;
 import java.util.Observable;
 
 public class Universe extends Observable implements Runnable {
@@ -12,8 +11,8 @@ public class Universe extends Observable implements Runnable {
     private Thread thread = new Thread(this);
 
     private List<Mass> objects = new Vector<Mass>();
-    private List<Mass> incoming = new ArrayList<Mass>();
-    private List<Mass> outgoing = new ArrayList<Mass>();
+    private List<Mass> incoming = new Vector<Mass>();
+    private List<Mass> outgoing = new Vector<Mass>();
 
     public Universe() {
         /* Set up player ship. */
@@ -48,10 +47,14 @@ public class Universe extends Observable implements Runnable {
             synchronized (objects) {
                 for (Mass m : objects) m.step(1.0);
             }
-            objects.removeAll(outgoing);
-            objects.addAll(incoming);
-            outgoing.clear();
-            incoming.clear();
+            synchronized (outgoing) {
+                objects.removeAll(outgoing);
+                outgoing.clear();
+            }
+            synchronized (incoming) {
+                objects.addAll(incoming);
+                incoming.clear();
+            }
             setChanged();
             notifyObservers();
             try {
