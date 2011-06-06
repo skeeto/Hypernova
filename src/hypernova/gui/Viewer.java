@@ -21,14 +21,14 @@ import hypernova.Universe;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
 
-    public static final double PLAYER_TURN = 0.2;
+    public static final double PLAYER_TURN = 0.15;
 
     /* Starting size. */
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
     private final Universe universe;
-    private double scale = 1.0;
+    private double scale = 10.0;
     private int quality = 2; /* 0 - 2 quality setting. */
 
     public Viewer(Universe state) {

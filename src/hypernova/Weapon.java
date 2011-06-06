@@ -11,7 +11,8 @@ public class Weapon {
 
     public void fire(Universe u, double x, double y, double a) {
         if (timeout <= 0) {
-            u.add(new Shot(u, x, y, a, "simple", speed));
+            Mass shot = new Shot(u, x, y, a, "shot", speed);
+            u.add(shot);
             timeout = rate;
         }
     }
