@@ -165,7 +165,7 @@ public class Viewer extends JComponent implements Observer {
         int sy = (yoff / size) * size - size;
         for (int i = sx; i <= getWidth() + sx + size; i += size) {
             for (int j = sy; j <= getHeight() + sy + size; j += size) {
-                int hash = (Objects.hashCode(i, j, scale) >> 6);
+                int hash = mix(STAR_SEED, i, j);
                 if ((hash & 1) == 1) {
                     int px = (hash % size) + (i - xoff);
                     int py = (hash % size) + (j - yoff);
@@ -173,5 +173,18 @@ public class Viewer extends JComponent implements Observer {
                 }
             }
         }
+    }
+
+    private static int mix(int a, int b, int c) {
+        a=a-b;  a=a-c;  a=a^(c >>> 13);
+        b=b-c;  b=b-a;  b=b^(a << 8);
+        c=c-a;  c=c-b;  c=c^(b >>> 13);
+        a=a-b;  a=a-c;  a=a^(c >>> 12);
+        b=b-c;  b=b-a;  b=b^(a << 16);
+        c=c-a;  c=c-b;  c=c^(b >>> 5);
+        a=a-b;  a=a-c;  a=a^(c >>> 3);
+        b=b-c;  b=b-a;  b=b^(a << 10);
+        c=c-a;  c=c-b;  c=c^(b >>> 15);
+        return c;
     }
 }
