@@ -175,6 +175,11 @@ public class Viewer extends JComponent implements Observer {
         }
     }
 
+    /** Robert Jenkins' 96 bit Mix Function.
+     * @param a random bits
+     * @param b random bits
+     * @param c the "key" to be hashed
+     */
     private static int mix(int a, int b, int c) {
         a=a-b;  a=a-c;  a=a^(c >>> 13);
         b=b-c;  b=b-a;  b=b^(a << 8);
