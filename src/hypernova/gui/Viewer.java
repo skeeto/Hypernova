@@ -22,6 +22,12 @@ public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
 
     public static final double PLAYER_TURN = 0.15;
+    public static final Color[] stars = {
+        new Color(0xFF, 0xFF, 0xFF),
+        new Color(0x0F, 0xFF, 0x0F),
+        new Color(0xFF, 0x00, 0x00),
+    };
+    public static final int STAR_SEED = 0x9d2c5680;
 
     /* Starting size. */
     public static final int WIDTH = 800;
@@ -99,17 +105,24 @@ public class Viewer extends JComponent implements Observer {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.translate(getWidth() / 2, getHeight() / 2);
-
         Graphics2D g2d = (Graphics2D) g;
+
+        Mass player = universe.getPlayer();
+        double xoff = player.getX(0);
+        double yoff = player.getY(0);
+
+        for (int i = stars.length; i > 0; i--) {
+            g.setColor(stars[i - 1]);
+            drawStars(g2d, (int) xoff / i, (int) yoff / i, i);
+        }
+
+        /* Set up graphics */
         if (quality > 0) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                  RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
-        Mass player = universe.getPlayer();
-        double xoff = player.getX(0);
-        double yoff = player.getY(0);
+        g.translate(getWidth() / 2, getHeight() / 2);
         List<Mass> objects = universe.getObjects();
         synchronized (objects) {
             for (Mass m : objects) {
@@ -142,5 +155,22 @@ public class Viewer extends JComponent implements Observer {
         // g.drawLine(cx, cy,
         //            (int) (Math.cos(a) * scale * reach) + cx,
         //            (int) (Math.sin(a) * scale * reach) + cy);
+    }
+
+    public void drawStars(Graphics2D g, int xoff, int yoff, int scale) {
+        int size = 50 / scale;
+        int sx = (xoff / size) * size - size;
+        int sy = (yoff / size) * size - size;
+        for (int i = sx; i <= getWidth() + sx + size; i += size) {
+            for (int j = sy; j <= getHeight() + sy + size; j += size) {
+                int hash = (((i << 2) * j) >> 4) ^ STAR_SEED;
+                if ((hash & 1) == 1) {
+                    if (scale == 3) System.out.println("kok");
+                    int px = (hash % size) + (i - xoff);
+                    int py = (hash % size) + (j - yoff);
+                    g.drawLine(px, py, px, py);
+                }
+            }
+        }
     }
 }
