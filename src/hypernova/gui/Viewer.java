@@ -14,6 +14,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
+import com.google.common.base.Objects;
+
 import hypernova.Ship;
 import hypernova.Mass;
 import hypernova.Universe;
@@ -24,8 +26,8 @@ public class Viewer extends JComponent implements Observer {
     public static final double PLAYER_TURN = 0.15;
     public static final Color[] stars = {
         new Color(0xFF, 0xFF, 0xFF),
-        new Color(0x0F, 0xFF, 0x0F),
-        new Color(0xFF, 0x00, 0x00),
+        new Color(0xAF, 0xAF, 0xAF),
+        new Color(0x4F, 0x4F, 0x4F),
     };
     public static final int STAR_SEED = 0x9d2c5680;
 
@@ -158,14 +160,13 @@ public class Viewer extends JComponent implements Observer {
     }
 
     public void drawStars(Graphics2D g, int xoff, int yoff, int scale) {
-        int size = 50 / scale;
+        int size = 100 / scale;
         int sx = (xoff / size) * size - size;
         int sy = (yoff / size) * size - size;
         for (int i = sx; i <= getWidth() + sx + size; i += size) {
             for (int j = sy; j <= getHeight() + sy + size; j += size) {
-                int hash = (((i << 2) * j) >> 4) ^ STAR_SEED;
+                int hash = (Objects.hashCode(i, j, scale) >> 6);
                 if ((hash & 1) == 1) {
-                    if (scale == 3) System.out.println("kok");
                     int px = (hash % size) + (i - xoff);
                     int py = (hash % size) + (j - yoff);
                     g.drawLine(px, py, px, py);
