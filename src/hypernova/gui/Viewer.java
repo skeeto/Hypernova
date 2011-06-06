@@ -23,7 +23,6 @@ import hypernova.Universe;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
 
-    public static final double PLAYER_TURN = 0.15;
     public static final Color[] stars = {
         new Color(0xFF, 0xFF, 0xFF),
         new Color(0xAF, 0xAF, 0xAF),
@@ -51,10 +50,10 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addA(-PLAYER_TURN, 1);
+                    player.turnLeft(true);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addA(PLAYER_TURN, 1);
+                    player.turnRight(true);
                     break;
                 case KeyEvent.VK_UP:
                     player.setEngines(true);
@@ -70,10 +69,10 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addA(PLAYER_TURN, 1);
+                    player.turnLeft(false);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addA(-PLAYER_TURN, 1);
+                    player.turnRight(false);
                     break;
                 case KeyEvent.VK_UP:
                     player.setEngines(false);
