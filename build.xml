@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Hypernova" default="jar">
+<project name="Hypernova" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
   <!-- Project-specific configuration -->
   <property name="package" value="hypernova"/>
   <property name="main.class" value="${package}.${ant.project.name}"/>
@@ -16,6 +16,7 @@
   <property name="doc.dir" value="doc"/>
 
   <!-- Project classpath -->
+  <available file="${lib.dir}" property="lib.present"/>
   <path id="build.classpath">
     <fileset dir="${lib.dir}">
       <include name="*.jar"/>
@@ -24,7 +25,6 @@
 
   <!-- Additional build tools -->
   <taskdef resource="checkstyletask.properties"/>
-  <taskdef resource="proguard/ant/task.properties"/>
 
   <!-- Targets -->
 
@@ -33,7 +33,12 @@
     <mkdir dir="${dist.dir}"/>
   </target>
 
-  <target name="compile" depends="init"
+  <target name="resolve" unless="lib.present"
+	  description="Retrieve dependencies with ivy.">
+    <ivy:retrieve type="jar,bundle"/>
+  </target>
+
+  <target name="compile" depends="init,resolve"
 	  description="Compile all source files.">
     <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
 	   optimize="on" debug="on" deprecation="on"
@@ -85,20 +90,6 @@
     <checkstyle config="doc/sun_checks.xml">
       <fileset dir="src" includes="**/*.java"/>
     </checkstyle>
-  </target>
-
-  <target name="optimize" depends="jar">
-    <proguard>
-      <libraryjar path="${java.home}/lib/rt.jar"/>
-      <injar file="${dist.dir}/${jar.file}"/>
-      <outjar file="${dist.dir}/out.${jar.file}"/>
-      <keepclasseswithmembers access="public" type="class">
-	<method access="public" type="void" name="main"
-		parameters="java.lang.String[]"/>
-      </keepclasseswithmembers>
-    </proguard>
-    <delete file="${dist.dir}/${jar.file}"/>
-    <move file="${dist.dir}/out.${jar.file}" tofile="${dist.dir}/${jar.file}"/>
   </target>
 
   <!-- JUnit -->

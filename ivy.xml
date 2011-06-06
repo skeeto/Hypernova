@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0">
+  <info organisation="com.nullprogram" module="Hypernova"/>
+  <dependencies>
+    <dependency org="com.google.guava" name="guava" rev="r09"/>
+  </dependencies>
+</ivy-module>
