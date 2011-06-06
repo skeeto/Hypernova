@@ -1,5 +1,7 @@
 package hypernova.gui;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,11 +14,16 @@ public class Model {
 
     private List<Polygon> polygons = new ArrayList<Polygon>();
 
-    public static Model getModel(String name) throws java.io.IOException {
+    private static Map<String, Model> cache = new HashMap<String, Model>();
+
+    public static synchronized Model getModel(String name)
+        throws java.io.IOException {
+        Model model = cache.get(name);
+        if (model != null) return model.copy();
+        model = new Model();
         String filename = "models/" + name + ".mdl";
         InputStream s = Model.class.getResourceAsStream(filename);
         BufferedReader in = new BufferedReader(new InputStreamReader(s));
-        Model model = new Model();
         while (true) {
             String str = in.readLine();
             if (str == null) break;
@@ -33,7 +40,8 @@ public class Model {
                 double[] result = readList(str.substring(4));
             }
         }
-        return model;
+        cache.put(name, model);
+        return model.copy();
     }
 
     private static double[] readList(String str) {
@@ -61,5 +69,14 @@ public class Model {
                 p.ys[i] *= s;
             }
         }
+    }
+
+    public Model copy() {
+        Model copy = new Model();
+        for (Polygon p : polygons) {
+            copy.polygons.add(p.copy());
+        }
+        copy.size = size;
+        return copy;
     }
 }
