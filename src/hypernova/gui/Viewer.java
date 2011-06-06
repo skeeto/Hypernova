@@ -102,9 +102,12 @@ public class Viewer extends JComponent implements Observer {
 
         Mass player = universe.getPlayer();
         double xoff = player.getX();
-        double yoff = player.getX();
-        for (Mass m : universe.getObjects()) {
-            drawMass(g2d, m, xoff, yoff);
+        double yoff = player.getY();
+        List<Mass> objects = universe.getObjects();
+        synchronized (objects) {
+            for (Mass m : objects) {
+                drawMass(g2d, m, xoff, yoff);
+            }
         }
     }
 
