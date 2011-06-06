@@ -31,9 +31,8 @@ public class Viewer extends JComponent implements Observer {
     private int quality = 2; /* 0 - 2 quality setting. */
 
     public Viewer(Universe state) {
-        setBackground(Color.BLACK);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setOpaque(false);
+        setOpaque(true);
         universe = state;
         universe.addObserver(this);
 
@@ -91,7 +90,7 @@ public class Viewer extends JComponent implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(getBackground());
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.translate(getWidth() / 2, getHeight() / 2);
 
