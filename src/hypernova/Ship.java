@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Ship extends Mass {
+    public static final double DEFAULT_POWER = 6.0;
 
     private List<Weapon> weapons = new ArrayList<Weapon>();
     private boolean[] firestate = new boolean[0];
+    private boolean engines;
+    private double power = DEFAULT_POWER;
 
     public Ship(Universe universe, double x, double y, double angle) {
         super(universe, x, y, angle);
@@ -17,7 +20,15 @@ public class Ship extends Mass {
         firestate = new boolean[weapons.size()];
     }
 
+    public void setEngines(boolean set) {
+        engines = set;
+    }
+
     public void step(double t) {
+        if (engines) {
+            setXdot(power * Math.cos(getA()));
+            setYdot(power * Math.sin(getA()));
+        }
         super.step(t);
         for (int i = 0; i < weapons.size(); i++) {
             weapons.get(i).step(t);

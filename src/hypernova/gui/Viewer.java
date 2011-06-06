@@ -1,5 +1,6 @@
 package hypernova.gui;
 
+import java.util.List;
 import java.util.Observer;
 import java.util.Observable;
 
@@ -20,7 +21,7 @@ import hypernova.Universe;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
 
-    public static final double TURN = 0.2;
+    public static final double PLAYER_TURN = 0.2;
 
     /* Starting size. */
     public static final int WIDTH = 800;
@@ -42,10 +43,13 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addAdot(-TURN);
+                    player.addAdot(-PLAYER_TURN);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addAdot(TURN);
+                    player.addAdot(PLAYER_TURN);
+                    break;
+                case KeyEvent.VK_UP:
+                    player.setEngines(true);
                     break;
                 case KeyEvent.VK_SPACE:
                     player.setFire(0, true);
@@ -58,10 +62,13 @@ public class Viewer extends JComponent implements Observer {
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    player.addAdot(TURN);
+                    player.addAdot(PLAYER_TURN);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    player.addAdot(-TURN);
+                    player.addAdot(-PLAYER_TURN);
+                    break;
+                case KeyEvent.VK_UP:
+                    player.setEngines(false);
                     break;
                 case KeyEvent.VK_SPACE:
                     player.setFire(0, false);
