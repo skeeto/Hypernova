@@ -119,22 +119,28 @@ public class Viewer extends JComponent implements Observer {
     }
 
     public void drawMass(Graphics2D g, Mass m, double xoff, double yoff) {
-        g.setColor(Color.GREEN);
-        int size = 25;
-        int reach = 25;
-
         /* Ship details */
         double x = m.getX(0);
         double y = m.getY(0);
         double a = m.getA(0);
-
-        /* Center pixel. */
         int cx = (int) ((x - xoff) * scale);
         int cy = (int) ((y - yoff) * scale);
 
-        g.drawOval(cx - size / 2, cy - size / 2, size, size);
-        g.drawLine(cx, cy,
-                   (int) (Math.cos(a) * scale * reach) + cx,
-                   (int) (Math.sin(a) * scale * reach) + cy);
+        g.setColor(Color.GREEN);
+        Model model = m.getModel();
+        for (Polygon p : model.getPolygons()) {
+            p.rotate(m.getA(0));
+            for (int i = 0; i < p.xs.length - 1; i++) {
+                g.drawLine((int) (p.rxs[i] * scale) + cx,
+                           (int) (p.rys[i] * scale) + cy,
+                           (int) (p.rxs[i+1] * scale) + cx,
+                           (int) (p.rys[i+1] * scale) + cy);
+            }
+        }
+
+        // g.drawOval(cx - size / 2, cy - size / 2, size, size);
+        // g.drawLine(cx, cy,
+        //            (int) (Math.cos(a) * scale * reach) + cx,
+        //            (int) (Math.sin(a) * scale * reach) + cy);
     }
 }

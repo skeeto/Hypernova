@@ -1,19 +1,28 @@
 package hypernova;
 
+import hypernova.gui.Model;
+
 public class Mass {
     /* State vectors -- {pos, vel, acc}. */
     private double[] x = new double[3];
     private double[] y = new double[3];
     private double[] a = new double[3];
+    private Model model;
     private boolean solid;
 
     protected final Universe universe;
 
-    public Mass(Universe universe, double px, double py, double angle) {
+    public Mass(Universe universe, double px, double py, double angle,
+                String modelname) {
         this.universe = universe;
         x[0] = px;
         y[0] = py;
         a[0] = angle;
+        try {
+            model = Model.getModel(modelname);
+        } catch (java.io.IOException e) {
+            System.out.println("Failed to read model " + modelname);
+        }
     }
 
     public void step(double t) {
@@ -26,6 +35,10 @@ public class Mass {
     }
 
     /* Getters and setters. */
+
+    public Model getModel() {
+        return model;
+    }
 
     public boolean isSolid() {
         return solid;

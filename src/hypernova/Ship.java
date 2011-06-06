@@ -11,8 +11,9 @@ public class Ship extends Mass {
     private boolean engines;
     private double power = DEFAULT_POWER;
 
-    public Ship(Universe universe, double x, double y, double angle) {
-        super(universe, x, y, angle);
+    public Ship(Universe universe, double x, double y, double angle,
+                String model) {
+        super(universe, x, y, angle, model);
     }
 
     public void addWeapon(Weapon w) {
