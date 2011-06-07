@@ -1,0 +1,14 @@
+* Collisions
+* Ship scripts
+* Ammo scripts
+* Mass (with engines)
+
+* Parts
+  * Hulls
+  * Engines
+
+* CLI
+  * --quality flag
+  * --sound flag
+  * --debug flag
+  * --log flag
