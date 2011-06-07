@@ -38,7 +38,7 @@ public class Model {
             while (true) {
                 String str = in.readLine();
                 if (str == null) break;
-                if ("poly".equals(str.substring(0, 4))) {
+                if ("path".equals(str.substring(0, 4))) {
                     double[] result = readList(str.substring(4));
                     double[] x = new double[result.length / 2];
                     double[] y = new double[result.length / 2];
