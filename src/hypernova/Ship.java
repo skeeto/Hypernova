@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Ship extends Mass {
-    public static final double DEFAULT_POWER = 0.1;
+    public static final double DEFAULT_POWER = 0.5;
     public static final double DEFAULT_TURN = 0.15;
 
     private List<Weapon> weapons = new ArrayList<Weapon>();

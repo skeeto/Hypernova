@@ -9,10 +9,18 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.awt.Shape;
+import java.awt.geom.Path2D;
+import java.awt.geom.AffineTransform;
+
 import org.apache.log4j.Logger;
 
 public class Model {
-    private List<Polygon> polygons = new ArrayList<Polygon>();
+    public static final double MODEL_SCALE = 10.0;
+
+    private List<Shape> shapes = new ArrayList<Shape>();
+    private List<Shape> transformed = new ArrayList<Shape>();
+    private AffineTransform at = new AffineTransform();
     private double size = 1.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
@@ -35,10 +43,10 @@ public class Model {
                     double[] x = new double[result.length / 2];
                     double[] y = new double[result.length / 2];
                     for (int i = 0; i < x.length; i++) {
-                        x[i] = result[i * 2];
-                        y[i] = result[i * 2 + 1];
+                        x[i] = result[i * 2] * MODEL_SCALE;
+                        y[i] = result[i * 2 + 1] * MODEL_SCALE;
                     }
-                    model.polygons.add(new Polygon(x, y));
+                    model.shapes.add(makePath(x, y));
                 } else if ("oval".equals(str.substring(0, 4))) {
                     double[] result = readList(str.substring(4));
                 }
@@ -61,30 +69,61 @@ public class Model {
         return ns;
     }
 
+    private static Path2D.Double makePath(double[] x, double[] y) {
+        Path2D.Double path = new Path2D.Double();
+        path.moveTo(x[0], y[0]);
+        for (int i = 1; i < x.length; i++) {
+            path.lineTo(x[i], y[i]);
+        }
+        return path;
+    }
+
     public double getSize() {
         return size;
     }
 
-    public List<Polygon> getPolygons() {
-        return polygons;
+    public void setSize(double val) {
+        size = val;
+    }
+
+    public List<Shape> getShapes() {
+        return transformed;
     }
 
     public void scale(double s) {
-        size *= s;
-        for (Polygon p : polygons) {
-            for (int i = 0; i < p.xs.length; i++) {
-                p.xs[i] *= s;
-                p.ys[i] *= s;
-            }
+        at.setToScale(s * size, s * size);
+        apply();
+    }
+
+    public void rotate(double a) {
+        at.setToRotation(a);
+        apply();
+    }
+
+    public void translate(double x, double y) {
+        at.setToTranslation(x, y);
+        apply();
+    }
+
+    public void transform(double x, double y, double rotate) {
+        at.setToScale(size, size);
+        at.translate(x, y);
+        at.rotate(rotate);
+        apply();
+    }
+
+    private void apply() {
+        transformed.clear();
+        for (Shape s : shapes) {
+            transformed.add(at.createTransformedShape(s));
         }
     }
 
     public Model copy() {
         Model copy = new Model();
-        for (Polygon p : polygons) {
-            copy.polygons.add(p.copy());
-        }
+        copy.shapes = shapes;
         copy.size = size;
+        copy.apply();
         return copy;
     }
 }

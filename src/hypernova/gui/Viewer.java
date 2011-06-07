@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Observer;
 import java.util.Observable;
 
+import java.awt.Shape;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
@@ -36,7 +37,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int HEIGHT = 600;
 
     private final Universe universe;
-    private double scale = 10.0;
+    private double scale = 1.0;
     private int quality = 2; /* 0 - 2 quality setting. */
 
     private static Logger log = Logger.getLogger("gui.Viewer");
@@ -115,12 +116,12 @@ public class Viewer extends JComponent implements Observer {
         Graphics2D g2d = (Graphics2D) g;
 
         Mass player = universe.getPlayer();
-        double xoff = player.getX(0);
-        double yoff = player.getY(0);
+        double px = player.getX(0);
+        double py = player.getY(0);
 
         for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
-            drawStars(g2d, (int) xoff / i, (int) yoff / i, i);
+            drawStars(g2d, (int) px / i, (int) py / i, i);
         }
 
         /* Set up graphics */
@@ -129,33 +130,23 @@ public class Viewer extends JComponent implements Observer {
                                  RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
-        g.translate(getWidth() / 2, getHeight() / 2);
+        g2d.translate(-(px - getWidth() / 2),
+                      -(py - getHeight() / 2));
+        g2d.scale(scale, scale);
         List<Mass> objects = universe.getObjects();
         synchronized (objects) {
             for (Mass m : objects) {
-                drawMass(g2d, m, xoff, yoff);
+                drawMass(g2d, m);
             }
         }
     }
 
-    public void drawMass(Graphics2D g, Mass m, double xoff, double yoff) {
-        /* Ship details */
-        double x = m.getX(0);
-        double y = m.getY(0);
-        double a = m.getA(0);
-        int cx = (int) ((x - xoff) * scale);
-        int cy = (int) ((y - yoff) * scale);
-
+    public void drawMass(Graphics2D g, Mass m) {
         g.setColor(Color.GREEN);
         Model model = m.getModel();
-        for (Polygon p : model.getPolygons()) {
-            p.rotate(m.getA(0));
-            for (int i = 0; i < p.xs.length - 1; i++) {
-                g.drawLine((int) (p.rxs[i] * scale) + cx,
-                           (int) (p.rys[i] * scale) + cy,
-                           (int) (p.rxs[i+1] * scale) + cx,
-                           (int) (p.rys[i+1] * scale) + cy);
-            }
+        model.transform(m.getX(0), m.getY(0), m.getA(0));
+        for (Shape s : model.getShapes()) {
+            g.draw(s);
         }
     }
 
