@@ -12,11 +12,18 @@ public class Ammo extends Mass {
     public static final double DEFAULT_DAMAGE = 1.0;
     public static final String DEFAULT_MODEL = "bolt";
 
+    public final String name, info;
+
     private int ttl;
     private double damage;
     private double speed;
 
     private static Logger log = Logger.getLogger("Ammo");
+
+    private Ammo(String name, String info) {
+        this.name = name;
+        this.info = info;
+    }
 
     public static Ammo getAmmo(String name) {
         String filename = "parts/" + name + ".ammo";
@@ -29,7 +36,9 @@ public class Ammo extends Mass {
             /* TODO handle this more gracefully. */
             return null;
         }
-        Ammo ammo = new Ammo();
+
+        Ammo ammo = new Ammo(props.getProperty("name"),
+                             props.getProperty("info"));
         ammo.ttl = (int) Weapon.attempt(props, "ttl", DEFAULT_TTL);
         ammo.damage = Weapon.attempt(props, "damage", DEFAULT_DAMAGE);
         ammo.speed = Weapon.attempt(props, "speed", DEFAULT_SPEED);
@@ -40,11 +49,8 @@ public class Ammo extends Mass {
         return ammo;
     }
 
-    protected Ammo() {
-    }
-
     public Ammo copy(Mass src) {
-        Ammo ammo = new Ammo();
+        Ammo ammo = new Ammo(name, info);
         ammo.ttl = ttl;
         ammo.damage = damage;
         ammo.speed = speed;

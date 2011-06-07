@@ -9,11 +9,18 @@ public class Weapon {
     public static final double DEFAULT_MASS = 1.0;
     public static final String DEFAULT_AMMO = "bolt";
 
+    public final String name, info;
+
     private double cooldown, timeout;
     private double mass;
     private Ammo ammo;
 
     private static Logger log = Logger.getLogger("Weapon");
+
+    protected Weapon(String name, String info) {
+        this.name = name;
+        this.info = info;
+    }
 
     public static Weapon getWeapon(String name) {
         String filename = "parts/" + name + ".weapon";
@@ -28,7 +35,8 @@ public class Weapon {
             return null;
         }
 
-        Weapon weapon = new Weapon();
+        Weapon weapon = new Weapon(props.getProperty("name"),
+                                   props.getProperty("info"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
         String ammoname = props.getProperty("ammo");
@@ -48,9 +56,6 @@ public class Weapon {
             log.warn("Invalid property value for '" + prop + "'");
             return def;
         }
-    }
-
-    protected Weapon() {
     }
 
     public void fire(Mass src) {

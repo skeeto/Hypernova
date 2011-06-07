@@ -1,3 +1,7 @@
+name = Blaster
+info = "Hokey religions and ancient weapons are no match for a good \
+        blaster at your side, kid."
+
 # stats
 cooldown = 3.0
 ammo     = bolt

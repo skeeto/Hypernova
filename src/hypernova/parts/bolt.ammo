@@ -1,3 +1,8 @@
+name = Plasma Bolt
+info = Very hot, very energetic excited matter. It typically causes \
+       serious burns, and often immediate death of living creatures, \
+       and melts or evaporates other materials.
+
 # stats
 speed  = 15.0
 damage = 1.0
