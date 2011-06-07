@@ -71,6 +71,11 @@
     <delete dir="${dist.dir}"/>
   </target>
 
+  <target name="clean-all" depends="clean"
+	  description="Fully clear out everything.">
+    <delete dir="${lib.dir}"/>
+  </target>
+
   <target name="javadoc" description="Generate Javadoc HTML.">
     <javadoc destdir="${doc.dir}/javadoc">
       <fileset dir="${src.dir}" includes="**/*.java" />
