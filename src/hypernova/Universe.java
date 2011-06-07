@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Vector;
 import java.util.Observable;
 
+import org.apache.log4j.Logger;
+
 public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;
+
+    private static Logger log = Logger.getLogger("Universe");
 
     private Ship player;
     private Thread thread = new Thread(this);
@@ -25,6 +29,7 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void start() {
+        log.debug("Starting simulation thread.");
         thread.start();
     }
 

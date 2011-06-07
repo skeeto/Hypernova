@@ -2,6 +2,8 @@ package hypernova;
 
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import hypernova.gui.Model;
 
 public class Ammo extends Mass {
@@ -14,12 +16,16 @@ public class Ammo extends Mass {
     private double damage;
     private double speed;
 
+    private static Logger log = Logger.getLogger("Ammo");
+
     public static Ammo getAmmo(String name) {
         String filename = "parts/" + name + ".ammo";
+        log.debug("Loading ammo '" + name + "' (" + filename + ")");
         Properties props = new Properties();
         try {
             props.load(Weapon.class.getResourceAsStream(filename));
         } catch (java.io.IOException e) {
+            log.error("Failed to load ammo '" + name + "': " + e.getMessage());
             /* TODO handle this more gracefully. */
             return null;
         }

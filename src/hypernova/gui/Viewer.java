@@ -14,11 +14,12 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
-import com.google.common.base.Objects;
+import org.apache.log4j.Logger;
 
 import hypernova.Ship;
 import hypernova.Mass;
 import hypernova.Universe;
+import hypernova.Hypernova;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
@@ -38,6 +39,8 @@ public class Viewer extends JComponent implements Observer {
     private double scale = 10.0;
     private int quality = 2; /* 0 - 2 quality setting. */
 
+    private static Logger log = Logger.getLogger("gui.Viewer");
+
     public Viewer(Universe state) {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setOpaque(true);
@@ -47,6 +50,7 @@ public class Viewer extends JComponent implements Observer {
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (Hypernova.debug) log.trace("keyPressed() " + e);
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
@@ -66,6 +70,7 @@ public class Viewer extends JComponent implements Observer {
 
             @Override
             public void keyReleased(KeyEvent e) {
+                if (Hypernova.debug) log.trace("keyReleased() " + e);
                 Ship player = universe.getPlayer();
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
@@ -89,6 +94,7 @@ public class Viewer extends JComponent implements Observer {
     }
 
     public void setQuality(int q) {
+        log.info("quality adjusted to " + q);
         quality = Math.max(q, 0);
     }
 

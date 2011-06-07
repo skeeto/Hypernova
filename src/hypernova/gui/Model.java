@@ -9,18 +9,21 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.Logger;
+
 public class Model {
+    private List<Polygon> polygons = new ArrayList<Polygon>();
     private double size = 1.0;
 
-    private List<Polygon> polygons = new ArrayList<Polygon>();
-
     private static Map<String, Model> cache = new HashMap<String, Model>();
+    private static Logger log = Logger.getLogger("gui.Model");
 
     public static synchronized Model getModel(String name) {
         Model model = cache.get(name);
         if (model != null) return model.copy();
         model = new Model();
         String filename = "models/" + name + ".mdl";
+        log.debug("Loading model '" + name + "' (" + filename + ")");
         try {
             InputStream s = Model.class.getResourceAsStream(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(s));
@@ -42,6 +45,7 @@ public class Model {
             }
             cache.put(name, model);
         } catch (java.io.IOException e) {
+            log.error("Failed to load model '" + name + "' " + e.getMessage());
             /* TODO handle more gracefully. */
             return null;
         }
