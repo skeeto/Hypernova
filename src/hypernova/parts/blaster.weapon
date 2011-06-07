@@ -2,12 +2,11 @@ name = Blaster
 info = "Hokey religions and ancient weapons are no match for a good \
         blaster at your side, kid."
 
-# stats
 cooldown = 3.0
 ammo     = bolt
 mass     = 1.0
 
-# sound
-channel = 0
-note    = 40
-volume  = 75
+# sound effect
+channel  = 0
+note     = 40
+volume   = 75
