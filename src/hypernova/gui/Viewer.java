@@ -145,8 +145,13 @@ public class Viewer extends JComponent implements Observer {
         g.setColor(Color.GREEN);
         Model model = m.getModel();
         model.transform(m.getX(0), m.getY(0), m.getA(0));
-        for (Shape s : model.getShapes()) {
-            g.draw(s);
+        Shape[] shapes = model.getShapes();
+        boolean[] filled = model.getFilled();
+        for (int i = 0; i < shapes.length; i++) {
+            if (filled[i])
+                g.fill(shapes[i]);
+            else
+                g.draw(shapes[i]);
         }
     }
 

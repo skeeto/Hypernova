@@ -17,18 +17,24 @@ import java.awt.geom.AffineTransform;
 import org.apache.log4j.Logger;
 
 public class Model {
-    private List<Shape> shapes = new ArrayList<Shape>();
-    private List<Shape> transformed = new ArrayList<Shape>();
+    private Shape[] shapes;
+    private Shape[] transformed;
+    private boolean[] filled;
     private AffineTransform at = new AffineTransform();
     private double size = 10.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");
 
+    protected Model() {
+    }
+
     public static synchronized Model getModel(String name) {
         Model model = cache.get(name);
         if (model != null) return model.copy();
         model = new Model();
+        List<Shape> shapes = new ArrayList<Shape>();
+        List<Boolean> filled = new ArrayList<Boolean>();
         String filename = "models/" + name + ".mdl";
         log.debug("Loading model '" + name + "' (" + filename + ")");
         try {
@@ -38,31 +44,24 @@ public class Model {
                 String str = in.readLine();
                 if (str == null || str.length() < 5) break;
                 if ("path".equals(str.substring(0, 4))) {
-                    double[] result = readList(str.substring(4));
-                    double[] x = new double[result.length / 2];
-                    double[] y = new double[result.length / 2];
-                    for (int i = 0; i < x.length; i++) {
-                        x[i] = result[i * 2];
-                        y[i] = result[i * 2 + 1];
-                    }
-                    model.shapes.add(makePath(x, y));
+                    shapes.add(path(readList(str.substring(4))));
+                    filled.add(false);
+                } else if ("fpath".equals(str.substring(0, 5))) {
+                    shapes.add(path(readList(str.substring(5))));
+                    filled.add(true);
                 } else if ("oval".equals(str.substring(0, 4))) {
-                    double[] result = readList(str.substring(4));
-                    if (result.length < 4 || result.length > 5)
-                        throw new RuntimeException("Invalid oval");
-                    double w = result[2] * 2;
-                    double h = result[3] * 2;
-                    double x = result[0] - w / 2;
-                    double y = result[1] - h / 2;
-                    Shape oval = new Ellipse2D.Double(x, y, w, h);
-                    if (result.length == 5) {
-                        AffineTransform at = new AffineTransform();
-                        at.rotate(Math.toRadians(result[4]));
-                        oval = at.createTransformedShape(oval);
-                    }
-                    model.shapes.add(oval);
+                    shapes.add(oval(readList(str.substring(4))));
+                    filled.add(false);
+                } else if ("foval".equals(str.substring(0, 5))) {
+                    shapes.add(oval(readList(str.substring(5))));
+                    filled.add(true);
                 }
             }
+            model.shapes = shapes.toArray(new Shape[0]);
+            model.transformed = new Shape[shapes.size()];
+            model.filled = new boolean[shapes.size()];
+            for (int i = 0; i < filled.size(); i++)
+                model.filled[i] = filled.get(i);
             cache.put(name, model);
         } catch (java.io.IOException e) {
             log.error("Failed to load model '" + name + "' " + e.getMessage());
@@ -81,13 +80,29 @@ public class Model {
         return ns;
     }
 
-    private static Path2D.Double makePath(double[] x, double[] y) {
+    private static Shape path(double[] vals) {
         Path2D.Double path = new Path2D.Double();
-        path.moveTo(x[0], y[0]);
-        for (int i = 1; i < x.length; i++) {
-            path.lineTo(x[i], y[i]);
+        path.moveTo(vals[0], vals[1]);
+        for (int i = 1; i < vals.length / 2; i++) {
+            path.lineTo(vals[i * 2], vals[i * 2 + 1]);
         }
         return path;
+    }
+
+    private static Shape oval(double[] vals) {
+        if (vals.length < 4 || vals.length > 5)
+            throw new RuntimeException("Invalid oval");
+        double w = vals[2] * 2;
+        double h = vals[3] * 2;
+        double x = vals[0] - w / 2;
+        double y = vals[1] - h / 2;
+        Shape oval = new Ellipse2D.Double(x, y, w, h);
+        if (vals.length == 5) {
+            AffineTransform at = new AffineTransform();
+            at.rotate(Math.toRadians(vals[4]));
+            oval = at.createTransformedShape(oval);
+        }
+        return oval;
     }
 
     public double getSize() {
@@ -98,8 +113,12 @@ public class Model {
         size = val;
     }
 
-    public List<Shape> getShapes() {
+    public Shape[] getShapes() {
         return transformed;
+    }
+
+    public boolean[] getFilled() {
+        return filled;
     }
 
     public void scale(double s) {
@@ -125,15 +144,16 @@ public class Model {
     }
 
     private void apply() {
-        transformed.clear();
-        for (Shape s : shapes) {
-            transformed.add(at.createTransformedShape(s));
+        for (int i = 0; i < shapes.length; i++) {
+            transformed[i] = at.createTransformedShape(shapes[i]);
         }
     }
 
     public Model copy() {
         Model copy = new Model();
         copy.shapes = shapes;
+        copy.transformed = new Shape[shapes.length];
+        copy.filled = filled;
         copy.size = size;
         copy.apply();
         return copy;
