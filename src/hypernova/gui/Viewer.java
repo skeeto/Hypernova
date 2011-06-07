@@ -112,7 +112,7 @@ public class Viewer extends JComponent implements Observer {
         double xoff = player.getX(0);
         double yoff = player.getY(0);
 
-        for (int i = stars.length; i > 0; i--) {
+        for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
             drawStars(g2d, (int) xoff / i, (int) yoff / i, i);
         }
