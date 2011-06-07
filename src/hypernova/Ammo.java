@@ -1,10 +1,10 @@
 package hypernova;
 
-public class Shot extends Mass {
+public class Ammo extends Mass {
     public static final int DEFAULT_TTL = 200;
     private int ttl;
 
-    public Shot(Universe u, double x, double y, double a, String model,
+    public Ammo(Universe u, double x, double y, double a, String model,
                 double speed, int ttl) {
         super(u, x, y, a, model);
         setX(Math.cos(a) * speed, 1);
@@ -12,7 +12,7 @@ public class Shot extends Mass {
         this.ttl = ttl;
     }
 
-    public Shot(Universe u, double x, double y, double a, String model,
+    public Ammo(Universe u, double x, double y, double a, String model,
                 double speed) {
         this(u, x, y, a, model, speed, DEFAULT_TTL);
     }

@@ -1,0 +1,6 @@
+# stats
+speed  = 1.5
+damage = 1.0
+
+# display
+model    = shot

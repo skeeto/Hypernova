@@ -1,0 +1,9 @@
+# stats
+cooldown = 3.0
+ammo     = bolt
+mass     = 1.0
+
+# sound
+channel = 0
+note    = 40
+volume  = 75
