@@ -26,6 +26,8 @@ public class Hypernova {
         if (debug)
             log.setLevel(Level.TRACE);
 
+        Sound.init();
+
         universe = new Universe();
         viewer = new Viewer(universe);
 
@@ -35,8 +37,6 @@ public class Hypernova {
         frame.pack();
         frame.setVisible(true);
         viewer.requestFocusInWindow();
-
-        Sound.init();
 
         universe.start();
     }
