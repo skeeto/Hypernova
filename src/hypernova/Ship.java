@@ -13,9 +13,8 @@ public class Ship extends Mass {
     private double power = DEFAULT_POWER;
     private boolean turnleft, turnright;
 
-    public Ship(Universe universe, double x, double y, double angle,
-                String model) {
-        super(universe, x, y, angle, model);
+    public Ship(double x, double y, double angle, String model) {
+        super(x, y, angle, model);
     }
 
     public void addWeapon(Weapon w) {
@@ -54,7 +53,7 @@ public class Ship extends Mass {
     public void fire(int n) {
         if (n >= weapons.size())
             return;
-        weapons.get(n).fire(universe, this);
+        weapons.get(n).fire(this);
     }
 
     /** Set a weapon as currently firing or not.

@@ -7,7 +7,7 @@ import hypernova.gui.Viewer;
 public class Hypernova {
     public static final String TITLE = "Hypernova";
 
-    private static Universe universe = new Universe();
+    public static Universe universe = new Universe();
     private static Viewer viewer = new Viewer(universe);
 
     public static void main(String[] args) {

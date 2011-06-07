@@ -7,22 +7,17 @@ public class Mass {
     private double[] x = new double[3];
     private double[] y = new double[3];
     private double[] a = new double[3];
-    private Model model;
+    protected Model model;
     private boolean solid;
 
-    protected final Universe universe;
+    protected Mass() {
+    }
 
-    public Mass(Universe universe, double px, double py, double angle,
-                String modelname) {
-        this.universe = universe;
+    public Mass(double px, double py, double angle, String modelname) {
         x[0] = px;
         y[0] = py;
         a[0] = angle;
-        try {
-            model = Model.getModel(modelname);
-        } catch (java.io.IOException e) {
-            System.out.println("Failed to read model " + modelname);
-        }
+        model = Model.getModel(modelname);
     }
 
     public void step(double t) {
@@ -46,6 +41,12 @@ public class Mass {
 
     public void setSolid(boolean set) {
         solid = set;
+    }
+
+    public void match(Mass m, int deriv) {
+        x[deriv] = m.x[deriv];
+        y[deriv] = m.y[deriv];
+        a[deriv] = m.a[deriv];
     }
 
     public void setX(double val, int deriv) {

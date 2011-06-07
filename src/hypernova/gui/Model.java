@@ -16,31 +16,35 @@ public class Model {
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
 
-    public static synchronized Model getModel(String name)
-        throws java.io.IOException {
+    public static synchronized Model getModel(String name) {
         Model model = cache.get(name);
         if (model != null) return model.copy();
         model = new Model();
         String filename = "models/" + name + ".mdl";
-        InputStream s = Model.class.getResourceAsStream(filename);
-        BufferedReader in = new BufferedReader(new InputStreamReader(s));
-        while (true) {
-            String str = in.readLine();
-            if (str == null) break;
-            if ("poly".equals(str.substring(0, 4))) {
-                double[] result = readList(str.substring(4));
-                double[] x = new double[result.length / 2];
-                double[] y = new double[result.length / 2];
-                for (int i = 0; i < x.length; i++) {
-                    x[i] = result[i * 2];
-                    y[i] = result[i * 2 + 1];
+        try {
+            InputStream s = Model.class.getResourceAsStream(filename);
+            BufferedReader in = new BufferedReader(new InputStreamReader(s));
+            while (true) {
+                String str = in.readLine();
+                if (str == null) break;
+                if ("poly".equals(str.substring(0, 4))) {
+                    double[] result = readList(str.substring(4));
+                    double[] x = new double[result.length / 2];
+                    double[] y = new double[result.length / 2];
+                    for (int i = 0; i < x.length; i++) {
+                        x[i] = result[i * 2];
+                        y[i] = result[i * 2 + 1];
+                    }
+                    model.polygons.add(new Polygon(x, y));
+                } else if ("oval".equals(str.substring(0, 4))) {
+                    double[] result = readList(str.substring(4));
                 }
-                model.polygons.add(new Polygon(x, y));
-            } else if ("oval".equals(str.substring(0, 4))) {
-                double[] result = readList(str.substring(4));
             }
+            cache.put(name, model);
+        } catch (java.io.IOException e) {
+            /* TODO handle more gracefully. */
+            return null;
         }
-        cache.put(name, model);
         return model.copy();
     }
 
