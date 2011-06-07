@@ -121,21 +121,6 @@ public class Model {
         return filled;
     }
 
-    public void scale(double s) {
-        at.setToScale(s * size, s * size);
-        apply();
-    }
-
-    public void rotate(double a) {
-        at.setToRotation(a);
-        apply();
-    }
-
-    public void translate(double x, double y) {
-        at.setToTranslation(x, y);
-        apply();
-    }
-
     public void transform(double x, double y, double rotate) {
         at.setToTranslation(x, y);
         at.scale(size, size);
