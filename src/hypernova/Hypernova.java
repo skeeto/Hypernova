@@ -21,6 +21,8 @@ public class Hypernova {
         frame.setVisible(true);
         viewer.requestFocusInWindow();
 
+        Sound.init();
+
         universe.start();
     }
 }

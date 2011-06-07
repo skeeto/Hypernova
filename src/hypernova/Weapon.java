@@ -17,6 +17,7 @@ public class Weapon {
             shot.addY(src.getY(1), 1);
             u.add(shot);
             timeout = rate;
+            Sound.play(0, 40, 75);
         }
     }
 
