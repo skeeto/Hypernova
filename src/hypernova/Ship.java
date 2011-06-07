@@ -28,17 +28,17 @@ public class Ship extends Mass {
 
     public void step(double t) {
         if (engines) {
-            setX(power * Math.cos(getA(0)), 2);
-            setY(power * Math.sin(getA(0)), 2);
+            x[2] = power * Math.cos(getA(0));
+            y[2] = power * Math.sin(getA(0));
         } else {
-            setX(0, 2);
-            setY(0, 2);
+            x[2] = 0;
+            y[2] = 0;
         }
-        setA(0.0, 1);
+        a[1] = 0;
         if (turnleft)
-            addA(-DEFAULT_TURN, 1);
+            a[1] += -DEFAULT_TURN;
         if (turnright)
-            addA(DEFAULT_TURN, 1);
+            a[1] += DEFAULT_TURN;
 
         super.step(t);
         for (int i = 0; i < weapons.size(); i++) {

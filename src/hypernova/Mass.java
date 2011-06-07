@@ -4,9 +4,9 @@ import hypernova.gui.Model;
 
 public class Mass {
     /* State vectors -- {pos, vel, acc}. */
-    private double[] x = new double[3];
-    private double[] y = new double[3];
-    private double[] a = new double[3];
+    protected double[] x = new double[3];
+    protected double[] y = new double[3];
+    protected double[] a = new double[3];
     protected Model model;
     private boolean solid;
 
@@ -43,34 +43,25 @@ public class Mass {
         solid = set;
     }
 
-    public void match(Mass m, int deriv) {
-        x[deriv] = m.x[deriv];
-        y[deriv] = m.y[deriv];
-        a[deriv] = m.a[deriv];
-    }
-
-    public void setX(double val, int deriv) {
-        x[deriv] = val;
-    }
-
-    public void setY(double val, int deriv) {
-        y[deriv] = val;
-    }
-
     public void setA(double val, int deriv) {
         a[deriv] = val;
     }
 
-    public void addX(double val, int deriv) {
-        x[deriv] += val;
+    public void setPosition(double px, double py, double pa) {
+        x[0] = px;
+        y[0] = py;
+        a[0] = pa;
     }
 
-    public void addY(double val, int deriv) {
-        y[deriv] += val;
+    public void setPosition(double px, double py) {
+        x[0] = px;
+        y[0] = py;
     }
 
-    public void addA(double val, int deriv) {
-        a[deriv] += val;
+    public void setPosition(Mass src) {
+        x[0] = src.x[0];
+        y[0] = src.y[0];
+        a[0] = src.a[0];
     }
 
     public double getX(int deriv) {

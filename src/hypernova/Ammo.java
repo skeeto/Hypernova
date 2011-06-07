@@ -49,11 +49,9 @@ public class Ammo extends Mass {
         ammo.damage = damage;
         ammo.speed = speed;
         ammo.model = model;
-        ammo.match(src, 0);
-        ammo.match(src, 1);
-        ammo.setA(0.0, 1);
-        ammo.addX(Math.cos(src.getA(0)) * speed, 1);
-        ammo.addY(Math.sin(src.getA(0)) * speed, 1);
+        ammo.setPosition(src);
+        ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
+        ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;
         return ammo;
     }
 
