@@ -11,17 +11,16 @@ import java.io.InputStreamReader;
 
 import java.awt.Shape;
 import java.awt.geom.Path2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.AffineTransform;
 
 import org.apache.log4j.Logger;
 
 public class Model {
-    public static final double MODEL_SCALE = 10.0;
-
     private List<Shape> shapes = new ArrayList<Shape>();
     private List<Shape> transformed = new ArrayList<Shape>();
     private AffineTransform at = new AffineTransform();
-    private double size = 1.0;
+    private double size = 10.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");
@@ -37,18 +36,31 @@ public class Model {
             BufferedReader in = new BufferedReader(new InputStreamReader(s));
             while (true) {
                 String str = in.readLine();
-                if (str == null) break;
+                if (str == null || str.length() < 5) break;
                 if ("path".equals(str.substring(0, 4))) {
                     double[] result = readList(str.substring(4));
                     double[] x = new double[result.length / 2];
                     double[] y = new double[result.length / 2];
                     for (int i = 0; i < x.length; i++) {
-                        x[i] = result[i * 2] * MODEL_SCALE;
-                        y[i] = result[i * 2 + 1] * MODEL_SCALE;
+                        x[i] = result[i * 2];
+                        y[i] = result[i * 2 + 1];
                     }
                     model.shapes.add(makePath(x, y));
                 } else if ("oval".equals(str.substring(0, 4))) {
                     double[] result = readList(str.substring(4));
+                    if (result.length < 4 || result.length > 5)
+                        throw new RuntimeException("Invalid oval");
+                    double w = result[2] * 2;
+                    double h = result[3] * 2;
+                    double x = result[0] - w / 2;
+                    double y = result[1] - h / 2;
+                    Shape oval = new Ellipse2D.Double(x, y, w, h);
+                    if (result.length == 5) {
+                        AffineTransform at = new AffineTransform();
+                        at.rotate(Math.toRadians(result[4]));
+                        oval = at.createTransformedShape(oval);
+                    }
+                    model.shapes.add(oval);
                 }
             }
             cache.put(name, model);
@@ -106,8 +118,8 @@ public class Model {
     }
 
     public void transform(double x, double y, double rotate) {
-        at.setToScale(size, size);
-        at.translate(x, y);
+        at.setToTranslation(x, y);
+        at.scale(size, size);
         at.rotate(rotate);
         apply();
     }

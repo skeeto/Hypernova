@@ -24,7 +24,7 @@ public class Universe extends Observable implements Runnable {
         player.addWeapon(Weapon.getWeapon("blaster"));
         objects.add(player);
         Mass dummy = new Mass(200.0, 200.0, 0.0, "simple");
-        dummy.getModel().setSize(0.5);
+        dummy.getModel().setSize(5.0);
         objects.add(dummy);
     }
 
