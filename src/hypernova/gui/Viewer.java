@@ -157,23 +157,20 @@ public class Viewer extends JComponent implements Observer {
                            (int) (p.rys[i+1] * scale) + cy);
             }
         }
-
-        // g.drawOval(cx - size / 2, cy - size / 2, size, size);
-        // g.drawLine(cx, cy,
-        //            (int) (Math.cos(a) * scale * reach) + cx,
-        //            (int) (Math.sin(a) * scale * reach) + cy);
     }
 
     public void drawStars(Graphics2D g, int xoff, int yoff, int scale) {
-        int size = 128 / scale;
+        int size = 256 / scale;
         int sx = (xoff / size) * size - size;
         int sy = (yoff / size) * size - size;
         for (int i = sx; i <= getWidth() + sx + size * 3; i += size) {
             for (int j = sy; j <= getHeight() + sy + size * 3; j += size) {
                 int hash = mix(STAR_SEED, i, j);
-                if ((hash & 1) == 1) {
+                for (int n = 0; n < 3; n++) {
                     int px = (hash % size) + (i - xoff);
+                    hash >>= 3;
                     int py = (hash % size) + (j - yoff);
+                    hash >>= 3;
                     g.drawLine(px, py, px, py);
                 }
             }
