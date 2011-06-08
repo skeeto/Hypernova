@@ -7,4 +7,4 @@ speed  = 15.0
 damage = 1.0
 ttl    = 100
 
-model  = bolt
+hull   = bolt

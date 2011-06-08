@@ -55,11 +55,21 @@ public class Hull {
     }
 
     private static Point2D.Double[] slots(String str, int n) {
+        if (str == null || n == 0)
+            return new Point2D.Double[0];
         double[] list = Model.readList(str, 0);
         Point2D.Double[] slots = new Point2D.Double[n];
         for (int i = 0; i < n; i++) {
             slots[i] = new Point2D.Double(list[i * 2], list[i * 2 + 1]);
         }
         return slots;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public int numWeapons() {
+        return numweapons;
     }
 }

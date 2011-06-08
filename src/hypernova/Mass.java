@@ -7,17 +7,19 @@ public class Mass {
     protected double[] x = new double[3];
     protected double[] y = new double[3];
     protected double[] a = new double[3];
-    protected Model model;
-    private boolean solid;
+    protected Hull hull;
+    private double size = 10.0;
 
     protected Mass() {
     }
 
-    public Mass(double px, double py, double angle, String modelname) {
-        x[0] = px;
-        y[0] = py;
-        a[0] = angle;
-        model = Model.getModel(modelname);
+    public Mass(Hull hull) {
+        this.hull = hull;
+        setSize(size);
+    }
+
+    public Mass(String hullname) {
+        this(Hull.getHull(hullname));
     }
 
     public void step(double t) {
@@ -32,15 +34,20 @@ public class Mass {
     /* Getters and setters. */
 
     public Model getModel() {
-        return model;
+        return hull.getModel();
     }
 
-    public boolean isSolid() {
-        return solid;
+    public Hull getHull() {
+        return hull;
     }
 
-    public void setSolid(boolean set) {
-        solid = set;
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double val) {
+        size = val;
+        hull.getModel().setSize(val);
     }
 
     public void setA(double val, int deriv) {

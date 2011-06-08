@@ -21,7 +21,7 @@ public class Model {
     private Shape[] transformed;
     private boolean[] filled;
     private AffineTransform at = new AffineTransform();
-    private double size = 10.0;
+    private double size = 1.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");

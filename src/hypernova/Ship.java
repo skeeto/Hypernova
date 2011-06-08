@@ -7,19 +7,29 @@ public class Ship extends Mass {
     public static final double DEFAULT_POWER = 0.5;
     public static final double DEFAULT_TURN = 0.15;
 
-    private List<Weapon> weapons = new ArrayList<Weapon>();
+    private Weapon[] weapons;
     private boolean[] firestate = new boolean[0];
     private boolean engines;
     private double power = DEFAULT_POWER;
     private boolean turnleft, turnright;
 
-    public Ship(double x, double y, double angle, String model) {
-        super(x, y, angle, model);
+    public Ship(String hullname) {
+        this(Hull.getHull(hullname));
     }
 
-    public void addWeapon(Weapon w) {
-        weapons.add(w);
-        firestate = new boolean[weapons.size()];
+    public Ship(Hull hull) {
+        super(hull);
+        weapons = new Weapon[hull.numWeapons()];
+        firestate = new boolean[weapons.length];
+    }
+
+    public void setWeapon(String w, int slot) {
+        this.setWeapon(Weapon.getWeapon(w), slot);
+    }
+
+    public void setWeapon(Weapon w, int slot) {
+        weapons[slot] = w;
+        firestate[slot] = false;
     }
 
     public void setEngines(boolean set) {
@@ -41,8 +51,8 @@ public class Ship extends Mass {
             a[1] += DEFAULT_TURN;
 
         super.step(t);
-        for (int i = 0; i < weapons.size(); i++) {
-            weapons.get(i).step(t);
+        for (int i = 0; i < weapons.length; i++) {
+            weapons[i].step(t);
             if (firestate[i]) fire(i);
         }
     }
@@ -51,9 +61,7 @@ public class Ship extends Mass {
      * @param n  weapon number
      */
     public void fire(int n) {
-        if (n >= weapons.size())
-            return;
-        weapons.get(n).fire(this);
+        weapons[n].fire(this);
     }
 
     /** Set a weapon as currently firing or not.

@@ -20,7 +20,8 @@ public class Ammo extends Mass {
 
     private static Logger log = Logger.getLogger("Ammo");
 
-    private Ammo(String name, String info) {
+    private Ammo(Hull hull, String name, String info) {
+        super(hull);
         this.name = name;
         this.info = info;
     }
@@ -37,24 +38,24 @@ public class Ammo extends Mass {
             return null;
         }
 
-        Ammo ammo = new Ammo(props.getProperty("name"),
+        String hullname = props.getProperty("hull");
+        if (hullname == null)
+            hullname = DEFAULT_MODEL;
+        Hull hull = Hull.getHull(hullname);
+        Ammo ammo = new Ammo(hull, props.getProperty("name"),
                              props.getProperty("info"));
         ammo.ttl = (int) Weapon.attempt(props, "ttl", DEFAULT_TTL);
         ammo.damage = Weapon.attempt(props, "damage", DEFAULT_DAMAGE);
         ammo.speed = Weapon.attempt(props, "speed", DEFAULT_SPEED);
-        String modelname = props.getProperty("model");
-        if (modelname == null)
-            modelname = DEFAULT_MODEL;
-        ammo.model = Model.getModel(modelname);
         return ammo;
     }
 
     public Ammo copy(Mass src) {
-        Ammo ammo = new Ammo(name, info);
+        Ammo ammo = new Ammo(getHull(), name, info);
         ammo.ttl = ttl;
         ammo.damage = damage;
         ammo.speed = speed;
-        ammo.model = model;
+        ammo.hull = hull;
         ammo.setPosition(src);
         ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
         ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;
