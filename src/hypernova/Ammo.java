@@ -64,7 +64,29 @@ public class Ammo extends Mass {
 
     public void step(double t) {
         super.step(t);
-        if (ttl-- < 0)
-            Hypernova.universe.remove(this);
+        if (ttl-- < 0) {
+            zenThing();
+            return;
+        }
+
+        for (Mass m : Hypernova.universe.getObjects()) {
+            if (m.getMass() > 0) {
+                if (m != Hypernova.universe.getPlayer())
+                for (double dt = t; dt > 0; dt -= t / 8.0) {
+                    double tx = x[0] - x[1] * dt;
+                    double ty = y[0] - y[1] * dt;
+                    if (m.getHit().contains(tx, ty)) {
+                        hit(m);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void hit(Mass m) {
+        /* TODO: calculate damage
+                 remove object from the universe if below 0. */
+        zenThing();
     }
 }

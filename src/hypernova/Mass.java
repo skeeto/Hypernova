@@ -1,5 +1,7 @@
 package hypernova;
 
+import java.awt.Shape;
+
 import hypernova.gui.Model;
 
 public class Mass {
@@ -31,6 +33,11 @@ public class Mass {
         a[0] += a[1] * t;
     }
 
+    /** Remove oneself from the equation. */
+    protected void zenThing() {
+        Hypernova.universe.remove(this);
+    }
+
     /* Getters and setters. */
 
     public Model getModel() {
@@ -39,6 +46,14 @@ public class Mass {
 
     public Hull getHull() {
         return hull;
+    }
+
+    public Shape getHit() {
+        return getModel().getShapes()[0];
+    }
+
+    public double getMass() {
+        return hull.getMass();
     }
 
     public double getSize() {

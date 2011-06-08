@@ -72,4 +72,8 @@ public class Hull {
     public int numWeapons() {
         return numweapons;
     }
+
+    public double getMass() {
+        return mass;
+    }
 }
