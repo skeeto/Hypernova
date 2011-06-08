@@ -39,7 +39,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int HEIGHT = 600;
 
     private final Universe universe;
-    private double scale = 1.0;
+    private double scale = 2.0;
     private double targetScale = scale;
     private int quality = 2; /* 0 - 2 quality setting. */
 

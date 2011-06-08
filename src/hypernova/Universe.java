@@ -26,14 +26,15 @@ public class Universe extends Observable implements Runnable {
         objects.add(player);
 
         Ship s = new Ship("tenderfoot");
-        s.setPosition(130, 210, Math.PI / 3);
+        s.setPosition(45, 105, Math.PI / 3);
         s.setWeapon("blaster", 0);
+        s.setSize(6.0);
         objects.add(s);
 
         Mass station = new Mass("small-station");
-        station.setPosition(200.0, 200.0, 0.0);
+        station.setPosition(100.0, 100.0, 0.0);
         station.setA(0.01, 1);
-        station.setSize(40.0);
+        station.setSize(30.0);
         objects.add(station);
     }
 

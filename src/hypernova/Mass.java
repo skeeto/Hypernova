@@ -10,7 +10,7 @@ public class Mass {
     protected double[] y = new double[3];
     protected double[] a = new double[3];
     protected Hull hull;
-    private double size = 10.0;
+    private double size = 5.0;
 
     protected Mass() {
     }
