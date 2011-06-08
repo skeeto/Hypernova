@@ -44,16 +44,16 @@ public class Model {
                 String str = in.readLine();
                 if (str == null || str.length() < 5) break;
                 if ("path".equals(str.substring(0, 4))) {
-                    shapes.add(path(readList(str.substring(4))));
+                    shapes.add(path(readList(str.substring(4), 1)));
                     filled.add(false);
                 } else if ("fpath".equals(str.substring(0, 5))) {
-                    shapes.add(path(readList(str.substring(5))));
+                    shapes.add(path(readList(str.substring(5), 1)));
                     filled.add(true);
                 } else if ("oval".equals(str.substring(0, 4))) {
-                    shapes.add(oval(readList(str.substring(4))));
+                    shapes.add(oval(readList(str.substring(4), 1)));
                     filled.add(false);
                 } else if ("foval".equals(str.substring(0, 5))) {
-                    shapes.add(oval(readList(str.substring(5))));
+                    shapes.add(oval(readList(str.substring(5), 1)));
                     filled.add(true);
                 }
             }
@@ -71,11 +71,11 @@ public class Model {
         return model.copy();
     }
 
-    private static double[] readList(String str) {
+    public static double[] readList(String str, int skip) {
         String[] s = str.split("\\s+");
-        double[] ns = new double[s.length - 1];
-        for (int i = 1; i < s.length; i++) {
-            ns[i-1] = Double.parseDouble(s[i]);
+        double[] ns = new double[s.length - skip];
+        for (int i = skip; i < s.length; i++) {
+            ns[i-skip] = Double.parseDouble(s[i]);
         }
         return ns;
     }
