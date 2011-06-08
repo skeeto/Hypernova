@@ -25,6 +25,8 @@ import hypernova.Hypernova;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
 
+    public static final double ZOOM_RATE = 1.2;
+
     public static final Color[] stars = {
         new Color(0xFF, 0xFF, 0xFF),
         new Color(0xAF, 0xAF, 0xAF),
@@ -38,6 +40,7 @@ public class Viewer extends JComponent implements Observer {
 
     private final Universe universe;
     private double scale = 1.0;
+    private double targetScale = scale;
     private int quality = 2; /* 0 - 2 quality setting. */
 
     private static Logger log = Logger.getLogger("gui.Viewer");
@@ -66,6 +69,14 @@ public class Viewer extends JComponent implements Observer {
                 case KeyEvent.VK_SPACE:
                     player.setFire(0, true);
                     break;
+                case KeyEvent.VK_PAGE_UP:
+                    setScale(getScale() * ZOOM_RATE);
+                    break;
+                case KeyEvent.VK_PAGE_DOWN:
+                    setScale(getScale() * (1 / ZOOM_RATE));
+                    break;
+                default:
+                    log.trace("Unkown key " + e.getKeyCode());
                 }
             }
 
@@ -103,6 +114,14 @@ public class Viewer extends JComponent implements Observer {
         return quality;
     }
 
+    public void setScale(double scale) {
+        targetScale = scale;
+    }
+
+    public double getScale() {
+        return targetScale;
+    }
+
     @Override
     public void update(Observable o, Object msg) {
         repaint();
@@ -114,6 +133,8 @@ public class Viewer extends JComponent implements Observer {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2d = (Graphics2D) g;
+
+        scale = (0.8 * scale + 0.2 * targetScale);
 
         Mass player = universe.getPlayer();
         double px = player.getX(0);
@@ -136,8 +157,8 @@ public class Viewer extends JComponent implements Observer {
                                  RenderingHints.VALUE_RENDER_QUALITY);
         }
 
-        g2d.translate(-(px - getWidth() / 2),
-                      -(py - getHeight() / 2));
+        g2d.translate(-(px * scale - getWidth() / 2),
+                      -(py * scale - getHeight() / 2));
         g2d.scale(scale, scale);
         List<Mass> objects = universe.getObjects();
         synchronized (objects) {
