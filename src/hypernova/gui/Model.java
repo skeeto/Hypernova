@@ -34,12 +34,15 @@ public class Model {
         if (model != null) return model.copy();
         model = new Model();
         List<Shape> shapes = new ArrayList<Shape>();
+        shapes.add(null);
         List<Boolean> filled = new ArrayList<Boolean>();
+        filled.add(false);
         String filename = "models/" + name + ".mdl";
         log.debug("Loading model '" + name + "' (" + filename + ")");
         try {
             InputStream s = Model.class.getResourceAsStream(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(s));
+            Shape hit = null;
             while (true) {
                 String str = in.readLine();
                 if (str == null || str.length() < 5) break;
@@ -49,14 +52,21 @@ public class Model {
                 } else if ("fpath".equals(str.substring(0, 5))) {
                     shapes.add(path(readList(str.substring(5), 1)));
                     filled.add(true);
+                } else if ("hpath".equals(str.substring(0, 5))) {
+                    hit = path(readList(str.substring(5), 1));
                 } else if ("oval".equals(str.substring(0, 4))) {
                     shapes.add(oval(readList(str.substring(4), 1)));
                     filled.add(false);
                 } else if ("foval".equals(str.substring(0, 5))) {
                     shapes.add(oval(readList(str.substring(5), 1)));
                     filled.add(true);
+                } else if ("hoval".equals(str.substring(0, 5))) {
+                    hit = oval(readList(str.substring(5), 1));
                 }
             }
+            if (hit == null)
+                hit = shapes.get(1);
+            shapes.set(0, hit);
             model.shapes = shapes.toArray(new Shape[0]);
             model.transformed = new Shape[shapes.size()];
             model.filled = new boolean[shapes.size()];
