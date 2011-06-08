@@ -1,0 +1,9 @@
+name = Tenderfoot
+info = It can take a plasma bolt or two, but not much else.
+
+hp    = 5.0
+mass  = 5.0
+model = simple
+
+numweapons  = 1
+weaponslots = 1.0 0.0
