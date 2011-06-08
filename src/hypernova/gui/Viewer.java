@@ -128,6 +128,12 @@ public class Viewer extends JComponent implements Observer {
         if (quality > 0) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                  RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                                 RenderingHints.VALUE_STROKE_PURE);
+        }
+        if (quality > 1) {
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                                 RenderingHints.VALUE_RENDER_QUALITY);
         }
 
         g2d.translate(-(px - getWidth() / 2),
