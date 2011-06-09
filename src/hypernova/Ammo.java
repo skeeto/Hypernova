@@ -55,7 +55,7 @@ public class Ammo extends Mass {
         ammo.ttl = ttl;
         ammo.damage = damage;
         ammo.speed = speed;
-        ammo.hull = hull;
+        ammo.hull = hull.copy();
         ammo.setPosition(src);
         ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
         ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;

@@ -33,6 +33,7 @@ public class Mass {
         x[0] += x[1] * t;
         y[0] += y[1] * t;
         a[0] += a[1] * t;
+        hull.getModel().transform(x[0], y[0], a[0]);
     }
 
     /** Remove oneself from the equation. */

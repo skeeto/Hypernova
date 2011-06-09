@@ -171,7 +171,6 @@ public class Viewer extends JComponent implements Observer {
     public void drawMass(Graphics2D g, Mass m) {
         g.setColor(m.getFaction().getColor());
         Model model = m.getModel();
-        model.transform(m.getX(0), m.getY(0), m.getA(0));
         Shape[] shapes = model.getShapes();
         boolean[] filled = model.getFilled();
         for (int i = 1; i < shapes.length; i++) {
