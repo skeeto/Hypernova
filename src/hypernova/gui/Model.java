@@ -1,5 +1,6 @@
 package hypernova.gui;
 
+import java.awt.geom.PathIterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,16 @@ public class Model {
     private static Logger log = Logger.getLogger("gui.Model");
 
     protected Model() {
+    }
+
+    protected Model(Shape s, double size) {
+        shapes = new Shape[2];
+        transformed = new Shape[2];
+        shapes[0] = s;
+        shapes[1] = s;
+        apply();
+        filled = new boolean[2];
+        this.size = size;
     }
 
     public static synchronized Model getModel(String name) {
@@ -152,5 +163,31 @@ public class Model {
         copy.size = size;
         copy.apply();
         return copy;
+    }
+
+    public Model[] breakup() {
+        List<Model> models = new ArrayList<Model>();
+        double[] coords = new double[6];
+        double[] last = new double[2];
+        for (int n = 1; n < shapes.length; n++) {
+            PathIterator i = shapes[n].getPathIterator(null);
+            while (!i.isDone()) {
+                int type = i.currentSegment(coords);
+                switch (type) {
+                case PathIterator.SEG_LINETO:
+                case PathIterator.SEG_QUADTO:
+                case PathIterator.SEG_CUBICTO:
+                    Path2D.Double p = new Path2D.Double();
+                    p.moveTo(last[0], last[1]);
+                    p.lineTo(coords[0], coords[1]);
+                    models.add(new Model(p, size));
+                    break;
+                }
+                last[0] = coords[0];
+                last[1] = coords[1];
+                i.next();
+            }
+        }
+        return models.toArray(new Model[0]);
     }
 }

@@ -5,6 +5,9 @@ import java.awt.Shape;
 import hypernova.gui.Model;
 
 public class Mass {
+    public static final double BREAKUP_SPEED = 1.0;
+    public static final double BREAKUP_ANGLE = 0.01;
+
     /* State vectors -- {pos, vel, acc}. */
     protected double[] x = new double[3];
     protected double[] y = new double[3];
@@ -57,7 +60,7 @@ public class Mass {
 
     public void damage(double val) {
         double hp = hull.getHP() - val;
-        if (hp < 0) {
+        if (hp <= 0) {
             destruct();
             return;
         }
@@ -65,10 +68,18 @@ public class Mass {
     }
 
     public void destruct() {
-        /* TODO: Animate the ship tearing apart. Do this by breaking
-         * the model into new peices and making each peice a
-         * short-lived mass of its own with a randomized
-         * state-vector. */
+        Model[] models = hull.getModel().breakup();
+        Hull[] hulls = new Hull[models.length];
+        for (int i = 0; i < models.length; i++) {
+            Mass m = new Mass(new Hull(models[i]));
+            m.setSize(size);
+            m.setPosition(this);
+            m.x[1] = x[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
+            m.y[1] = y[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
+            m.a[1] = a[1] + (Math.random() * 2 - 1) * BREAKUP_ANGLE;
+            m.setFaction(faction);
+            Hypernova.universe.add(m);
+        }
         zenThing();
     }
 

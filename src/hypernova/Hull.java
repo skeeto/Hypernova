@@ -28,6 +28,15 @@ public class Hull {
         this.info = info;
     }
 
+    /** Create an anonymous Hull from the given model. */
+    public Hull(Model model) {
+        name = null;
+        info = null;
+        this.model = model;
+        hp = DEFAULT_HP;
+        mass = DEFAULT_MASS;
+    }
+
     public static Hull getHull(String name) {
         String filename = "parts/" + name + ".hull";
         log.debug("Loading hull '" + name + "' (" + filename + ")");
