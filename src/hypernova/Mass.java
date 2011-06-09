@@ -5,7 +5,7 @@ import java.awt.Shape;
 import hypernova.gui.Model;
 
 public class Mass {
-    public static final double BREAKUP_SPEED = 1.0;
+    public static final double BREAKUP_SPEED = 0.25;
     public static final double BREAKUP_ANGLE = 0.01;
     public static final double BREAKUP_TTL_AVE = 100;
     public static final double BREAKUP_TTL_VAR = 40;
