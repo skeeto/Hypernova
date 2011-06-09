@@ -1,6 +1,6 @@
 name = Small Station
 info = A small space station suitable for a single inhabitant.
 
-hp    = 50.0
+hp    = 2.0
 mass  = 100.0
 model = station
