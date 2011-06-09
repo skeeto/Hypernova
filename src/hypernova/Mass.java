@@ -60,30 +60,34 @@ public class Mass {
         return size;
     }
 
-    public void setSize(double val) {
+    public Mass setSize(double val) {
         size = val;
         hull.getModel().setSize(val);
+        return this;
     }
 
     public void setA(double val, int deriv) {
         a[deriv] = val;
     }
 
-    public void setPosition(double px, double py, double pa) {
+    public Mass setPosition(double px, double py, double pa) {
         x[0] = px;
         y[0] = py;
         a[0] = pa;
+        return this;
     }
 
-    public void setPosition(double px, double py) {
+    public Mass setPosition(double px, double py) {
         x[0] = px;
         y[0] = py;
+        return this;
     }
 
-    public void setPosition(Mass src) {
+    public Mass setPosition(Mass src) {
         x[0] = src.x[0];
         y[0] = src.y[0];
         a[0] = src.a[0];
+        return this;
     }
 
     public double getX(int deriv) {
