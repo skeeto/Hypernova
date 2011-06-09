@@ -55,6 +55,23 @@ public class Mass {
         return getModel().getShapes()[0];
     }
 
+    public void damage(double val) {
+        double hp = hull.getHP() - val;
+        if (hp < 0) {
+            destruct();
+            return;
+        }
+        hull.setHP(hp);
+    }
+
+    public void destruct() {
+        /* TODO: Animate the ship tearing apart. Do this by breaking
+         * the model into new peices and making each peice a
+         * short-lived mass of its own with a randomized
+         * state-vector. */
+        zenThing();
+    }
+
     public double getMass() {
         return hull.getMass();
     }

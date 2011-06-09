@@ -91,6 +91,7 @@ public class Ammo extends Mass {
     private void hit(Mass m) {
         /* TODO: calculate damage
                  remove object from the universe if below 0. */
+        m.damage(damage);
         zenThing();
     }
 }

@@ -77,6 +77,14 @@ public class Hull {
         return mass;
     }
 
+    public double getHP() {
+        return hp;
+    }
+
+    public void setHP(double val) {
+        hp = val;
+    }
+
     public Hull copy() {
         Hull copy = new Hull(name, info);
         copy.hp = hp;
