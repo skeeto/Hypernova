@@ -173,7 +173,7 @@ public class Model {
         double[] coords = new double[6];
         double[] last = new double[2];
         for (int n = 1; n < shapes.length; n++) {
-            PathIterator i = shapes[n].getPathIterator(null);
+            PathIterator i = shapes[n].getPathIterator(null, 0.1);
             while (!i.isDone()) {
                 int type = i.currentSegment(coords);
                 switch (type) {
