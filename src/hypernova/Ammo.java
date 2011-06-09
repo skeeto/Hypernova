@@ -59,6 +59,7 @@ public class Ammo extends Mass {
         ammo.setPosition(src);
         ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
         ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;
+        ammo.setFaction(src.getFaction());
         return ammo;
     }
 

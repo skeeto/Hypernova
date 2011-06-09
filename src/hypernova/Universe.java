@@ -1,8 +1,11 @@
 package hypernova;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Vector;
 import java.util.Observable;
+
+import java.awt.Color;
 
 import org.apache.log4j.Logger;
 
@@ -12,6 +15,7 @@ public class Universe extends Observable implements Runnable {
     private static Logger log = Logger.getLogger("Universe");
 
     private Ship player;
+
     private Thread thread = new Thread(this);
 
     private List<Mass> objects = new Vector<Mass>();
@@ -19,19 +23,24 @@ public class Universe extends Observable implements Runnable {
     private List<Mass> outgoing = new Vector<Mass>();
 
     public Universe() {
+        new Faction("None", Color.WHITE);
+        new Faction("Humans", Color.GREEN);
+        new Faction("Aliens", new Color(0xcc, 0x00, 0xcc));
+
         /* Set up player ship. */
         player = new Ship("tenderfoot");
-        player.setPosition(0, 0, Math.PI / -2);
+        player.setPosition(0, 0, Math.PI / -2).setFaction("Humans");
         player.setWeapon("blaster", 0);
         objects.add(player);
 
         Ship dummy = new Ship("tenderfoot");
-        dummy.setPosition(45, 105, Math.PI / 3);
+        dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans");
         dummy.setWeapon("blaster", 0);
         dummy.setSize(6.0);
         objects.add(dummy);
 
-        Mass station = new Mass("small-station").setPosition(100.0, 100.0, 0.0);
+        Mass station = new Mass("small-station");
+        station.setPosition(100.0, 100.0, 0.0).setFaction("Aliens");
         station.setA(0.01, 1);
         station.setSize(30.0);
         objects.add(station);

@@ -11,6 +11,7 @@ public class Mass {
     protected double[] a = new double[3];
     protected Hull hull;
     private double size = 5.0;
+    private Faction faction;
 
     protected Mass() {
     }
@@ -18,6 +19,7 @@ public class Mass {
     public Mass(Hull hull) {
         this.hull = hull;
         setSize(size);
+        faction = Faction.getDefault();
     }
 
     public Mass(String hullname) {
@@ -54,6 +56,20 @@ public class Mass {
 
     public double getMass() {
         return hull.getMass();
+    }
+
+    public Faction getFaction() {
+        return faction;
+    }
+
+    public Mass setFaction(Faction faction) {
+        this.faction = faction;
+        return this;
+    }
+
+    public Mass setFaction(String name) {
+        this.faction = Faction.get(name);
+        return this;
     }
 
     public double getSize() {
