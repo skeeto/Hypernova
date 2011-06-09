@@ -17,6 +17,7 @@ public class Ammo extends Mass {
     private int ttl;
     private double damage;
     private double speed;
+    private Mass source;
 
     private static Logger log = Logger.getLogger("Ammo");
 
@@ -60,6 +61,7 @@ public class Ammo extends Mass {
         ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
         ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;
         ammo.setFaction(src.getFaction());
+        ammo.source = src;
         return ammo;
     }
 
@@ -72,13 +74,14 @@ public class Ammo extends Mass {
 
         for (Mass m : Hypernova.universe.getObjects()) {
             if (m.getMass() > 0) {
-                if (m != Hypernova.universe.getPlayer())
-                for (double dt = t; dt > 0; dt -= t / 8.0) {
-                    double tx = x[0] - x[1] * dt;
-                    double ty = y[0] - y[1] * dt;
-                    if (m.getHit().contains(tx, ty)) {
-                        hit(m);
-                        break;
+                if (m != source) {
+                    for (double dt = t; dt > 0; dt -= t / 8.0) {
+                        double tx = x[0] - x[1] * dt;
+                        double ty = y[0] - y[1] * dt;
+                        if (m.getHit().contains(tx, ty)) {
+                            hit(m);
+                            break;
+                        }
                     }
                 }
             }
