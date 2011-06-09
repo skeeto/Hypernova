@@ -1,14 +1,11 @@
-* Collisions
+* Non-ammo collisions
 * Ship scripts
 * Ammo scripts
-* Mass (with engines)
+* Gravity
+* Quests (Brian's idea)
 
 * Parts
-  * Hulls
   * Engines
 
 * CLI
-  * --quality flag
-  * --sound flag
-  * --debug flag
   * --log flag
