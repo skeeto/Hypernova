@@ -11,6 +11,7 @@ public class Ammo extends Mass {
     public static final double DEFAULT_SPEED = 1.5;
     public static final double DEFAULT_DAMAGE = 1.0;
     public static final String DEFAULT_MODEL = "bolt";
+    public static final double HIT_DIVISION = 8.0;
 
     public final String name, info;
 
@@ -71,7 +72,7 @@ public class Ammo extends Mass {
         for (Mass m : Hypernova.universe.getObjects()) {
             if (!m.shortlived) {
                 if (m != source) {
-                    for (double dt = t; dt > 0; dt -= t / 8.0) {
+                    for (double dt = t; dt > 0; dt -= t / HIT_DIVISION) {
                         double tx = x[0] - x[1] * dt;
                         double ty = y[0] - y[1] * dt;
                         if (m.getHit().contains(tx, ty)) {
