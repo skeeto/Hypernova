@@ -1,5 +1,6 @@
 package hypernova;
 
+import java.util.Random;
 import java.awt.Shape;
 
 import hypernova.gui.Model;
@@ -7,8 +8,10 @@ import hypernova.gui.Model;
 public class Mass {
     public static final double BREAKUP_SPEED = 0.25;
     public static final double BREAKUP_ANGLE = 0.01;
-    public static final double BREAKUP_TTL_AVE = 100;
+    public static final double BREAKUP_TTL = 100;
     public static final double BREAKUP_TTL_VAR = 40;
+
+    private static final Random rng = new Random();
 
     /* State vectors -- {pos, vel, acc}. */
     protected double[] x = new double[3];
@@ -83,11 +86,11 @@ public class Mass {
             Mass m = new Mass(new Hull(models[i]));
             m.setSize(size);
             m.setPosition(this);
-            m.x[1] = x[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
-            m.y[1] = y[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
-            m.a[1] = a[1] + (Math.random() * 2 - 1) * BREAKUP_ANGLE;
+            m.x[1] = x[1] + rng.nextGaussian() * BREAKUP_SPEED;
+            m.y[1] = y[1] + rng.nextGaussian() * BREAKUP_SPEED;
+            m.a[1] = a[1] + rng.nextGaussian() * BREAKUP_ANGLE;
             m.shortlived = true;
-            m.ttl = (int) (BREAKUP_TTL_AVE + Math.random() * BREAKUP_TTL_VAR);
+            m.ttl = (int) (BREAKUP_TTL + rng.nextGaussian() * BREAKUP_TTL_VAR);
             m.setFaction(faction);
             models[i].transform(x[0], y[0], a[0]);
             Hypernova.universe.add(m);
