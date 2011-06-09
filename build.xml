@@ -62,7 +62,9 @@
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
-    <java jar="${dist.dir}/${jar.file}" fork="true"/>
+    <java jar="${dist.dir}/${jar.file}" fork="true">
+      <arg value="--debug"/>
+    </java>
   </target>
 
   <target name="clean" description="Delete all generated files.">
