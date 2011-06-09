@@ -1,6 +1,5 @@
 package hypernova.gui;
 
-import java.awt.geom.PathIterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +10,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.QuadCurve2D;
+import java.awt.geom.PathIterator;
 
 import org.apache.log4j.Logger;
 
@@ -175,12 +178,24 @@ public class Model {
                 int type = i.currentSegment(coords);
                 switch (type) {
                 case PathIterator.SEG_LINETO:
+                    Line2D.Double l = new Line2D.Double(last[0], last[1],
+                                                        coords[0], coords[1]);
+                    models.add(new Model(l, size));
+                    break;
                 case PathIterator.SEG_QUADTO:
+                    QuadCurve2D.Double q
+                        = new QuadCurve2D.Double(last[0], last[1],
+                                                 coords[0], coords[1],
+                                                 coords[2], coords[3]);
+                    models.add(new Model(q, size));
+                    break;
                 case PathIterator.SEG_CUBICTO:
-                    Path2D.Double p = new Path2D.Double();
-                    p.moveTo(last[0], last[1]);
-                    p.lineTo(coords[0], coords[1]);
-                    models.add(new Model(p, size));
+                    CubicCurve2D.Double c =
+                        new CubicCurve2D.Double(last[0], last[1],
+                                                coords[0], coords[1],
+                                                coords[2], coords[3],
+                                                coords[4], coords[5]);
+                    models.add(new Model(c, size));
                     break;
                 }
                 last[0] = coords[0];
