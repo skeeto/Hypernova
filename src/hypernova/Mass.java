@@ -7,6 +7,8 @@ import hypernova.gui.Model;
 public class Mass {
     public static final double BREAKUP_SPEED = 1.0;
     public static final double BREAKUP_ANGLE = 0.01;
+    public static final double BREAKUP_TTL_AVE = 100;
+    public static final double BREAKUP_TTL_VAR = 40;
 
     /* State vectors -- {pos, vel, acc}. */
     protected double[] x = new double[3];
@@ -15,6 +17,8 @@ public class Mass {
     protected Hull hull;
     private double size = 5.0;
     private Faction faction;
+    protected boolean shortlived;
+    protected int ttl;
 
     protected Mass() {
     }
@@ -30,6 +34,11 @@ public class Mass {
     }
 
     public void step(double t) {
+        if (shortlived && ttl-- < 0) {
+            zenThing();
+            return;
+        }
+
         x[1] += x[2] * t;
         y[1] += y[2] * t;
         a[1] += a[2] * t;
@@ -77,6 +86,8 @@ public class Mass {
             m.x[1] = x[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
             m.y[1] = y[1] + (Math.random() * 2 - 1) * BREAKUP_SPEED;
             m.a[1] = a[1] + (Math.random() * 2 - 1) * BREAKUP_ANGLE;
+            m.shortlived = true;
+            m.ttl = (int) (BREAKUP_TTL_AVE + Math.random() * BREAKUP_TTL_VAR);
             m.setFaction(faction);
             Hypernova.universe.add(m);
         }

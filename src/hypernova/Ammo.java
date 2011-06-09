@@ -14,7 +14,6 @@ public class Ammo extends Mass {
 
     public final String name, info;
 
-    private int ttl;
     private double damage;
     private double speed;
     private Mass source;
@@ -53,6 +52,7 @@ public class Ammo extends Mass {
 
     public Ammo copy(Mass src) {
         Ammo ammo = new Ammo(getHull(), name, info);
+        ammo.shortlived = true;
         ammo.ttl = ttl;
         ammo.damage = damage;
         ammo.speed = speed;
@@ -67,10 +67,6 @@ public class Ammo extends Mass {
 
     public void step(double t) {
         super.step(t);
-        if (ttl-- < 0) {
-            zenThing();
-            return;
-        }
 
         for (Mass m : Hypernova.universe.getObjects()) {
             if (m.getMass() > 0) {
