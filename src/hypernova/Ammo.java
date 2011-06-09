@@ -69,7 +69,7 @@ public class Ammo extends Mass {
         super.step(t);
 
         for (Mass m : Hypernova.universe.getObjects()) {
-            if (m.getMass() > 0) {
+            if (!m.shortlived) {
                 if (m != source) {
                     for (double dt = t; dt > 0; dt -= t / 8.0) {
                         double tx = x[0] - x[1] * dt;
