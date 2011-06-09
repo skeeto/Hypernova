@@ -76,4 +76,15 @@ public class Hull {
     public double getMass() {
         return mass;
     }
+
+    public Hull copy() {
+        Hull copy = new Hull(name, info);
+        copy.hp = hp;
+        copy.mass = mass;
+        copy.model = model.copy();
+        copy.numweapons = numweapons;
+        if (numweapons > 0)
+            copy.weaponslots = new Point2D.Double[numweapons];
+        return copy;
+    }
 }
