@@ -33,7 +33,7 @@ public class Mass {
     }
 
     public Mass(String hullname) {
-        this(Hull.getHull(hullname));
+        this(Hull.get(hullname));
     }
 
     public void step(double t) {

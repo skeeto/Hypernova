@@ -14,7 +14,7 @@ public class Ship extends Mass {
     private boolean turnleft, turnright;
 
     public Ship(String hullname) {
-        this(Hull.getHull(hullname));
+        this(Hull.get(hullname));
     }
 
     public Ship(Hull hull) {
@@ -24,7 +24,7 @@ public class Ship extends Mass {
     }
 
     public void setWeapon(String w, int slot) {
-        this.setWeapon(Weapon.getWeapon(w), slot);
+        this.setWeapon(Weapon.get(w), slot);
     }
 
     public void setWeapon(Weapon w, int slot) {

@@ -26,7 +26,7 @@ public class Weapon {
         this.info = info;
     }
 
-    public static Weapon getWeapon(String name) {
+    public static Weapon get(String name) {
         String filename = "parts/" + name + ".weapon";
         log.debug("Loading weapon '" + name + "' (" + filename + ")");
         Properties props = new Properties();
@@ -50,7 +50,7 @@ public class Weapon {
         String ammoname = props.getProperty("ammo");
         if (ammoname == null)
             ammoname = DEFAULT_AMMO;
-        weapon.ammo = Ammo.getAmmo(ammoname);
+        weapon.ammo = Ammo.get(ammoname);
         return weapon;
     }
 

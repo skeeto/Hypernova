@@ -43,7 +43,7 @@ public class Model {
         this.size = size;
     }
 
-    public static synchronized Model getModel(String name) {
+    public static synchronized Model get(String name) {
         Model model = cache.get(name);
         if (model != null) return model.copy();
         model = new Model();

@@ -27,7 +27,7 @@ public class Ammo extends Mass {
         this.info = info;
     }
 
-    public static Ammo getAmmo(String name) {
+    public static Ammo get(String name) {
         String filename = "parts/" + name + ".ammo";
         log.debug("Loading ammo '" + name + "' (" + filename + ")");
         Properties props = new Properties();
@@ -42,7 +42,7 @@ public class Ammo extends Mass {
         String hullname = props.getProperty("hull");
         if (hullname == null)
             hullname = DEFAULT_MODEL;
-        Hull hull = Hull.getHull(hullname);
+        Hull hull = Hull.get(hullname);
         Ammo ammo = new Ammo(hull, props.getProperty("name"),
                              props.getProperty("info"));
         ammo.ttl = (int) Weapon.attempt(props, "ttl", DEFAULT_TTL);

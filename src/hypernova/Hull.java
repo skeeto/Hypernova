@@ -41,7 +41,7 @@ public class Hull {
         mass = DEFAULT_MASS;
     }
 
-    public static Hull getHull(String name) {
+    public static Hull get(String name) {
         Hull hull = cache.get(name);
         if (hull != null) return hull.copy();
         String filename = "parts/" + name + ".hull";
@@ -61,7 +61,7 @@ public class Hull {
         String model = props.getProperty("model");
         if (model == null)
             model = DEFAULT_MODEL;
-        hull.model = Model.getModel(model);
+        hull.model = Model.get(model);
         hull.numweapons = (int) Weapon.attempt(props, "numweapons", 0);
         hull.weaponslots = slots(props.getProperty("weaponslots"),
                                  hull.numweapons);
