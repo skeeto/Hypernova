@@ -1,8 +1,8 @@
 package hypernova;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Vector;
+import java.util.Calendar;
 import java.util.Observable;
 
 import java.awt.Color;
@@ -67,9 +67,14 @@ public class Universe extends Observable implements Runnable {
         return player;
     }
 
+    private static long now() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+
     @Override
     public void run() {
         while (true) {
+            long start = now();
             synchronized (objects) {
                 for (Mass m : objects) m.step(1.0);
             }
@@ -84,7 +89,7 @@ public class Universe extends Observable implements Runnable {
             setChanged();
             notifyObservers();
             try {
-                Thread.sleep(SPEED);
+                Thread.sleep(SPEED - (now() - start));
             } catch (Throwable t) {
                 /* We don't care, really. */
             }
