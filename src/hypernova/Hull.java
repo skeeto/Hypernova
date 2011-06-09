@@ -1,5 +1,7 @@
 package hypernova;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Properties;
 
 import java.awt.geom.Point2D;
@@ -12,6 +14,8 @@ public class Hull {
     public static final double DEFAULT_HP = 5.0;
     public static final double DEFAULT_MASS = 5.0;
     public static final String DEFAULT_MODEL = "simple";
+
+    private static Map<String, Hull> cache = new HashMap<String, Hull>();
 
     public final String name, info;
 
@@ -38,6 +42,8 @@ public class Hull {
     }
 
     public static Hull getHull(String name) {
+        Hull hull = cache.get(name);
+        if (hull != null) return hull.copy();
         String filename = "parts/" + name + ".hull";
         log.debug("Loading hull '" + name + "' (" + filename + ")");
         Properties props = new Properties();
@@ -49,8 +55,7 @@ public class Hull {
             return null;
         }
 
-        Hull hull = new Hull(props.getProperty("name"),
-                             props.getProperty("info"));
+        hull = new Hull(props.getProperty("name"), props.getProperty("info"));
         hull.hp = Weapon.attempt(props, "hp", DEFAULT_HP);
         hull.mass = Weapon.attempt(props, "mass", DEFAULT_MASS);
         String model = props.getProperty("model");
@@ -60,7 +65,8 @@ public class Hull {
         hull.numweapons = (int) Weapon.attempt(props, "numweapons", 0);
         hull.weaponslots = slots(props.getProperty("weaponslots"),
                                  hull.numweapons);
-        return hull;
+        cache.put(name, hull);
+        return hull.copy();
     }
 
     private static Point2D.Double[] slots(String str, int n) {
