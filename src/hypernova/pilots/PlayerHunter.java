@@ -35,7 +35,7 @@ public class PlayerHunter extends Pilot {
             ship.turnRight(diff * 10);
             ship.turnLeft(false);
         }
-        if (Math.abs(diff) < 0.01) {
+        if (Math.abs(diff) < 0.05 && player.isActive()) {
             ship.fire(0);
         }
 
