@@ -15,8 +15,9 @@ public class Universe extends Observable implements Runnable {
     private static Logger log = Logger.getLogger("Universe");
 
     private Ship player;
-
     private Thread thread = new Thread(this);
+
+    public boolean teamDamage = false;
 
     private List<Mass> objects = new Vector<Mass>();
     private List<Mass> incoming = new Vector<Mass>();
