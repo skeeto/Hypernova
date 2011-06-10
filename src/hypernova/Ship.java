@@ -7,11 +7,13 @@ import hypernova.pilots.Pilot;
 import hypernova.pilots.EmptyCockpit;
 
 public class Ship extends Mass {
+    public static final double BACK_LIMIT = 0.5;
+
     private Weapon[] weapons;
     private Engine[] engines;
-    private boolean enginestate;
+    private double enginestate;
     private boolean[] firestate = new boolean[0];
-    private boolean turnleft, turnright;
+    private double turnleft, turnright;
     private Pilot pilot = new EmptyCockpit();
 
     /* Derived from the above. */
@@ -41,7 +43,11 @@ public class Ship extends Mass {
     }
 
     public void setEngines(boolean set) {
-        enginestate = set;
+        enginestate = set ? thrust : 0.0;
+    }
+
+    public void setEngines(double rate) {
+        enginestate = Math.max(Math.min(rate, 1.0), BACK_LIMIT) * thrust;
     }
 
     public Ship setEngine(String name, int slot) {
@@ -82,18 +88,11 @@ public class Ship extends Mass {
 
     public void step(double t) {
         pilot.drive();
-        if (enginestate) {
-            x[2] = thrust / mass * Math.cos(getA(0));
-            y[2] = thrust / mass * Math.sin(getA(0));
-        } else {
-            x[2] = 0;
-            y[2] = 0;
-        }
+        x[2] = enginestate / mass * Math.cos(getA(0));
+        y[2] = enginestate / mass * Math.sin(getA(0));
         a[1] = 0;
-        if (turnleft)
-            a[1] += -maneuverability;
-        if (turnright)
-            a[1] += maneuverability;
+        a[1] += -turnleft;
+        a[1] += turnright;
 
         super.step(t);
         for (int i = 0; i < weapons.length; i++) {
@@ -119,10 +118,18 @@ public class Ship extends Mass {
     }
 
     public void turnLeft(boolean set) {
-        turnleft = set;
+        turnleft = set ? maneuverability : 0.0;
+    }
+
+    public void turnLeft(double set) {
+        turnleft = Math.max(Math.min(set, 1.0), 0.0) * maneuverability;
     }
 
     public void turnRight(boolean set) {
-        turnright = set;
+        turnright = set ? maneuverability : 0.0;
+    }
+
+    public void turnRight(double set) {
+        turnright = Math.max(Math.min(set, 1.0), 0.0) * maneuverability;
     }
 }
