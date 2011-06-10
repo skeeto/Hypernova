@@ -21,7 +21,7 @@ import hypernova.Ship;
 import hypernova.Mass;
 import hypernova.Universe;
 import hypernova.Hypernova;
-import hypernova.KeyboardPilot;
+import hypernova.pilots.KeyboardPilot;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;

@@ -3,12 +3,16 @@ package hypernova;
 import java.util.List;
 import java.util.ArrayList;
 
+import hypernova.pilots.Pilot;
+import hypernova.pilots.EmptyCockpit;
+
 public class Ship extends Mass {
     private Weapon[] weapons;
     private Engine[] engines;
     private boolean enginestate;
     private boolean[] firestate = new boolean[0];
     private boolean turnleft, turnright;
+    private Pilot pilot = new EmptyCockpit();
 
     /* Derived from the above. */
     private double thrust, maneuverability;
@@ -50,6 +54,14 @@ public class Ship extends Mass {
         return this;
     }
 
+    public Ship setPilot(Pilot pilot) {
+        if (pilot != null)
+            this.pilot = pilot;
+        else
+            pilot = new EmptyCockpit();
+        return this;
+    }
+
     private void calc() {
         thrust = 0;
         maneuverability = 0;
@@ -69,6 +81,7 @@ public class Ship extends Mass {
     }
 
     public void step(double t) {
+        pilot.drive();
         if (enginestate) {
             x[2] = thrust / mass * Math.cos(getA(0));
             y[2] = thrust / mass * Math.sin(getA(0));

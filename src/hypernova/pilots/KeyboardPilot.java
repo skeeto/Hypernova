@@ -1,9 +1,11 @@
-package hypernova;
+package hypernova.pilots;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import org.apache.log4j.Logger;
+
+import hypernova.Hypernova;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
     private static Logger log = Logger.getLogger("KeyboardPilot");

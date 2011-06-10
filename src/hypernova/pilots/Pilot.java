@@ -1,4 +1,6 @@
-package hypernova;
+package hypernova.pilots;
+
+import hypernova.Ship;
 
 public abstract class Pilot {
     protected final Ship ship;
