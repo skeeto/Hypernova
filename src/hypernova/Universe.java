@@ -15,6 +15,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import hypernova.pilots.*;
 
@@ -23,6 +24,8 @@ public class Universe extends Observable implements Runnable {
     public static final Universe INSTANCE = new Universe();
 
     private static Logger log = Logger.getLogger("Universe");
+    private static String defaultActivity = "test";
+    private ActivityManager activityManager = new ActivityManager();
 
     private Ship player;
     private Thread thread = new Thread(this);
@@ -50,28 +53,16 @@ public class Universe extends Observable implements Runnable {
         new Faction("Humans", Color.GREEN);
         new Faction("Aliens", new Color(0xcc, 0x00, 0xcc));
         new Faction("Invaders", Color.RED);
+    }
 
-        /* Set up player ship. */
-        player = Ship.get("monoship");
-        player.setPosition(0, 0, Math.PI / 3).setFaction("Humans");
-        add(player);
+    public void setPlayer(Ship thePlayer) {
+	player = thePlayer;
+	add(player);
+    }
 
-        Mass station = new Mass("small-station");
-        station.setPosition(100.0, 100.0, 0.0).setFaction("Aliens");
-        station.setA(0.01, 1);
-        add(station);
-
-        Ship factory1 = new Ship("factory");
-        factory1.setPosition(-1000.0, -1000.0, 0.0).setFaction("Humans");
-        PilotFactory pfactory = new PilotFactory.HunterSeekerFactory();
-        factory1.setPilot(new SpaceFactory(factory1, "drone", pfactory, 50.0));
-        add(factory1);
-
-        Ship factory2 = new Ship("factory");
-        factory2.setPosition(1000.0, 1000.0, 0.0).setFaction("Invaders");
-        pfactory = new PilotFactory.HunterSeekerFactory();
-        factory2.setPilot(new SpaceFactory(factory2, "drone", pfactory, 50.0));
-        add(factory2);
+    public void initialize() {
+	Activity test = activityManager.loadActivity(defaultActivity);
+	test.initialize();
     }
 
     public static Universe get() {
