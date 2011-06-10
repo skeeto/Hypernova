@@ -107,7 +107,8 @@ public class Ship extends Mass {
      * @param n  weapon number
      */
     public void fire(int n) {
-        weapons[n].fire(this);
+        Weapon w = weapons[n];
+        if (w != null) w.fire(this);
     }
 
     /** Set a weapon as currently firing or not.
