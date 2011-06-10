@@ -71,10 +71,6 @@
     <delete dir="${doc.dir}/javadoc"/>
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
-  </target>
-
-  <target name="clean-all" depends="clean"
-	  description="Fully clear out everything.">
     <delete dir="${lib.dir}"/>
   </target>
 
