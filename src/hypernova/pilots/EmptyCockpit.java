@@ -5,6 +5,7 @@ public class EmptyCockpit extends Pilot {
         super(null);
     }
 
+    @Override
     public void drive() {
         /* We're asleep at the wheel here. */
     }
