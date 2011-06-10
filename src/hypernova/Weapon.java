@@ -74,6 +74,10 @@ public class Weapon {
         }
     }
 
+    public double getMass() {
+        return mass;
+    }
+
     public void step(double t) {
         timeout -= t;
     }

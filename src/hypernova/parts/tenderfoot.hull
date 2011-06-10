@@ -7,3 +7,5 @@ model = simple
 
 numweapons  = 1
 weaponslots = 1.0 0.0
+
+numengines = 1

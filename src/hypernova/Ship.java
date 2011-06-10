@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Ship extends Mass {
-    public static final double DEFAULT_POWER = 0.5;
-    public static final double DEFAULT_TURN = 0.15;
-
     private Weapon[] weapons;
+    private Engine[] engines;
+    private boolean enginestate;
     private boolean[] firestate = new boolean[0];
-    private boolean engines;
-    private double power = DEFAULT_POWER;
     private boolean turnleft, turnright;
+
+    /* Derived from the above. */
+    private double thrust, maneuverability;
+    private double mass;
 
     public Ship(String hullname) {
         this(Hull.get(hullname));
@@ -21,34 +22,65 @@ public class Ship extends Mass {
         super(hull);
         weapons = new Weapon[hull.numWeapons()];
         firestate = new boolean[weapons.length];
+        engines = new Engine[hull.numEngines()];
+        calc();
     }
 
-    public void setWeapon(String w, int slot) {
-        this.setWeapon(Weapon.get(w), slot);
+    public Ship setWeapon(String w, int slot) {
+        return this.setWeapon(Weapon.get(w), slot);
     }
 
-    public void setWeapon(Weapon w, int slot) {
+    public Ship setWeapon(Weapon w, int slot) {
         weapons[slot] = w;
         firestate[slot] = false;
+        return this;
     }
 
     public void setEngines(boolean set) {
-        engines = set;
+        enginestate = set;
+    }
+
+    public Ship setEngine(String name, int slot) {
+        return this.setEngine(Engine.get(name), slot);
+    }
+
+    public Ship setEngine(Engine e, int slot) {
+        engines[slot] = e;
+        calc();
+        return this;
+    }
+
+    private void calc() {
+        thrust = 0;
+        maneuverability = 0;
+        mass = hull.getMass();
+        for (Engine e : engines) {
+            if (e != null) {
+                thrust += e.getThrust();
+                maneuverability += e.getManeuverability();
+                mass += e.getMass();
+            }
+        }
+        for (Weapon w : weapons) {
+            if (w != null) {
+                mass += w.getMass();
+            }
+        }
     }
 
     public void step(double t) {
-        if (engines) {
-            x[2] = power * Math.cos(getA(0));
-            y[2] = power * Math.sin(getA(0));
+        if (enginestate) {
+            x[2] = thrust / mass * Math.cos(getA(0));
+            y[2] = thrust / mass * Math.sin(getA(0));
         } else {
             x[2] = 0;
             y[2] = 0;
         }
         a[1] = 0;
         if (turnleft)
-            a[1] += -DEFAULT_TURN;
+            a[1] += -maneuverability;
         if (turnright)
-            a[1] += DEFAULT_TURN;
+            a[1] += maneuverability;
 
         super.step(t);
         for (int i = 0; i < weapons.length; i++) {

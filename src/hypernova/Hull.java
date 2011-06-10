@@ -24,6 +24,7 @@ public class Hull {
     private Model model;
     private int numweapons;
     private Point2D.Double[] weaponslots;
+    private int numengines;
 
     private static Logger log = Logger.getLogger("Hull");
 
@@ -65,6 +66,7 @@ public class Hull {
         hull.numweapons = (int) Weapon.attempt(props, "numweapons", 0);
         hull.weaponslots = slots(props.getProperty("weaponslots"),
                                  hull.numweapons);
+        hull.numengines = (int) Weapon.attempt(props, "numengines", 0);
         cache.put(name, hull);
         return hull.copy();
     }
@@ -88,6 +90,10 @@ public class Hull {
         return numweapons;
     }
 
+    public int numEngines() {
+        return numengines;
+    }
+
     public double getMass() {
         return mass;
     }
@@ -106,6 +112,7 @@ public class Hull {
         copy.mass = mass;
         copy.model = model.copy();
         copy.numweapons = numweapons;
+        copy.numengines = numengines;
         if (numweapons > 0)
             copy.weaponslots = new Point2D.Double[numweapons];
         return copy;
