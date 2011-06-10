@@ -24,6 +24,7 @@ public class Hull {
     private double mass;
     private Model model;
     private double size;
+    private double drag;
     private int numweapons;
     private Point2D.Double[] weaponslots;
     private int numengines;
@@ -66,6 +67,7 @@ public class Hull {
             model = DEFAULT_MODEL;
         hull.model = Model.get(model);
         hull.size = Weapon.attempt(props, "size", DEFAULT_SIZE);
+        hull.drag = Weapon.attempt(props, "drag", 1.0);
         hull.numweapons = (int) Weapon.attempt(props, "numweapons", 0);
         hull.weaponslots = slots(props.getProperty("weaponslots"),
                                  hull.numweapons);
@@ -91,6 +93,10 @@ public class Hull {
 
     public double getSize() {
         return size;
+    }
+
+    public double getDrag() {
+        return drag;
     }
 
     public int numWeapons() {
@@ -119,6 +125,7 @@ public class Hull {
         copy.mass = mass;
         copy.model = model.copy();
         copy.size = size;
+        copy.drag = drag;
         copy.numweapons = numweapons;
         copy.numengines = numengines;
         if (numweapons > 0)

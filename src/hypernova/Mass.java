@@ -10,6 +10,7 @@ public class Mass {
     public static final double BREAKUP_ANGLE = 0.01;
     public static final double BREAKUP_TTL = 100;
     public static final double BREAKUP_TTL_VAR = 40;
+    public static final double DRAG = 0.001;
 
     private static final Random rng = new Random();
 
@@ -42,6 +43,12 @@ public class Mass {
             return;
         }
 
+        /* Add drag. */
+        if (!shortlived) {
+            drag(x);
+            drag(y);
+        }
+
         x[1] += x[2] * t;
         y[1] += y[2] * t;
         a[1] += a[2] * t;
@@ -51,6 +58,11 @@ public class Mass {
         while (a[0] < -Math.PI) a[0] += Math.PI * 2;
         while (a[0] > Math.PI) a[0] -= Math.PI * 2;
         hull.getModel().transform(x[0], y[0], a[0]);
+    }
+
+    private void drag(double[] v) {
+        double drag = v[1] * v[1] * DRAG * hull.getDrag();
+        v[2] += drag * -Math.signum(v[1]);
     }
 
     /** Remove oneself from the equation. */

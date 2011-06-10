@@ -1,6 +1,6 @@
 name = Microshove
 info = A tiny engine for tiny ships.
 
-thrust          = 0.25
+thrust          = 0.35
 maneuverability = 0.1
 mass            = 0.1
