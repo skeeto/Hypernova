@@ -21,6 +21,7 @@ import hypernova.Ship;
 import hypernova.Mass;
 import hypernova.Universe;
 import hypernova.Hypernova;
+import hypernova.KeyboardPilot;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
@@ -50,59 +51,27 @@ public class Viewer extends JComponent implements Observer {
         setOpaque(true);
         universe = state;
         universe.addObserver(this);
-
+        addKeyListener(new KeyboardPilot());
         addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (Hypernova.debug) log.trace("keyPressed() " + e);
-                Ship player = universe.getPlayer();
-                switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    player.turnLeft(true);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    player.turnRight(true);
-                    break;
-                case KeyEvent.VK_UP:
-                    player.setEngines(true);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    player.setFire(0, true);
-                    break;
-                case KeyEvent.VK_PAGE_UP:
-                    setScale(getScale() * ZOOM_RATE);
-                    break;
-                case KeyEvent.VK_PAGE_DOWN:
-                    setScale(getScale() * (1 / ZOOM_RATE));
-                    break;
-                default:
-                    log.trace("Unkown key " + e.getKeyCode());
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    log.trace("keyPressed() " + e);
+                    switch (e.getKeyCode()) {
+                    case KeyEvent.VK_PAGE_UP:
+                        setScale(getScale() * ZOOM_RATE);
+                        break;
+                    case KeyEvent.VK_PAGE_DOWN:
+                        setScale(getScale() * (1 / ZOOM_RATE));
+                        break;
+                    default:
+                        log.trace("Unkown key " + e.getKeyCode());
+                    }
                 }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (Hypernova.debug) log.trace("keyReleased() " + e);
-                Ship player = universe.getPlayer();
-                switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    player.turnLeft(false);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    player.turnRight(false);
-                    break;
-                case KeyEvent.VK_UP:
-                    player.setEngines(false);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    player.setFire(0, false);
-                    break;
-                }
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {}
-        });
+                @Override
+                public void keyReleased(KeyEvent e) {}
+                @Override
+                public void keyTyped(KeyEvent e) {}
+            });
     }
 
     public void setQuality(int q) {
