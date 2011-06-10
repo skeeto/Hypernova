@@ -35,7 +35,6 @@ public class Universe extends Observable implements Runnable {
 
         Ship dummy = new Ship("tenderfoot");
         dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans");
-        dummy.setWeapon("blaster", 0);
         dummy.setSize(6.0);
         objects.add(dummy);
 

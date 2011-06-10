@@ -84,8 +84,10 @@ public class Ship extends Mass {
 
         super.step(t);
         for (int i = 0; i < weapons.length; i++) {
-            weapons[i].step(t);
-            if (firestate[i]) fire(i);
+            if (weapons[i] != null) {
+                weapons[i].step(t);
+                if (firestate[i]) fire(i);
+            }
         }
     }
 
