@@ -133,4 +133,8 @@ public class Ship extends Mass {
     public void turnRight(double set) {
         turnright = Math.max(Math.min(set, 1.0), 0.0) * maneuverability;
     }
+
+    public double getMass() {
+        return mass;
+    }
 }

@@ -10,7 +10,7 @@ public class Mass {
     public static final double BREAKUP_ANGLE = 0.01;
     public static final double BREAKUP_TTL = 100;
     public static final double BREAKUP_TTL_VAR = 40;
-    public static final double DRAG = 0.001;
+    public static final double DRAG = 0.005;
 
     private static final Random rng = new Random();
 
@@ -63,7 +63,7 @@ public class Mass {
 
     private void drag(double[] v) {
         double drag = v[1] * v[1] * DRAG * hull.getDrag();
-        v[2] += drag * -Math.signum(v[1]);
+        v[2] += drag * -Math.signum(v[1]) / getMass();
     }
 
     /** Remove oneself from the equation. */
