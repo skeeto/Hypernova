@@ -98,12 +98,14 @@ public class Ship extends Mass {
         return this;
     }
 
-    public void setEngines(boolean set) {
+    public Ship setEngines(boolean set) {
         enginestate = set ? thrust : 0.0;
+	return this;
     }
 
-    public void setEngines(double rate) {
+    public Ship setEngines(double rate) {
         enginestate = Math.max(Math.min(rate, 1.0), BACK_LIMIT) * thrust;
+	return this;
     }
 
     public Ship setEngine(String name, int slot) {

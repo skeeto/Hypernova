@@ -1,67 +1,60 @@
 package hypernova;
 
-public abstract class Activity {
-    protected Universe universe;
+import java.lang.RuntimeException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.IOException;
+import groovy.lang.GroovyShell;
+import groovy.lang.Binding;
+import java.util.Properties;
+import org.apache.log4j.Logger;
 
-    public abstract void initialize();
+public class Activity {
+    private static Logger log = Logger.getLogger("Activity");
+    private static String defaultAPI = "activities/api.groovy";
 
+    private String script;
 
-    protected void setUniverse(Universe universe) {
-	this.universe = universe;
+    public static Activity get(String name) {
+	Properties prop = new Properties();
+	String fname = "activities/" + name;
+
+	try {
+	    prop.load(Activity.class.getResourceAsStream(fname));
+	} catch (IOException ex) {
+	    log.error("error loading " + fname);
+	    return null;
+	}
+
+	String script = prop.getProperty("script");
+
+	return new Activity(script);
     }
 
-    protected ShipBuilder makeShip(String kind) {
-	Ship ship = new Ship(kind);
-	return new ShipBuilder(ship);
+    private Activity(String script) {
+	this.script = script;
     }
 
-    class ShipBuilder {
-	private String weapon = "blaster";
-	private double px = 0;
-	private double py = 0;
-	private double theta = 0;
-	private double size = 5.0;
-	private Ship ship;
-
-	ShipBuilder(Ship ship) {
-	    this.ship = ship;
+    private Reader readerForResource(String resource) {
+	InputStream is = Activity.class.getResourceAsStream(resource);
+	if(is == null) {
+	    log.error("error loading " + resource);
+	    throw new RuntimeException("error loading " + resource);
 	}
 
-	public ShipBuilder withWeapon(String name) {
-	    weapon = name;
-	    return this;
-	}
-
-	public ShipBuilder atPosition(double x, double y) {
-	    px = x;
-	    py = y;
-	    return this;
-	}
-
-	public ShipBuilder withRotation(double theta) {
-	    this.theta = theta;
-	    return this;
-	}
-
-	public ShipBuilder withSize(double size) {
-	    this.size = size;
-	    return this;
-	}
-
-	public Ship add() {
-	    ship.setWeapon(weapon, 0);
-	    ship.setPosition(px, py, theta);
-	    ship.setSize(size);
-	    universe.add(ship);
-	    return ship;
-	}
-
-	public Ship addAsPlayer() {
-	    add();
-	    universe.setPlayer(ship);
-	    return ship;
-	}
+	Reader reader = new InputStreamReader(is);
+	return reader;
     }
 
+    public void realize(Universe universe) {
+	Binding binding = new Binding();
+	binding.setVariable("_universe_", universe);
+
+	GroovyShell shell = new GroovyShell(binding);
+	shell.evaluate("import hypernova.API; API.setUniverse(_universe_)");
+	Reader reader = readerForResource(script);
+	shell.evaluate(reader);
+    }
 }
 

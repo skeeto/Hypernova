@@ -24,8 +24,8 @@ public class Universe extends Observable implements Runnable {
     public static final Universe INSTANCE = new Universe();
 
     private static Logger log = Logger.getLogger("Universe");
-    private static String defaultActivity = "test";
-    private ActivityManager activityManager = new ActivityManager();
+
+    private static String defaultActivity = "test.act";
 
     private Ship player;
     private Thread thread = new Thread(this);
@@ -61,8 +61,8 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void initialize() {
-	Activity test = activityManager.loadActivity(defaultActivity);
-	test.initialize();
+	Activity test = Activity.get(defaultActivity);
+	test.realize(this);
     }
 
     public static Universe get() {
