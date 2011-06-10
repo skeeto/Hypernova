@@ -1,5 +1,7 @@
 package hypernova;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -19,6 +21,7 @@ public class Weapon {
     private Ammo ammo;
     private int channel, note, volume;
 
+    private static Map<String, Weapon> cache = new HashMap<String, Weapon>();
     private static Logger log = Logger.getLogger("Weapon");
 
     protected Weapon(String name, String info) {
@@ -27,6 +30,8 @@ public class Weapon {
     }
 
     public static Weapon get(String name) {
+        Weapon weapon = cache.get(name);
+        if (weapon != null) return weapon.copy();
         String filename = "parts/" + name + ".weapon";
         log.debug("Loading weapon '" + name + "' (" + filename + ")");
         Properties props = new Properties();
@@ -39,8 +44,8 @@ public class Weapon {
             return null;
         }
 
-        Weapon weapon = new Weapon(props.getProperty("name"),
-                                   props.getProperty("info"));
+        weapon = new Weapon(props.getProperty("name"),
+                            props.getProperty("info"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
         weapon.channel = (int) Weapon.attempt(props, "channel",
@@ -51,7 +56,8 @@ public class Weapon {
         if (ammoname == null)
             ammoname = DEFAULT_AMMO;
         weapon.ammo = Ammo.get(ammoname);
-        return weapon;
+        cache.put(name, weapon);
+        return weapon.copy();
     }
 
     public static double attempt(Properties ps, String prop, double def) {
@@ -80,5 +86,16 @@ public class Weapon {
 
     public void step(double t) {
         timeout -= t;
+    }
+
+    public Weapon copy() {
+        Weapon weapon = new Weapon(name, info);
+        weapon.ammo = ammo;
+        weapon.mass = mass;
+        weapon.cooldown = cooldown;
+        weapon.channel = channel;
+        weapon.note = note;
+        weapon.volume = volume;
+        return weapon;
     }
 }
