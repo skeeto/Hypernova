@@ -14,6 +14,7 @@ public class Hull {
     public static final double DEFAULT_HP = 5.0;
     public static final double DEFAULT_MASS = 5.0;
     public static final String DEFAULT_MODEL = "simple";
+    public static final double DEFAULT_SIZE = 5.0;
 
     private static Map<String, Hull> cache = new HashMap<String, Hull>();
 
@@ -22,6 +23,7 @@ public class Hull {
     private double hp;
     private double mass;
     private Model model;
+    private double size;
     private int numweapons;
     private Point2D.Double[] weaponslots;
     private int numengines;
@@ -63,6 +65,7 @@ public class Hull {
         if (model == null)
             model = DEFAULT_MODEL;
         hull.model = Model.get(model);
+        hull.size = Weapon.attempt(props, "size", DEFAULT_SIZE);
         hull.numweapons = (int) Weapon.attempt(props, "numweapons", 0);
         hull.weaponslots = slots(props.getProperty("weaponslots"),
                                  hull.numweapons);
@@ -84,6 +87,10 @@ public class Hull {
 
     public Model getModel() {
         return model;
+    }
+
+    public double getSize() {
+        return size;
     }
 
     public int numWeapons() {
@@ -111,6 +118,7 @@ public class Hull {
         copy.hp = hp;
         copy.mass = mass;
         copy.model = model.copy();
+        copy.size = size;
         copy.numweapons = numweapons;
         copy.numengines = numengines;
         if (numweapons > 0)

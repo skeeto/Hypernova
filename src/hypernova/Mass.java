@@ -18,7 +18,7 @@ public class Mass {
     protected double[] y = new double[3];
     protected double[] a = new double[3];
     protected Hull hull;
-    private double size = 5.0;
+    private double size;
     private Faction faction;
     protected boolean shortlived;
     protected int ttl;
@@ -28,7 +28,7 @@ public class Mass {
 
     public Mass(Hull hull) {
         this.hull = hull;
-        setSize(size);
+        setSize(hull.getSize());
         faction = Faction.getDefault();
     }
 
