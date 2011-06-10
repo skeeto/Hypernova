@@ -48,6 +48,8 @@ public class Mass {
         x[0] += x[1] * t;
         y[0] += y[1] * t;
         a[0] += a[1] * t;
+        while (a[0] < -Math.PI) a[0] += Math.PI * 2;
+        while (a[0] > Math.PI) a[0] -= Math.PI * 2;
         hull.getModel().transform(x[0], y[0], a[0]);
     }
 
