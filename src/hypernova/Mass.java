@@ -15,6 +15,7 @@ public class Mass {
     private static final Random rng = new Random();
 
     /* State vectors -- {pos, vel, acc}. */
+    private boolean active;
     protected double[] x = new double[3];
     protected double[] y = new double[3];
     protected double[] a = new double[3];
@@ -173,5 +174,13 @@ public class Mass {
 
     public double getA(int deriv) {
         return a[deriv];
+    }
+
+    public void setActive(boolean set) {
+        active = set;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

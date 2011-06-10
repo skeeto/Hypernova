@@ -77,11 +77,13 @@ public class Universe extends Observable implements Runnable {
 
     public void add(Mass m) {
         m.getModel().transform(m);
+        m.setActive(true);
         incoming.add(m);
     }
 
     public void remove(Mass m) {
         outgoing.add(m);
+        m.setActive(false);
     }
 
     public Ship getPlayer() {
