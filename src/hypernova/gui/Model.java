@@ -184,9 +184,9 @@ public class Model {
                     break;
                 case PathIterator.SEG_QUADTO:
                     QuadCurve2D.Double q
-                        = new QuadCurve2D.Double(last[0], last[1],
-                                                 coords[0], coords[1],
-                                                 coords[2], coords[3]);
+                    = new QuadCurve2D.Double(last[0], last[1],
+                                             coords[0], coords[1],
+                                             coords[2], coords[3]);
                     models.add(new Model(q, size));
                     break;
                 case PathIterator.SEG_CUBICTO:

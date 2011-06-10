@@ -53,25 +53,25 @@ public class Viewer extends JComponent implements Observer {
         universe.addObserver(this);
         addKeyListener(new KeyboardPilot());
         addKeyListener(new KeyListener() {
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    log.trace("keyPressed() " + e);
-                    switch (e.getKeyCode()) {
-                    case KeyEvent.VK_PAGE_UP:
-                        setScale(getScale() * ZOOM_RATE);
-                        break;
-                    case KeyEvent.VK_PAGE_DOWN:
-                        setScale(getScale() * (1 / ZOOM_RATE));
-                        break;
-                    default:
-                        log.trace("Unkown key " + e.getKeyCode());
-                    }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                log.trace("keyPressed() " + e);
+                switch (e.getKeyCode()) {
+                case KeyEvent.VK_PAGE_UP:
+                    setScale(getScale() * ZOOM_RATE);
+                    break;
+                case KeyEvent.VK_PAGE_DOWN:
+                    setScale(getScale() * (1 / ZOOM_RATE));
+                    break;
+                default:
+                    log.trace("Unkown key " + e.getKeyCode());
                 }
-                @Override
-                public void keyReleased(KeyEvent e) {}
-                @Override
-                public void keyTyped(KeyEvent e) {}
-            });
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        });
     }
 
     public void setQuality(int q) {
