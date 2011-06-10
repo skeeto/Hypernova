@@ -7,7 +7,7 @@ import hypernova.pilots.Pilot;
 import hypernova.pilots.EmptyCockpit;
 
 public class Ship extends Mass {
-    public static final double BACK_LIMIT = 0.5;
+    public static final double BACK_LIMIT = -0.5;
 
     private Weapon[] weapons;
     private Engine[] engines;

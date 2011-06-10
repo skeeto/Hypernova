@@ -25,7 +25,10 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             ship.turnRight(true);
             break;
         case KeyEvent.VK_UP:
-            ship.setEngines(true);
+            ship.setEngines(1.0);
+            break;
+        case KeyEvent.VK_DOWN:
+            ship.setEngines(-1.0);
             break;
         case KeyEvent.VK_SPACE:
             ship.setFire(0, true);
@@ -46,6 +49,9 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             ship.turnRight(false);
             break;
         case KeyEvent.VK_UP:
+            ship.setEngines(false);
+            break;
+        case KeyEvent.VK_DOWN:
             ship.setEngines(false);
             break;
         case KeyEvent.VK_SPACE:
