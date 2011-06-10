@@ -26,6 +26,7 @@ public class Universe extends Observable implements Runnable {
         new Faction("None", Color.WHITE);
         new Faction("Humans", Color.GREEN);
         new Faction("Aliens", new Color(0xcc, 0x00, 0xcc));
+        new Faction("Invaders", Color.RED);
 
         /* Set up player ship. */
         player = new Ship("tenderfoot");
@@ -45,6 +46,15 @@ public class Universe extends Observable implements Runnable {
         station.setA(0.01, 1);
         station.setSize(30.0);
         objects.add(station);
+
+        for (int i = 0; i < 3; i++) {
+            Ship invader = new Ship("tenderfoot");
+            invader.setWeapon("blaster", 0).setEngine("tourist", 0);
+            invader.setSize(3.5).setFaction("Invaders");
+            invader.setPosition(200.0 * i, 200.0 + i * 10.0, 0.0);
+            invader.setPilot(new hypernova.pilots.PlayerHunter(invader));
+            objects.add(invader);
+        }
     }
 
     public void start() {
