@@ -1,6 +1,7 @@
 package hypernova;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 import java.util.Calendar;
 import java.util.Observable;
@@ -16,6 +17,7 @@ public class Universe extends Observable implements Runnable {
 
     private Ship player;
     private Thread thread = new Thread(this);
+    private Random rng = new Random();
 
     public boolean teamDamage = false;
 
@@ -46,11 +48,17 @@ public class Universe extends Observable implements Runnable {
         station.setA(0.01, 1);
         add(station);
 
-        for (int i = 0; i < 3; i++) {
+        double MEAN = 1000.0;
+        double VAR  = 500.0;
+        for (int i = 0; i < 15; i++) {
             Ship invader = new Ship("drone");
             invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0);
             invader.setFaction("Invaders");
-            invader.setPosition(200.0 * i, 200.0 + i * 10.0, 0.0);
+            double dir = 1.0;
+            if (rng.nextInt(2) == 0) dir = -1.0;
+            invader.setPosition((rng.nextGaussian() * VAR + MEAN) * dir,
+                                (rng.nextGaussian() * VAR + MEAN) * dir,
+                                rng.nextDouble() * Math.PI * 2);
             invader.setPilot(new hypernova.pilots.PlayerHunter(invader));
             add(invader);
         }
