@@ -67,6 +67,7 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void add(Mass m) {
+        m.getModel().transform(m);
         incoming.add(m);
     }
 

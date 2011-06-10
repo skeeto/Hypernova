@@ -94,7 +94,6 @@ public class Mass {
             m.shortlived = true;
             m.ttl = (int) (BREAKUP_TTL + rng.nextGaussian() * BREAKUP_TTL_VAR);
             m.setFaction(faction);
-            models[i].transform(x[0], y[0], a[0]);
             Hypernova.universe.add(m);
         }
         zenThing();

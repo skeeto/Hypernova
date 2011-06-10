@@ -20,6 +20,8 @@ import java.awt.geom.PathIterator;
 
 import org.apache.log4j.Logger;
 
+import hypernova.Mass;
+
 public class Model {
     private Shape[] shapes;
     private Shape[] transformed;
@@ -150,6 +152,10 @@ public class Model {
         at.scale(size, size);
         at.rotate(rotate);
         apply();
+    }
+
+    public void transform(Mass src) {
+        transform(src.getX(0), src.getY(0), src.getA(0));
     }
 
     private void apply() {
