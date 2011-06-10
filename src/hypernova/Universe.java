@@ -54,10 +54,12 @@ public class Universe extends Observable implements Runnable {
             Ship invader = new Ship("drone");
             invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0);
             invader.setFaction("Invaders");
-            double dir = 1.0;
-            if (rng.nextInt(2) == 0) dir = -1.0;
-            invader.setPosition((rng.nextGaussian() * VAR + MEAN) * dir,
-                                (rng.nextGaussian() * VAR + MEAN) * dir,
+            double dirx = 1.0;
+            if (rng.nextInt(2) == 0) dirx = -1.0;
+            double diry = 1.0;
+            if (rng.nextInt(2) == 0) diry = -1.0;
+            invader.setPosition((rng.nextGaussian() * VAR + MEAN) * dirx,
+                                (rng.nextGaussian() * VAR + MEAN) * diry,
                                 rng.nextDouble() * Math.PI * 2);
             invader.setPilot(new hypernova.pilots.PlayerHunter(invader));
             add(invader);
