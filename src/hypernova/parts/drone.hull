@@ -1,0 +1,12 @@
+name = Drone
+info = It has no cockpit, just space for a small piloting computer.
+
+hp    = 1.0
+mass  = 2.0
+model = drone
+size  = 4.0
+
+numweapons  = 1
+weaponslots = 1.0 0.0
+
+numengines = 1

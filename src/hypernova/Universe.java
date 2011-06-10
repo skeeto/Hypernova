@@ -46,9 +46,9 @@ public class Universe extends Observable implements Runnable {
         add(station);
 
         for (int i = 0; i < 3; i++) {
-            Ship invader = new Ship("tenderfoot");
-            invader.setWeapon("blaster", 0).setEngine("tourist", 0);
-            invader.setSize(3.5).setFaction("Invaders");
+            Ship invader = new Ship("drone");
+            invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0);
+            invader.setFaction("Invaders");
             invader.setPosition(200.0 * i, 200.0 + i * 10.0, 0.0);
             invader.setPilot(new hypernova.pilots.PlayerHunter(invader));
             add(invader);

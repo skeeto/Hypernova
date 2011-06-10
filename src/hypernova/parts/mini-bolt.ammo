@@ -1,0 +1,8 @@
+name = Mini Plasma Bolt
+info = Less devastating version of a plasma bolt.
+
+speed  = 9
+damage = 0.25
+ttl    = 75
+
+hull   = bolt
