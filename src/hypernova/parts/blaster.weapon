@@ -5,8 +5,3 @@ info = "Hokey religions and ancient weapons are no match for a good \
 cooldown = 3.0
 ammo     = bolt
 mass     = 1.0
-
-# sound effect
-channel  = 0
-note     = 40
-volume   = 75
