@@ -29,12 +29,14 @@ public class Universe extends Observable implements Runnable {
 
         /* Set up player ship. */
         player = new Ship("tenderfoot");
-        player.setPosition(0, 0, Math.PI / -2).setFaction("Humans");
+        player.setPosition(0, 0, Math.PI / 3).setFaction("Humans");
         player.setWeapon("blaster", 0).setEngine("tourist", 0);
         objects.add(player);
 
         Ship dummy = new Ship("tenderfoot");
-        dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans");
+        dummy.setPosition(45, 105, Math.PI / -2).setFaction("Humans");
+        dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0));
+        dummy.setEngine("tourist", 0).setWeapon("blaster", 0);
         dummy.setSize(6.0);
         objects.add(dummy);
 
