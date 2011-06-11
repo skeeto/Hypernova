@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import hypernova.Mass;
 
 public class Model {
+    public static final double BREAKUP_DIVISION = 0.05;
+
     private Shape[] shapes;
     private Shape[] transformed;
     private boolean[] filled;
@@ -179,7 +181,7 @@ public class Model {
         double[] coords = new double[6];
         double[] last = new double[2];
         for (int n = 1; n < shapes.length; n++) {
-            PathIterator i = shapes[n].getPathIterator(null, 0.1);
+            PathIterator i = shapes[n].getPathIterator(null, BREAKUP_DIVISION);
             while (!i.isDone()) {
                 int type = i.currentSegment(coords);
                 switch (type) {
