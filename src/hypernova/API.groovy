@@ -10,22 +10,28 @@ public class API {
         universe = u
     }
 
-    public static void withNewPlayer(String kind, Closure setup) {
-        def player = new Ship(kind)
+    public static Closure parts(String kind) {
+        return { Ship.get(kind) }
+    }
+
+    public static Closure ship(String kind) {
+        return { new Ship(kind) }
+    }
+
+    public static Closure mass(String kind) {
+        return { new Mass(kind) }
+    }
+
+    public static void withNewPlayer(Closure kind, Closure setup) {
+        def player = kind()
         setup(player)
         universe.setPlayer(player)
     }
 
-    public static void withNewShip(String kind, Closure setup) {
-        def ship = new Ship(kind)
-        setup(ship)
-        universe.add(ship)
-    }
-
-    public static void withNewMass(String kind, Closure setup) {
-        def mass = new Mass(kind)
-        setup(mass)
-        universe.add(mass)
+    public static void withNew(Closure kind, Closure setup) {
+        def thing = kind()
+        setup(thing)
+        universe.add(thing)
     }
 
     public static Iterable<Double> randomPosition(double VAR, double centerX, double centerY) {
