@@ -22,6 +22,7 @@ public class SpaceFactory extends Pilot {
         if (timeout > 0) return;
         timeout += speed;
 
+	Ship ship = getShip();
         Ship forged = Ship.get(tooling);
         forged.setFaction(ship.getFaction());
         forged.setPilot(pilots.create(forged));

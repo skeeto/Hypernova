@@ -17,7 +17,8 @@ import com.google.common.collect.Collections2;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 
-import hypernova.pilots.*;
+import hypernova.pilots.KeyboardPilot;
+import hypernova.pilots.EmptyCockpit;
 
 public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;

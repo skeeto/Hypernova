@@ -13,6 +13,8 @@ public class HunterSeeker extends Hunter {
     @Override
     public void drive(double dt) {
         if (target == null || !target.isActive()) {
+	    Ship ship = getShip();
+
             Mass old = target;
             target = null;
             Faction faction = ship.getFaction();
@@ -37,6 +39,8 @@ public class HunterSeeker extends Hunter {
     }
 
     private double distance2(Mass m) {
+	Ship ship = getShip();
+
         double x = m.getX(0) - ship.getX(0);
         double y = m.getY(0) - ship.getY(0);
         return x * x + y * y;
