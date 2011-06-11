@@ -120,9 +120,8 @@ public class Universe extends Observable implements Runnable {
         while (true) {
             long start = now();
             if (!paused) {
-                synchronized (objects) {
-                    for (Mass m : objects) m.step(1.0);
-                }
+                for (Mass m : objects)
+                    m.step(1.0);
                 ships = null;
                 synchronized (outgoing) {
                     objects.removeAll(outgoing);

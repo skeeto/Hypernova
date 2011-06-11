@@ -139,10 +139,8 @@ public class Viewer extends JComponent implements Observer {
                       -(py * scale - getHeight() / 2));
         g2d.scale(scale, scale);
         Collection<Mass> objects = universe.getObjects();
-        synchronized (objects) {
-            for (Mass m : objects) {
-                drawMass(g2d, m);
-            }
+        for (Mass m : objects) {
+            drawMass(g2d, m);
         }
     }
 
