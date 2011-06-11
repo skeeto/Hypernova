@@ -37,8 +37,10 @@ public class Universe extends Observable implements Runnable {
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
     private Collection<Mass> objects = new HashSet<Mass>();
-    private Collection<Mass> incoming = new HashSet<Mass>();
-    private Collection<Mass> outgoing = new HashSet<Mass>();
+    private Collection<Realization> realizations = new HashSet<Realization>();
+
+    private Collection<Object> incoming = new HashSet<Object>();
+    private Collection<Object> outgoing = new HashSet<Object>();
 
     /** Cache of ship list. */
     private Collection<Mass> ships;
@@ -55,8 +57,19 @@ public class Universe extends Observable implements Runnable {
         new Faction("Invaders", Color.RED);
     }
 
+    public void movePlayerControlsTo(Ship newPlayer) {
+	// remove the player pilot from wherever it is right now
+	Ship oldShip = KeyboardPilot.get().getShip();
+	if(oldShip != null) {
+	    oldShip.setPilot(new EmptyCockpit());
+	}
+	newPlayer.setPilot(KeyboardPilot.get());
+	KeyboardPilot.get().setShip(newPlayer);
+    }
+
     public void setPlayer(Ship thePlayer) {
 	player = thePlayer;
+	movePlayerControlsTo(player);
 	add(player);
     }
 
@@ -110,6 +123,14 @@ public class Universe extends Observable implements Runnable {
         m.setActive(false);
     }
 
+    public void addRealization(Realization r) {
+	incoming.add(r);
+    }
+
+    public void removeRealization(Realization r) {
+	outgoing.add(r);
+    }
+
     public Ship getPlayer() {
         return player;
     }
@@ -126,12 +147,25 @@ public class Universe extends Observable implements Runnable {
                 for (Mass m : objects)
                     m.step(1.0);
                 ships = null;
+		synchronized (realizations) {
+		    for (Realization r : realizations) {
+			if(r.shouldTrigger(player.getX(0), player.getY(0))) {
+			    r.trigger(player.getX(0), player.getY(0));
+			}
+		    }
+		}
                 synchronized (outgoing) {
                     objects.removeAll(outgoing);
                     outgoing.clear();
                 }
                 synchronized (incoming) {
-                    objects.addAll(incoming);
+		    for(Object obj : incoming) {
+			if (obj instanceof Mass) {
+			    objects.add((Mass)obj);
+			} else if (obj instanceof Realization) {
+			    realizations.add((Realization)obj);
+			}
+		    }
                     incoming.clear();
                 }
                 setChanged();

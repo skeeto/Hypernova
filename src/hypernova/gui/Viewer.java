@@ -60,7 +60,7 @@ public class Viewer extends JComponent implements Observer {
         setOpaque(true);
         universe = Universe.get();
         universe.addObserver(this);
-        addKeyListener(new KeyboardPilot());
+        addKeyListener(KeyboardPilot.get());
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {

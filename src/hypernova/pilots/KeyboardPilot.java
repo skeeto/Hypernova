@@ -6,17 +6,29 @@ import java.awt.event.KeyListener;
 import org.apache.log4j.Logger;
 
 import hypernova.Universe;
+import hypernova.Ship;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
     private static Logger log = Logger.getLogger("KeyboardPilot");
+    private static KeyboardPilot INSTANCE = new KeyboardPilot();
 
-    public KeyboardPilot() {
-        super(Universe.get().getPlayer());
+    private KeyboardPilot() {
+        super(null);
+    }
+
+    public static KeyboardPilot get() {
+	return INSTANCE;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         log.trace("keyPressed() " + e);
+	Ship ship = getShip();
+	if(ship == null) {
+	    log.trace("no ship");
+	    return;
+	}
+
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
             ship.turnLeft(true);
@@ -41,6 +53,12 @@ public class KeyboardPilot extends Pilot implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         log.trace("keyReleased() " + e);
+	Ship ship = getShip();
+	if(ship == null) {
+	    log.trace("no ship");
+	    return;
+	}
+
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
             ship.turnLeft(false);

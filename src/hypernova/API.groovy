@@ -28,18 +28,32 @@ public class API {
         universe.add(mass)
     }
 
-    public static Iterable<Double> randomPosition(double VAR, double MEAN) {
-        double dirx = 1.0
-        double diry = 1.0
-        if (rng.nextInt(2) == 0) {
-            dirx = -1.0
-        }
-        if (rng.nextInt(2) == 0) {
-            diry = -1.0
-        }
-        def x = rng.nextGaussian() * VAR + MEAN * dirx
-        def y = rng.nextGaussian() * VAR + MEAN * diry
+    public static Iterable<Double> randomPosition(double VAR, double centerX, double centerY) {
+        def x = rng.nextGaussian() * VAR + centerX
+        def y = rng.nextGaussian() * VAR + centerY
         def theta = rng.nextDouble() * Math.PI * 2
         return [x, y, theta]
+    }
+
+    public static void newSpatialRealization(double triggerX, double triggerY, double triggerRad,
+                                                    Closure event) {
+        boolean haveTriggered = false
+        def realization = [
+            'shouldTrigger': { playerX, playerY ->
+                if (haveTriggered) {
+                    return false
+                }
+
+                def dx = triggerX - playerX
+                def dy = triggerY - playerY
+
+                if ((dx * dx + dy * dy) < (triggerRad * triggerRad)) {
+                    haveTriggered = true
+                    return true
+                }
+                return false
+            },
+            'trigger': event] as Realization
+        universe.addRealization(realization)
     }
 }

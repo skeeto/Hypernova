@@ -13,7 +13,7 @@ import hypernova.Ship;
  */
 public abstract class Pilot {
     /** The ship being controlled by this pilot. */
-    protected final Ship ship;
+    private Ship ship;
 
     /**
      * Create a pilot that controls the given ship.
@@ -21,6 +21,14 @@ public abstract class Pilot {
      */
     public Pilot(Ship ship) {
         this.ship = ship;
+    }
+
+    public void setShip(Ship ship) {
+	this.ship = ship;
+    }
+
+    public Ship getShip() {
+	return ship;
     }
 
     /**

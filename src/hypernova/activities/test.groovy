@@ -11,28 +11,37 @@ withNewPlayer("tenderfoot") { player ->
 }
 
 withNewShip("tenderfoot") { dummy ->
-    dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans");
-    dummy.setWeapon("blaster", 0).setEngine("tourist", 0);
+    dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans")
+    dummy.setWeapon("blaster", 0).setEngine("tourist", 0)
     dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0))
     dummy.setSize(6.0);
 }
 
 withNewMass("small-station") { station ->
-    station.setPosition(100.0, 100.0, 0.0).setFaction("Aliens");
-    station.setA(0.01, 1);
-    station.setSize(30.0);
+    station.setPosition(300.0, 300.0, 0.0).setFaction("Aliens")
+    station.setA(0.01, 1)
+    station.setSize(30.0)
 }
 
-def MEAN = 1000.0
-def VAR = 500.0
+newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
+    print("Invaders!\n")
 
-(0..15).each() { idx ->
-    withNewShip("drone") { invader ->
-       invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0)
-       invader.setSize(3.5).setFaction("Invaders")
+    withNewMass("small-station") { station ->
+        station.setPosition(playerX + 100, playerY + 200, 0.0).setFaction("Invaders")
+        station.setA(0.01, 1)
+        station.setSize(30.0)
+    }
 
-       def (x,y,theta) = randomPosition(VAR, MEAN)
-       invader.setPosition(x, y, theta)
-       invader.setPilot(new hypernova.pilots.PlayerHunter(invader))
+    def VAR = 500.0
+
+    (0..15).each() { idx ->
+        withNewShip("drone") { invader ->
+            invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0)
+            invader.setSize(3.5).setFaction("Invaders")
+
+            def (x,y,theta) = randomPosition(VAR, playerX, playerY)
+            invader.setPosition(x, y, theta)
+            invader.setPilot(new hypernova.pilots.PlayerHunter(invader))
+        }
     }
 }
