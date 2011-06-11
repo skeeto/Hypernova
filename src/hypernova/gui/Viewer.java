@@ -64,6 +64,9 @@ public class Viewer extends JComponent implements Observer {
                 case KeyEvent.VK_PAGE_DOWN:
                     setScale(getScale() * (1 / ZOOM_RATE));
                     break;
+                case KeyEvent.VK_P:
+                    universe.togglePause();
+                    break;
                 default:
                     log.trace("Unkown key " + e.getKeyCode());
                 }

@@ -17,6 +17,7 @@ public class Universe extends Observable implements Runnable {
 
     private Ship player;
     private Thread thread = new Thread(this);
+    private boolean paused;
     private Random rng = new Random();
 
     public boolean teamDamage = false;
@@ -68,7 +69,13 @@ public class Universe extends Observable implements Runnable {
 
     public void start() {
         log.debug("Starting simulation thread.");
+        paused = false;
         thread.start();
+    }
+
+    public void togglePause() {
+        paused ^= true;
+        log.info("Pause set to " + paused);
     }
 
     public List<Mass> getObjects() {
@@ -98,19 +105,21 @@ public class Universe extends Observable implements Runnable {
     public void run() {
         while (true) {
             long start = now();
-            synchronized (objects) {
-                for (Mass m : objects) m.step(1.0);
+            if (!paused) {
+                synchronized (objects) {
+                    for (Mass m : objects) m.step(1.0);
+                }
+                synchronized (outgoing) {
+                    objects.removeAll(outgoing);
+                    outgoing.clear();
+                }
+                synchronized (incoming) {
+                    objects.addAll(incoming);
+                    incoming.clear();
+                }
+                setChanged();
+                notifyObservers();
             }
-            synchronized (outgoing) {
-                objects.removeAll(outgoing);
-                outgoing.clear();
-            }
-            synchronized (incoming) {
-                objects.addAll(incoming);
-                incoming.clear();
-            }
-            setChanged();
-            notifyObservers();
             try {
                 Thread.sleep(SPEED - (now() - start));
             } catch (Throwable t) {
