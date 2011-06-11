@@ -1,0 +1,6 @@
+name = Drone
+info = A small, unmanned, automated, single-purpose drone.
+
+hull    = drone
+weapons = mini-blaster
+engines = microshove

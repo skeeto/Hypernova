@@ -1,0 +1,7 @@
+name = Monoship
+info = The most concise know description for this configuration is \
+       the "space bicycle."
+
+hull    = tenderfoot
+engines = tourist
+weapons = blaster

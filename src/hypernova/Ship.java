@@ -1,13 +1,23 @@
 package hypernova;
 
+import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 import hypernova.pilots.Pilot;
 import hypernova.pilots.EmptyCockpit;
 
 public class Ship extends Mass {
     public static final double BACK_LIMIT = -0.5;
+
+    private static Map<String, Ship> cache = new HashMap<String, Ship>();
+    private static Logger log = Logger.getLogger("Ship");
+
+    public String name, info;
 
     private Weapon[] weapons;
     private Engine[] engines;
@@ -30,6 +40,52 @@ public class Ship extends Mass {
         firestate = new boolean[weapons.length];
         engines = new Engine[hull.numEngines()];
         calc();
+    }
+
+    public static Ship get(String name) {
+        Ship ship = cache.get(name);
+        if (ship != null) return ship.copy();
+        String filename = "parts/" + name + ".ship";
+        log.debug("Loading ship '" + name + "' (" + filename + ")");
+        Properties props = new Properties();
+        try {
+            props.load(Ship.class.getResourceAsStream(filename));
+        } catch (java.io.IOException e) {
+            /* TODO handle this more gracefully. */
+            log.error("Failed to load hull '" + name + "': " + e.getMessage());
+            return null;
+        }
+
+        ship = new Ship(props.getProperty("hull"));
+        ship.name = props.getProperty("name");
+        ship.info = props.getProperty("info");
+        String weapons = props.getProperty("weapons");
+        if (weapons != null) {
+            int i = 0;
+            for (String w : weapons.split("\\s+")) {
+                ship.setWeapon(w, i++);
+            }
+        }
+        String engines = props.getProperty("engines");
+        if (engines != null) {
+            int i = 0;
+            for (String e : engines.split("\\s+")) {
+                ship.setEngine(e, i++);
+            }
+        }
+        cache.put(name, ship);
+        return ship.copy();
+    }
+
+    public Ship copy() {
+        Ship copy = new Ship(hull.copy());
+        copy.name = name;
+        copy.info = info;
+        for (int i = 0; i < weapons.length; i++)
+            copy.setWeapon(weapons[i].copy(), i);
+        for (int i = 0; i < engines.length; i++)
+            copy.setEngine(engines[i], i);
+        return copy;
     }
 
     public Ship setWeapon(String w, int slot) {

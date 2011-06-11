@@ -46,15 +46,13 @@ public class Universe extends Observable implements Runnable {
         new Faction("Invaders", Color.RED);
 
         /* Set up player ship. */
-        player = new Ship("tenderfoot");
+        player = Ship.get("monoship");
         player.setPosition(0, 0, Math.PI / 3).setFaction("Humans");
-        player.setWeapon("blaster", 0).setEngine("tourist", 0);
         add(player);
 
-        Ship dummy = new Ship("tenderfoot");
+        Ship dummy = Ship.get("monoship");
         dummy.setPosition(45, 105, Math.PI / -2).setFaction("Humans");
         dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0));
-        dummy.setEngine("tourist", 0).setWeapon("blaster", 0);
         add(dummy);
 
         Mass station = new Mass("small-station");
@@ -65,8 +63,7 @@ public class Universe extends Observable implements Runnable {
         double MEAN = 1000.0;
         double VAR  = 500.0;
         for (int i = 0; i < 15; i++) {
-            Ship invader = new Ship("drone");
-            invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0);
+            Ship invader = Ship.get("drone");
             invader.setFaction("Invaders");
             double dirx = 1.0;
             if (rng.nextInt(2) == 0) dirx = -1.0;
