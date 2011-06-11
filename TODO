@@ -1,11 +1,7 @@
 * Non-ammo collisions
-* Ship scripts
-* Ammo scripts
+* Ship script helpers
 * Gravity
 * Quests (Brian's idea)
-
-* Parts
-  * Engines
-
-* CLI
-  * --log flag
+* Health bar
+* Large on screen messages (i.e. "Press 'c' to continue" on death)
+* --log flag
