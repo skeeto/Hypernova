@@ -1,6 +1,6 @@
 package hypernova.gui;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Observer;
 import java.util.Observable;
 
@@ -138,7 +138,7 @@ public class Viewer extends JComponent implements Observer {
         g2d.translate(-(px * scale - getWidth() / 2),
                       -(py * scale - getHeight() / 2));
         g2d.scale(scale, scale);
-        List<Mass> objects = universe.getObjects();
+        Collection<Mass> objects = universe.getObjects();
         synchronized (objects) {
             for (Mass m : objects) {
                 drawMass(g2d, m);

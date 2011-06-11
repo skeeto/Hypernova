@@ -1,12 +1,15 @@
 package hypernova;
 
-import java.util.List;
 import java.util.Random;
-import java.util.Vector;
+import java.util.HashSet;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Observable;
 
 import java.awt.Color;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 import org.apache.log4j.Logger;
 
@@ -22,9 +25,17 @@ public class Universe extends Observable implements Runnable {
 
     public boolean teamDamage = false;
 
-    private List<Mass> objects = new Vector<Mass>();
-    private List<Mass> incoming = new Vector<Mass>();
-    private List<Mass> outgoing = new Vector<Mass>();
+    private Collection<Mass> objects = new HashSet<Mass>();
+    private Collection<Mass> incoming = new HashSet<Mass>();
+    private Collection<Mass> outgoing = new HashSet<Mass>();
+
+    /** Cache of ship list. */
+    private Collection<Mass> ships;
+    private Predicate<Mass> shipfilter = new Predicate<Mass>() {
+        public boolean apply(Mass m) {
+            return m instanceof Ship;
+        }
+    };
 
     public Universe() {
         new Faction("None", Color.WHITE);
@@ -78,8 +89,14 @@ public class Universe extends Observable implements Runnable {
         log.info("Pause set to " + paused);
     }
 
-    public List<Mass> getObjects() {
+    public Collection<Mass> getObjects() {
         return objects;
+    }
+
+    public Collection<Mass> getShips() {
+        if (ships == null)
+            ships = Collections2.filter(objects, shipfilter);
+        return ships;
     }
 
     public void add(Mass m) {
@@ -109,6 +126,7 @@ public class Universe extends Observable implements Runnable {
                 synchronized (objects) {
                     for (Mass m : objects) m.step(1.0);
                 }
+                ships = null;
                 synchronized (outgoing) {
                     objects.removeAll(outgoing);
                     outgoing.clear();
