@@ -29,8 +29,8 @@ public class Universe extends Observable implements Runnable {
 
     private Ship player;
     private Thread thread = new Thread(this);
+
     private boolean paused;
-    private Random rng = new Random();
 
     public boolean teamDamage = false;
 

@@ -1,7 +1,8 @@
 package hypernova
+
 import static hypernova.API.*
 
-print "hello from groovy!\n"
+print("hello from groovy!\n")
 
 /* Set up player ship. */
 withNewPlayer("tenderfoot") { player ->
@@ -22,11 +23,16 @@ withNewMass("small-station") { station ->
     station.setSize(30.0);
 }
 
-(0..3).each() { idx ->
-    withNewShip("tenderfoot") { invader ->
-       invader.setWeapon("blaster", 0).setEngine("tourist", 0)
+def MEAN = 1000.0
+def VAR = 500.0
+
+(0..15).each() { idx ->
+    withNewShip("drone") { invader ->
+       invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0)
        invader.setSize(3.5).setFaction("Invaders")
-       invader.setPosition(200.0 * idx, 200.0 + idx * 10.0, 0.0)
+
+       def (x,y,theta) = randomPosition(VAR, MEAN)
+       invader.setPosition(x, y, theta)
        invader.setPilot(new hypernova.pilots.PlayerHunter(invader))
     }
 }

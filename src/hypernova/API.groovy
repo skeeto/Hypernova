@@ -3,6 +3,8 @@ package hypernova
 
 public class API {
     private static Universe universe
+    private static Random rng = new Random()
+
 
     public static void setUniverse(Universe u) {
         universe = u
@@ -24,5 +26,20 @@ public class API {
         def mass = new Mass(kind)
         setup(mass)
         universe.add(mass)
+    }
+
+    public static Iterable<Double> randomPosition(double VAR, double MEAN) {
+        double dirx = 1.0
+        double diry = 1.0
+        if (rng.nextInt(2) == 0) {
+            dirx = -1.0
+        }
+        if (rng.nextInt(2) == 0) {
+            diry = -1.0
+        }
+        def x = rng.nextGaussian() * VAR + MEAN * dirx
+        def y = rng.nextGaussian() * VAR + MEAN * diry
+        def theta = rng.nextDouble() * Math.PI * 2
+        return [x, y, theta]
     }
 }
