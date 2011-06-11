@@ -176,6 +176,14 @@ public class Mass {
         return a[deriv];
     }
 
+    public void setX(double val, int deriv) {
+        x[deriv] = val;
+    }
+
+    public void setY(double val, int deriv) {
+        y[deriv] = val;
+    }
+
     public void setActive(boolean set) {
         active = set;
     }
