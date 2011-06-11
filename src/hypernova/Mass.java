@@ -19,6 +19,7 @@ public class Mass {
     protected double[] x = new double[3];
     protected double[] y = new double[3];
     protected double[] a = new double[3];
+    protected double hp;
     protected Hull hull;
     private double size;
     private Faction faction;
@@ -31,6 +32,7 @@ public class Mass {
     public Mass(Hull hull) {
         this.hull = hull;
         setSize(hull.getSize());
+        hp = hull.getHP();
         faction = Faction.getDefault();
     }
 
@@ -86,12 +88,11 @@ public class Mass {
     }
 
     public void damage(double val) {
-        double hp = hull.getHP() - val;
+        hp -= val;
         if (hp <= 0) {
             destruct();
             return;
         }
-        hull.setHP(hp);
     }
 
     public void destruct() {

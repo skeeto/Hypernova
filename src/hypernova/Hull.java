@@ -115,10 +115,6 @@ public class Hull {
         return hp;
     }
 
-    public void setHP(double val) {
-        hp = val;
-    }
-
     public Hull copy() {
         Hull copy = new Hull(name, info);
         copy.hp = hp;
