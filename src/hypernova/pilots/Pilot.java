@@ -32,6 +32,9 @@ public abstract class Pilot {
      */
     public abstract void drive(double dt);
 
+    public static final double ANGULAR_TOLERANCE = 1e-3;
+    public static final double SPEED_TOLERANCE = 1e-3;
+
     /**
      * Turn to face the given direction as efficiently as possible.
      * @param dt  time step
@@ -55,6 +58,28 @@ public abstract class Pilot {
         } else {
             ship.turnRight(rate);
             ship.turnLeft(false);
+        }
+    }
+
+    /**
+     * Come to a complete stop as soon as possible.
+     * @param dt time step
+     */
+    protected void stop(double dt) {
+        double dx = ship.getX(1);
+        double dy = ship.getY(1);
+        double speed = Math.sqrt(dx * dx + dy * dy);
+        if (Math.abs(speed) < SPEED_TOLERANCE) {
+            ship.setEngines(false);
+            return;
+        }
+        double dir = Math.atan2(-dy, -dx);
+        face(dt, dir);
+        if (Math.abs(ship.getA(0) - dir) < ANGULAR_TOLERANCE) {
+            double rate = speed / (dt * ship.getThrust()) * ship.getMass();
+            ship.setEngines(rate);
+        } else {
+            ship.setEngines(false);
         }
     }
 }
