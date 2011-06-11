@@ -20,11 +20,9 @@ public class Hypernova {
     public static final String PROGRAM = "Hypernova";
     public static final String VERSION = "0.1";
 
-    public static Universe universe;
     public static boolean debug = false;
 
     private static Viewer viewer;
-
     private static Logger log = Logger.getRootLogger();
 
     public static void main(String[] args) {
@@ -47,8 +45,7 @@ public class Hypernova {
             log.info("extra debugging information enabled");
         }
 
-        universe = new Universe();
-        viewer = new Viewer(universe);
+        viewer = new Viewer();
 
         /* Determine quality settings. */
         if (line.hasOption("quality")) {
@@ -75,7 +72,7 @@ public class Hypernova {
             Sound.init();
         }
 
-        universe.start();
+        Universe.start();
     }
 
     private static CommandLine parseArgs(String[] args) {

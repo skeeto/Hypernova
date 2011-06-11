@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;
+    public static final Universe INSTANCE = new Universe();
 
     private static Logger log = Logger.getLogger("Universe");
 
@@ -37,7 +38,7 @@ public class Universe extends Observable implements Runnable {
         }
     };
 
-    public Universe() {
+    private Universe() {
         new Faction("None", Color.WHITE);
         new Faction("Humans", Color.GREEN);
         new Faction("Aliens", new Color(0xcc, 0x00, 0xcc));
@@ -78,10 +79,15 @@ public class Universe extends Observable implements Runnable {
         }
     }
 
-    public void start() {
+    public static Universe get() {
+        return INSTANCE;
+    }
+
+    public static void start() {
+        if (INSTANCE.thread.isAlive()) return;
         log.debug("Starting simulation thread.");
-        paused = false;
-        thread.start();
+        INSTANCE.paused = false;
+        INSTANCE.thread.start();
     }
 
     public void togglePause() {

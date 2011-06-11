@@ -5,13 +5,13 @@ import java.awt.event.KeyListener;
 
 import org.apache.log4j.Logger;
 
-import hypernova.Hypernova;
+import hypernova.Universe;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
     private static Logger log = Logger.getLogger("KeyboardPilot");
 
     public KeyboardPilot() {
-        super(Hypernova.universe.getPlayer());
+        super(Universe.get().getPlayer());
     }
 
     @Override

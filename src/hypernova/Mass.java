@@ -70,7 +70,7 @@ public class Mass {
 
     /** Remove oneself from the equation. */
     protected void zenThing() {
-        Hypernova.universe.remove(this);
+        Universe.get().remove(this);
     }
 
     /* Getters and setters. */
@@ -108,7 +108,7 @@ public class Mass {
             m.shortlived = true;
             m.ttl = (int) (BREAKUP_TTL + rng.nextGaussian() * BREAKUP_TTL_VAR);
             m.setFaction(faction);
-            Hypernova.universe.add(m);
+            Universe.get().add(m);
         }
         zenThing();
     }

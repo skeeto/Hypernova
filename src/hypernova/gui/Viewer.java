@@ -47,10 +47,10 @@ public class Viewer extends JComponent implements Observer {
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 
-    public Viewer(Universe state) {
+    public Viewer() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setOpaque(true);
-        universe = state;
+        universe = Universe.get();
         universe.addObserver(this);
         addKeyListener(new KeyboardPilot());
         addKeyListener(new KeyListener() {

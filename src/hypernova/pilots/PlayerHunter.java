@@ -1,6 +1,7 @@
 package hypernova.pilots;
 
 import hypernova.Ship;
+import hypernova.Universe;
 
 public class PlayerHunter extends Hunter {
     public PlayerHunter(Ship ship) {
@@ -8,7 +9,7 @@ public class PlayerHunter extends Hunter {
     }
 
     private Ship getPlayer() {
-        return hypernova.Hypernova.universe.getPlayer();
+        return Universe.get().getPlayer();
     }
 
     public void drive(double dt) {

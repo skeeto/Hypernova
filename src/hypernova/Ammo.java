@@ -69,9 +69,9 @@ public class Ammo extends Mass {
     public void step(double t) {
         super.step(t);
 
-        boolean teamDamage = Hypernova.universe.teamDamage;
+        boolean teamDamage = Universe.get().teamDamage;
         Faction team = getFaction();
-        for (Mass m : Hypernova.universe.getObjects()) {
+        for (Mass m : Universe.get().getObjects()) {
             if (!m.shortlived) {
                 if (m != source && (teamDamage || m.getFaction() != team)) {
                     for (double dt = t; dt > 0; dt -= t / HIT_DIVISION) {

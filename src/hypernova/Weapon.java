@@ -75,7 +75,7 @@ public class Weapon {
     public void fire(Mass src) {
         if (timeout <= 0) {
             Sound.play("fire");
-            Hypernova.universe.add(ammo.copy(src));
+            Universe.get().add(ammo.copy(src));
             timeout = cooldown;
         }
     }
