@@ -1,0 +1,7 @@
+name = Factory
+info = A common space factory for producing ships.
+
+hp    = 100.0
+mass  = 2000.0
+model = factory
+size  = 20.0

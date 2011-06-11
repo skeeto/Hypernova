@@ -14,6 +14,8 @@ import com.google.common.collect.Collections2;
 
 import org.apache.log4j.Logger;
 
+import hypernova.pilots.*;
+
 public class Universe extends Observable implements Runnable {
     public static final int SPEED = 50;
     public static final Universe INSTANCE = new Universe();
@@ -50,31 +52,22 @@ public class Universe extends Observable implements Runnable {
         player.setPosition(0, 0, Math.PI / 3).setFaction("Humans");
         add(player);
 
-        Ship dummy = Ship.get("monoship");
-        dummy.setPosition(45, 105, Math.PI / -2).setFaction("Humans");
-        dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0));
-        add(dummy);
-
         Mass station = new Mass("small-station");
         station.setPosition(100.0, 100.0, 0.0).setFaction("Aliens");
         station.setA(0.01, 1);
         add(station);
 
-        double MEAN = 1000.0;
-        double VAR  = 500.0;
-        for (int i = 0; i < 15; i++) {
-            Ship invader = Ship.get("drone");
-            invader.setFaction("Invaders");
-            double dirx = 1.0;
-            if (rng.nextInt(2) == 0) dirx = -1.0;
-            double diry = 1.0;
-            if (rng.nextInt(2) == 0) diry = -1.0;
-            invader.setPosition((rng.nextGaussian() * VAR + MEAN) * dirx,
-                                (rng.nextGaussian() * VAR + MEAN) * diry,
-                                rng.nextDouble() * Math.PI * 2);
-            invader.setPilot(new hypernova.pilots.PlayerHunter(invader));
-            add(invader);
-        }
+        Ship factory1 = new Ship("factory");
+        factory1.setPosition(-1000.0, -1000.0, 0.0).setFaction("Humans");
+        PilotFactory pfactory = new PilotFactory.HunterSeekerFactory();
+        factory1.setPilot(new SpaceFactory(factory1, "drone", pfactory, 50.0));
+        add(factory1);
+
+        Ship factory2 = new Ship("factory");
+        factory2.setPosition(1000.0, 1000.0, 0.0).setFaction("Invaders");
+        pfactory = new PilotFactory.HunterSeekerFactory();
+        factory2.setPilot(new SpaceFactory(factory2, "drone", pfactory, 50.0));
+        add(factory2);
     }
 
     public static Universe get() {
