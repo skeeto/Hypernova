@@ -40,6 +40,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int HEIGHT = 600;
 
     private final Universe universe;
+    private Mass focus;
     private double scale = 2.0;
     private double targetScale = scale;
     private int quality = 2; /* 0 - 2 quality setting. */
@@ -91,6 +92,10 @@ public class Viewer extends JComponent implements Observer {
         return targetScale;
     }
 
+    public void setFocus(Mass target) {
+        focus = target;
+    }
+
     @Override
     public void update(Observable o, Object msg) {
         repaint();
@@ -105,9 +110,10 @@ public class Viewer extends JComponent implements Observer {
 
         scale = (0.8 * scale + 0.2 * targetScale);
 
-        Mass player = universe.getPlayer();
-        double px = player.getX(0);
-        double py = player.getY(0);
+        if (focus == null || !focus.isActive())
+            focus = universe.getPlayer();
+        double px = focus.getX(0);
+        double py = focus.getY(0);
 
         for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
