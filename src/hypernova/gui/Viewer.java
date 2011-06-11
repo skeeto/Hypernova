@@ -1,15 +1,19 @@
 package hypernova.gui;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observer;
 import java.util.Observable;
 
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.FontMetrics;
+import java.awt.geom.AffineTransform;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -25,6 +29,7 @@ import hypernova.pilots.KeyboardPilot;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
+    public static final double MESSAGE_TIME = 5.0; // seconds
 
     public static final double ZOOM_RATE = 1.2;
 
@@ -44,6 +49,9 @@ public class Viewer extends JComponent implements Observer {
     private double scale = 2.0;
     private double targetScale = scale;
     private int quality = 2; /* 0 - 2 quality setting. */
+
+    private double msgTime;
+    private String message;
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 
@@ -110,6 +118,7 @@ public class Viewer extends JComponent implements Observer {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2d = (Graphics2D) g;
+        AffineTransform at = g2d.getTransform();
 
         scale = (0.8 * scale + 0.2 * targetScale);
 
@@ -141,6 +150,30 @@ public class Viewer extends JComponent implements Observer {
         Collection<Mass> objects = universe.getObjects();
         for (Mass m : objects) {
             drawMass(g2d, m);
+        }
+
+        g2d.setTransform(at);
+        paintOverlay(g2d);
+    }
+
+    private void paintOverlay(Graphics2D g) {
+        /* Display messages to the screen. */
+        if (message == null || now() - msgTime > MESSAGE_TIME) {
+            message = universe.nextMessage();
+            msgTime = now();
+        }
+        if (message != null) {
+            System.out.println(message);
+            Font oldfont = g.getFont();
+            g.setFont(oldfont.deriveFont(30f));
+            FontMetrics fm = g.getFontMetrics();
+            int width = fm.stringWidth(message);
+            int x = getWidth() / 2;
+            int y = getHeight() / 2;
+            double progress = (1 - (now() - msgTime) / MESSAGE_TIME);
+            int alpha = (int) (Math.sqrt(progress) * 255);
+            g.setColor(new Color(0xff, 0xff, 0xff, alpha));
+            g.drawString(message, x - width / 2, y - fm.getAscent() * 2);
         }
     }
 
@@ -191,5 +224,9 @@ public class Viewer extends JComponent implements Observer {
         b=b-c;  b=b-a;  b=b^(a << 10);
         c=c-a;  c=c-b;  c=c^(b >>> 15);
         return c;
+    }
+
+    private static double now() {
+        return Calendar.getInstance().getTimeInMillis() / 1000.0d;
     }
 }

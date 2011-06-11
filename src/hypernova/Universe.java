@@ -1,11 +1,13 @@
 package hypernova;
 
+import java.util.Queue;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import java.awt.Color;
 
@@ -28,6 +30,8 @@ public class Universe extends Observable implements Runnable {
     private Random rng = new Random();
 
     public boolean teamDamage = false;
+
+    private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
     private Collection<Mass> objects = new HashSet<Mass>();
     private Collection<Mass> incoming = new HashSet<Mass>();
@@ -84,6 +88,14 @@ public class Universe extends Observable implements Runnable {
     public void togglePause() {
         paused ^= true;
         log.info("Pause set to " + paused);
+    }
+
+    public void queueMessage(String msg) {
+        messages.offer(msg);
+    }
+
+    public String nextMessage() {
+        return messages.poll();
     }
 
     public Collection<Mass> getObjects() {
