@@ -15,6 +15,10 @@ public abstract class Pilot {
     /** The ship being controlled by this pilot. */
     protected final Ship ship;
 
+    /**
+     * Create a pilot that controls the given ship.
+     * @param ship  the ship to be piloted.
+     */
     public Pilot(Ship ship) {
         this.ship = ship;
     }
