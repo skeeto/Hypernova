@@ -91,8 +91,8 @@ public class Ship extends Mass {
         x[2] = enginestate / mass * Math.cos(getA(0));
         y[2] = enginestate / mass * Math.sin(getA(0));
         a[1] = 0;
-        a[1] += -turnleft * t;
-        a[1] += turnright * t;
+        a[1] += -turnleft;
+        a[1] += turnright;
 
         super.step(t);
         for (int i = 0; i < weapons.length; i++) {
