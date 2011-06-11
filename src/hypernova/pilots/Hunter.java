@@ -1,18 +1,19 @@
 package hypernova.pilots;
 
+import hypernova.Mass;
 import hypernova.Ship;
 
 public class Hunter extends Pilot {
     public static final double TARGET_DIST = 60.0;
 
-    protected Ship target;
+    protected Mass target;
 
-    public Hunter(Ship ship, Ship target) {
+    public Hunter(Ship ship, Mass target) {
         super(ship);
         setTarget(target);
     }
 
-    public void setTarget(Ship target) {
+    public void setTarget(Mass target) {
         this.target = target;
     }
 
