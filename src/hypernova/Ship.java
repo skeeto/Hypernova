@@ -137,4 +137,12 @@ public class Ship extends Mass {
     public double getMass() {
         return mass;
     }
+
+    public double getManeuverability() {
+        return maneuverability;
+    }
+
+    public double getThrust() {
+        return thrust;
+    }
 }
