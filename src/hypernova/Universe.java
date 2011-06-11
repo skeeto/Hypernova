@@ -3,6 +3,7 @@ package hypernova;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
 
@@ -96,7 +97,7 @@ public class Universe extends Observable implements Runnable {
     }
 
     public Collection<Mass> getObjects() {
-        return objects;
+        return new ArrayList<Mass>(objects);
     }
 
     public Collection<Mass> getShips() {
