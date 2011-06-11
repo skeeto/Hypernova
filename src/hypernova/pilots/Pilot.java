@@ -24,6 +24,33 @@ public abstract class Pilot {
      * driven ship's state is updated. In this method, the ship should
      * be manipulated through the various driving commands that
      * control the level of engines and weapon firing.
+     * @param dt time step
      */
-    public abstract void drive();
+    public abstract void drive(double dt);
+
+    /**
+     * Turn to face the given direction as efficiently as possible.
+     * @param dt  time step
+     * @param dir direction to face
+     */
+    protected void face(double dt, double dir) {
+        double diff = dir - ship.getA(0);
+
+        /* Choose the shorter direction */
+        if (diff > Math.PI)
+            diff -= Math.PI * 2;
+        else if (diff < -Math.PI)
+            diff += Math.PI * 2;
+
+        double maneuv = ship.getManeuverability();
+        double rate = diff / (maneuv * dt);
+
+        if (diff < 0) {
+            ship.turnLeft(-rate);
+            ship.turnRight(false);
+        } else {
+            ship.turnRight(rate);
+            ship.turnLeft(false);
+        }
+    }
 }

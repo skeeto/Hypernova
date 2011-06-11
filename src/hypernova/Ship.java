@@ -87,12 +87,12 @@ public class Ship extends Mass {
     }
 
     public void step(double t) {
-        pilot.drive();
+        pilot.drive(t);
         x[2] = enginestate / mass * Math.cos(getA(0));
         y[2] = enginestate / mass * Math.sin(getA(0));
         a[1] = 0;
-        a[1] += -turnleft;
-        a[1] += turnright;
+        a[1] += -turnleft * t;
+        a[1] += turnright * t;
 
         super.step(t);
         for (int i = 0; i < weapons.length; i++) {

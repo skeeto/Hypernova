@@ -12,7 +12,7 @@ public class CirclePilot extends Pilot {
     }
 
     @Override
-    public void drive() {
+    public void drive(double dt) {
         ship.turnLeft(size);
         ship.setEngines(true);
         if (firecount++ % 20 == 0)

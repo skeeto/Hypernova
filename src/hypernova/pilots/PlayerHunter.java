@@ -12,29 +12,16 @@ public class PlayerHunter extends Pilot {
     }
 
     @Override
-    public void drive() {
+    public void drive(double dt) {
         player = hypernova.Hypernova.universe.getPlayer();
         double x = ship.getX(0);
         double y = ship.getY(0);
         double px = player.getX(0);
         double py = player.getY(0);
         double dir = Math.atan2(py - y, px - x);
+        face(dt, dir);
+
         double diff = dir - ship.getA(0);
-
-        /* Choose the shorter direction */
-        if (diff > Math.PI)
-            diff -= Math.PI * 2;
-        else if (diff < -Math.PI)
-            diff += Math.PI * 2;
-
-        /* Turn towards the player. */
-        if (diff < 0) {
-            ship.turnLeft(-diff * 10);
-            ship.turnRight(false);
-        } else {
-            ship.turnRight(diff * 10);
-            ship.turnLeft(false);
-        }
         if (Math.abs(diff) < 0.05 && player.isActive()) {
             ship.fire(0);
         }

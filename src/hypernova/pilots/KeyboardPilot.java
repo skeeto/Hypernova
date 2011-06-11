@@ -64,7 +64,7 @@ public class KeyboardPilot extends Pilot implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void drive() {
+    public void drive(double dt) {
         /* Driving is handled entirely by keyboard events. */
     }
 }
