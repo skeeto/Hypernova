@@ -46,6 +46,7 @@ public class Viewer extends JComponent implements Observer {
 
     private final Universe universe;
     private Mass focus;
+    private double focusX, focusY;
     private double scale = 2.0;
     private double targetScale = scale;
     private int quality = 2; /* 0 - 2 quality setting. */
@@ -124,12 +125,12 @@ public class Viewer extends JComponent implements Observer {
 
         if (focus == null || !focus.isActive())
             focus = universe.getPlayer();
-        double px = focus.getX(0);
-        double py = focus.getY(0);
+        focusX = 0.6 * focusX + 0.4 * focus.getX(0);
+        focusY = 0.6 * focusY + 0.4 * focus.getY(0);
 
         for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
-            drawStars(g2d, (int) px / i, (int) py / i, i);
+            drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
         }
 
         /* Set up graphics */
@@ -144,8 +145,8 @@ public class Viewer extends JComponent implements Observer {
                                  RenderingHints.VALUE_RENDER_QUALITY);
         }
 
-        g2d.translate(-(px * scale - getWidth() / 2),
-                      -(py * scale - getHeight() / 2));
+        g2d.translate(-(focusX * scale - getWidth() / 2),
+                      -(focusY * scale - getHeight() / 2));
         g2d.scale(scale, scale);
         Collection<Mass> objects = universe.getObjects();
         for (Mass m : objects) {
