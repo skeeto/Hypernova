@@ -43,9 +43,11 @@ public class Activity {
 	return new InputStreamReader(is);
     }
 
-    public void realize(Universe universe) {
+    public void realize(Universe universe, double realizationX, double realizationY) {
 	Binding binding = new Binding();
 	binding.setVariable("_universe_", universe);
+	binding.setVariable("sceneX", realizationX);
+	binding.setVariable("sceneY", realizationY);
 
 	GroovyShell shell = new GroovyShell(binding);
 	shell.evaluate("import hypernova.API; API.setUniverse(_universe_)");
