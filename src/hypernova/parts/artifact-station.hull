@@ -1,0 +1,7 @@
+name = Artifact Station
+info = A medium sized space station of unknown origin
+
+hp    = 10.0
+mass  = 100.0
+model = station
+size  = 50.0

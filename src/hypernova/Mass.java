@@ -1,5 +1,7 @@
 package hypernova;
 
+import java.util.LinkedList;
+import java.util.Collection;
 import java.util.Random;
 import java.awt.Shape;
 
@@ -25,6 +27,7 @@ public class Mass {
     private Faction faction;
     protected boolean shortlived;
     protected int ttl;
+    private final Collection<DestructionListener> destructionListeners = new LinkedList<DestructionListener>();
 
     protected Mass() {
     }
@@ -112,7 +115,16 @@ public class Mass {
             m.setFaction(faction);
             Universe.get().add(m);
         }
+
+	for(DestructionListener listener : destructionListeners) {
+	    listener.destroyed(this);
+	}
+
         zenThing();
+    }
+
+    public void onDestruct(DestructionListener listener) {
+	destructionListeners.add(listener);
     }
 
     public double getMass() {

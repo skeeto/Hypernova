@@ -17,14 +17,24 @@ withNew(ship("tenderfoot")) { dummy ->
     dummy.setSize(6.0);
 }
 
-withNew(mass("small-station")) { station ->
-    station.setPosition(300.0, 300.0, 0.0).setFaction("Aliens")
-    station.setA(0.01, 1)
-    station.setSize(30.0)
+boolean stationAlive = true
+
+newSpatialRealization(300.0, 300.0, 200.0) { playerX, playerY ->
+    withNew(mass("artifact-station")) { station ->
+        station.setPosition(300.0, 300.0, 0.0).setFaction("Aliens")
+        station.setA(0.01, 1)
+        station.setSize(30.0)
+        station.onDestruct({
+           print("\$#&@ Invaders!!!\n")
+           stationAlive = false
+        } as DestructionListener)
+    }
+
+    print("Looks like we've found something interesting!\n")
 }
 
 newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
-    print("Invaders!\n")
+    print("Oh no! Invaders! We need to protect this artifact!\n")
 
     withNew(mass("small-station")) { station ->
         station.setPosition(playerX + 100, playerY + 200, 0.0).setFaction("Invaders")
@@ -33,8 +43,9 @@ newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
     }
 
     def VAR = 500.0
+    int invaderCount = 15
 
-    (0..15).each() { idx ->
+    (0..invaderCount).each() { idx ->
         withNew(ship("drone")) { invader ->
             invader.setWeapon("mini-blaster", 0).setEngine("microshove", 0)
             invader.setSize(3.5).setFaction("Invaders")
@@ -42,6 +53,13 @@ newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
             def (x,y,theta) = randomPosition(VAR, playerX, playerY)
             invader.setPosition(x, y, theta)
             invader.setPilot(new hypernova.pilots.PlayerHunter(invader))
+
+            invader.onDestruct({
+                invaderCount = invaderCount - 1
+                if(invaderCount == 0 && stationAlive) {
+                    print("Whew! That was a close one!\n")
+                }
+            } as DestructionListener)
         }
     }
 }
