@@ -44,6 +44,10 @@
   (position-absolute (- (position-x p1) (position-x p2))
 		     (- (position-y p1) (position-y p2))))
 
+(defn random-position [center variance]
+  "generate a random position around center with variance"
+  (add center (position-absolute (rand variance) (rand variance))))
+
 (defn dist2 [p1 p2]
   (let [offset (sub p1 p2)]
     (+ (* (position-x offset) (position-x offset))
@@ -80,11 +84,37 @@
 			 false)))
 
      (trigger [this px py]
-	      (let [player-pos (position-absolute px py)]
-		(func player-pos))))))
+	      (func (position-absolute px py))))))
 
 (defmacro with-spatial-realization [[player-pos event-pos event-radius] & body]
   `(call-with-spatial-realization ~event-pos ~event-radius (fn [~player-pos] ~@body)))
+
+(defn call-with-delayed-realization [delay func]
+  (let [end-time (+ (System/currentTimeMillis) (* delay 1000))]
+    (.addRealization *universe*
+      (reify
+       hypernova.Realization
+       (shouldTrigger [this px py]
+		      (if (>= (System/currentTimeMillis) end-time)
+			(do
+			  (.removeRealization *universe* this)
+			  true)
+			false))
+       (trigger [this px py]
+		(func (position-absolute px py)))))))
+
+(defmacro with-delayed-realization [[player-pos delay] & body]
+  `(call-with-delayed-realization ~delay (fn [~player-pos] ~@body)))
+
+(defn repack-event-sequence [forms]
+  (when-not (empty? forms)
+    `(~@(first forms)
+      (do ~(repack-event-sequence (rest forms))))))
+
+(defmacro event-sequence [& forms]
+  "arranges for the realization events defined by forms to execute in
+  sequence."
+  (repack-event-sequence forms))
 
 ;; required functionality that is accessed from java
 (defn- get-resource [file]
