@@ -63,4 +63,18 @@ public class ActivityRuntime {
 	    System.exit(1);
 	}
     }
+
+    public void startRepl() {
+        log.info("Starting a REPL");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    clojure.lang.Repl.main(new String[0]);
+                } catch (Exception e) {
+                    log.warn("REPL threw exception " + e);
+                }
+            }
+        }.start();
+    }
 }
