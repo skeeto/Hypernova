@@ -2,8 +2,10 @@ package hypernova;
 
 import java.util.Map;
 import java.util.List;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -25,6 +27,7 @@ public class Ship extends Mass {
     private boolean[] firestate = new boolean[0];
     private double turnleft, turnright;
     private Pilot pilot = new EmptyCockpit();
+    private Collection<Mass> hold = new HashSet<Mass>();
 
     /* Derived from the above. */
     private double thrust, maneuverability;
@@ -142,6 +145,11 @@ public class Ship extends Mass {
                 mass += w.getMass();
             }
         }
+        for (Mass m : hold) {
+            if (m != null) {
+                mass += m.getMass();
+            }
+        }
     }
 
     public void step(double t) {
@@ -202,5 +210,19 @@ public class Ship extends Mass {
 
     public double getThrust() {
         return thrust;
+    }
+
+    public Collection<Mass> getHold() {
+        return hold;
+    }
+
+    public void store(Mass m) {
+        hold.add(m);
+        calc();
+    }
+
+    public void unstore(Mass m) {
+        hold.remove(m);
+        calc();
     }
 }
