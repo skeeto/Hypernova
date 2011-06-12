@@ -160,7 +160,13 @@ public class Universe extends Observable implements Runnable {
 		    }
 		}
                 synchronized (outgoing) {
-                    objects.removeAll(outgoing);
+		    for(Object obj : outgoing) {
+			if (obj instanceof Mass) {
+			    objects.remove((Mass)obj);
+			} else if (obj instanceof Realization) {
+			    realizations.remove((Realization)obj);
+			}
+		    }
                     outgoing.clear();
                 }
                 synchronized (incoming) {

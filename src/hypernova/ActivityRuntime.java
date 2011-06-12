@@ -28,6 +28,8 @@ public class ActivityRuntime {
     private Symbol API;
     private Var API_LOADER;
 
+    private Var API_REPL;
+
     private static ActivityRuntime INSTANCE = null;
 
     private ActivityRuntime() throws Exception {
@@ -39,6 +41,7 @@ public class ActivityRuntime {
 	REQUIRE.invoke(API);
 
 	API_LOADER = RT.var("hypernova.activities.api", "loader");
+	API_REPL = RT.var("hypernova.activities.api", "repl");
     }
 
     public static ActivityRuntime get() {
@@ -70,7 +73,7 @@ public class ActivityRuntime {
             @Override
             public void run() {
                 try {
-                    clojure.lang.Repl.main(new String[0]);
+		    API_REPL.applyTo(RT.seq(RT.vector()));
                 } catch (Exception e) {
                     log.warn("REPL threw exception " + e);
                 }
