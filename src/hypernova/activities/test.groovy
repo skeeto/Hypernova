@@ -3,14 +3,6 @@ package hypernova
 import static hypernova.API.*
 import hypernova.pilots.*
 
-/* Set up player ship. */
-Ship thePlayer
-withNewPlayer(parts("monoship")) { player ->
-    player.setPosition(sceneX, sceneY, Math.PI / -2).setFaction("Humans")
-    player.setWeapon("blaster", 0).setEngine("tourist", 0)
-    thePlayer = player
-}
-
 boolean stationAlive = true
 def stationX = 300 + sceneX
 def stationY = 300 + sceneY
