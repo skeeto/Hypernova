@@ -62,4 +62,8 @@ public class API {
             'trigger': event] as Realization
         universe.addRealization(realization)
     }
+
+    public static void message(String message) {
+        universe.queueMessage(message)
+    }
 }

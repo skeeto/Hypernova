@@ -2,7 +2,7 @@ package hypernova
 
 import static hypernova.API.*
 
-print("hello from groovy!\n")
+message("Let's go south-east and see what we find...")
 
 /* Set up player ship. */
 withNewPlayer(parts("monoship")) { player ->
@@ -25,16 +25,16 @@ newSpatialRealization(300.0, 300.0, 200.0) { playerX, playerY ->
         station.setA(0.01, 1)
         station.setSize(30.0)
         station.onDestruct({
-           print("\$#&@ Invaders!!!\n")
+           message("\$#&@ Invaders!!!\n")
            stationAlive = false
         } as DestructionListener)
     }
 
-    print("Looks like we've found something interesting!\n")
+    message("Looks like we've found something interesting!\n")
 }
 
 newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
-    print("Oh no! Invaders! We need to protect this artifact!\n")
+    message("Oh no! Invaders! We need to protect this artifact!\n")
 
     withNew(mass("small-station")) { station ->
         station.setPosition(playerX + 100, playerY + 200, 0.0).setFaction("Invaders")
@@ -57,7 +57,7 @@ newSpatialRealization(300.0, 300.0, 100.0) { playerX, playerY ->
             invader.onDestruct({
                 invaderCount = invaderCount - 1
                 if(invaderCount == 0 && stationAlive) {
-                    print("Whew! That was a close one!\n")
+                    message("Whew! That was a close one!\n")
                 }
             } as DestructionListener)
         }
