@@ -35,8 +35,7 @@ public class Activity {
 	return script;
     }
 
-    public void realize(Universe universe, double realizationX,
-                        double realizationY) {
+    public void realize(double realizationX, double realizationY) {
 	ActivityRuntime.get().execute(this, realizationX, realizationY);
     }
 }
