@@ -69,6 +69,7 @@ public class Hypernova {
         }
 
         Universe.start();
+        Universe.get().addActivity("test", 0, 0);
     }
 
     private static CommandLine parseArgs(String[] args) {
