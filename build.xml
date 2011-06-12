@@ -61,8 +61,10 @@
     </jar>
   </target>
 
-  <target name="run" depends="jar" description="Run the application.">
-    <java jar="${dist.dir}/${jar.file}" fork="true">
+  <target name="run" depends="compile" description="Run the application.">
+    <java classname="${main.class}" classpath="${build.classes.dir}"
+	  fork="true">
+      <classpath refid="build.classpath"/>
       <arg value="--debug"/>
     </java>
   </target>
