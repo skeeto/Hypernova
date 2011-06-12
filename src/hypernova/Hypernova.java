@@ -69,6 +69,10 @@ public class Hypernova {
             Sound.init();
         }
 
+        if (line.hasOption("repl")) {
+            ActivityRuntime.get().startRepl();
+        }
+
         Universe.start();
         Universe.get().addActivity("test", 0, 0);
     }
@@ -81,6 +85,7 @@ public class Hypernova {
             {"d", "debug",   "f", "turn on extra debugging info"},
             {"q", "quality", "t", "set display quality (0-2)"},
             {"s", "nosound", "n", "disable sound"},
+            {"r", "repl",    "n", "expose a REPL on standard IO"},
         };
         for (String[] o : str) {
             opts.addOption(new Option(o[0], o[1], "t".equals(o[2]), o[3]));
