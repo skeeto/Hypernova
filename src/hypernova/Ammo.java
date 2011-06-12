@@ -54,6 +54,7 @@ public class Ammo extends Mass {
     public Ammo copy(Mass src) {
         Ammo ammo = new Ammo(getHull(), name, info);
         ammo.shortlived = true;
+        ammo.suffersdrag = false;
         ammo.ttl = ttl;
         ammo.damage = damage;
         ammo.speed = speed;

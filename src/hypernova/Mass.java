@@ -26,6 +26,7 @@ public class Mass {
     private double size;
     private Faction faction;
     protected boolean shortlived;
+    protected boolean suffersdrag = true;
     protected int ttl;
     private final Collection<DestructionListener> listeners
         = new LinkedList<DestructionListener>();
@@ -51,11 +52,10 @@ public class Mass {
         }
 
         /* Add drag. */
-        if (!shortlived) {
+        if (suffersdrag) {
             drag(x);
             drag(y);
         }
-
         x[1] += x[2] * t;
         y[1] += y[2] * t;
         a[1] += a[2] * t;
