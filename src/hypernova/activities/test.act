@@ -1,1 +1,1 @@
-script = activities/test.groovy
+script = hypernova/activities/test.clj

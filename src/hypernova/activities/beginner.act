@@ -1,1 +1,1 @@
-script = activities/beginner.groovy
+script = hypernova/activities/beginner.clj
