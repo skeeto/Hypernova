@@ -35,10 +35,6 @@ public class Hypernova {
 
         /* Parse the command line options. */
         CommandLine line = parseArgs(args);
-        if (line.hasOption("version")) {
-            printVersion();
-            System.exit(0);
-        }
         if (line.hasOption("debug")) {
             debug = true;
             log.setLevel(Level.DEBUG);
@@ -53,7 +49,7 @@ public class Hypernova {
             String str = line.getOptionValue("quality");
             try {
                 int level = Integer.parseInt(str);
-                if (level < 0 || level > 2) new Exception();
+                if (level < 0 || level > 2) throw new Exception();
                 viewer.setQuality(level);
             } catch (Throwable t) {
                 System.err.println("Unknown quality level '" + str + "'");
@@ -99,6 +95,10 @@ public class Hypernova {
         if (line.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Hypernova [options]", opts);
+            System.exit(0);
+        }
+        if (line.hasOption("version")) {
+            printVersion();
             System.exit(0);
         }
         return line;
