@@ -15,7 +15,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
 
 import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
