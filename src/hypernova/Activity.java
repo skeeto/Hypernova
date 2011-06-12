@@ -43,7 +43,8 @@ public class Activity {
 	return new InputStreamReader(is);
     }
 
-    public void realize(Universe universe, double realizationX, double realizationY) {
+    public void realize(Universe universe, double realizationX,
+                        double realizationY) {
 	Binding binding = new Binding();
 	binding.setVariable("_universe_", universe);
 	binding.setVariable("sceneX", realizationX);
