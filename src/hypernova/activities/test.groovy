@@ -6,19 +6,22 @@ import hypernova.pilots.*
 /* Set up player ship. */
 Ship thePlayer
 withNewPlayer(parts("monoship")) { player ->
-    player.setPosition(0, 0, Math.PI / -2).setFaction("Humans")
+    player.setPosition(sceneX, sceneY, Math.PI / -2).setFaction("Humans")
     player.setWeapon("blaster", 0).setEngine("tourist", 0)
     thePlayer = player
 }
 
 boolean stationAlive = true
+def stationX = 300 + sceneX
+def stationY = 300 + sceneY
+message("Let's go south-east and see what we find...")
 
-newSpatialRealization(300.0, 300.0, 200.0) { playerX, playerY ->
+newSpatialRealization(stationX, stationY, 200.0) { playerX, playerY ->
     message("Looks like we've found something interesting!\n")
 
     Ship theDummy
     withNew(ship("tenderfoot")) { dummy ->
-        dummy.setPosition(300, 300, Math.PI / 3).setFaction("Humans")
+        dummy.setPosition(stationX, stationY, Math.PI / 3).setFaction("Humans")
         dummy.setWeapon("blaster", 0).setEngine("tourist", 0)
         dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0))
         dummy.setSize(6.0);
@@ -30,7 +33,7 @@ newSpatialRealization(300.0, 300.0, 200.0) { playerX, playerY ->
     }
 
     withNew(mass("artifact-station")) { station ->
-        station.setPosition(300.0, 300.0, 0.0).setFaction("Aliens")
+        station.setPosition(stationX, stationY, 0.0).setFaction("Aliens")
         station.setA(0.01, 1)
         station.setSize(30.0)
         onDestruct(station) {
