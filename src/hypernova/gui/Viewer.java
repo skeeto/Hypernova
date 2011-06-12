@@ -161,9 +161,10 @@ public class Viewer extends JComponent implements Observer {
         if (message == null || now() - msgTime > MESSAGE_TIME) {
             message = universe.nextMessage();
             msgTime = now();
+            if (message != null)
+                log.debug("Displaying: " + message);
         }
         if (message != null) {
-            System.out.println(message);
             Font oldfont = g.getFont();
             g.setFont(oldfont.deriveFont(30f));
             FontMetrics fm = g.getFontMetrics();

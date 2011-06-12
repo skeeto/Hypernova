@@ -96,6 +96,7 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void queueMessage(String msg) {
+        log.info("Queued: \"" + msg + "\"");
         messages.offer(msg);
     }
 
