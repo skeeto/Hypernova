@@ -56,6 +56,23 @@
 (defn set-position [obj position]
   (.setPosition obj (position-x position) (position-y position)))
 
+(defn set-weapon [obj weapon & {:keys [slot]
+				:or {slot 0}}]
+  (.setWeapon obj weapon slot))
+
+(defn set-engine [obj engine & {:keys [slot]
+				:or {slot 0}}]
+  (.setEngine obj engine slot))
+
+(defn set-size [obj size]
+  (.setSize obj size))
+
+(defn set-faction [obj faction]
+  (.setFaction obj faction))
+
+(defn set-pilot [obj pilot]
+  (.setPilot obj pilot))
+
 (defmacro with-player [[symbol kind & {:keys [position]
 				       :or {position (position-relative 0 0)}}] & body]
   `(let [~symbol (~kind)]

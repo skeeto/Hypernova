@@ -11,13 +11,13 @@
    (message "Looks like we've found something interesting!")
 
    (with-new [station (mass "small-station") :position *station-position*]
-     (.setFaction station "Aliens"))
+     (set-faction station "Aliens"))
 
    (with-new [dummy (ship "tenderfoot") :position *station-position*]
-     (.setFaction dummy "Humans")
-     (.setWeapon dummy "blaster" 0)
-     (.setEngine dummy "tourist" 0)
-     (.setPilot dummy (hypernova.pilots.CirclePilot. dummy 1.0))))
+     (set-faction dummy "Humans")
+     (set-weapon dummy "blaster")
+     (set-engine dummy "tourist")
+     (set-pilot dummy (hypernova.pilots.CirclePilot. dummy 1.0))))
 
  (with-delayed-realization [player 4]
    (message "He's nuts... maybe the artifiact..."))
@@ -27,9 +27,9 @@
 
    (dotimes [idx 15]
      (with-new [invader (ship "drone")]
-       (.setWeapon invader "mini-blaster" 0)
-       (.setEngine invader "microshove" 0)
-       (.setSize invader 3.5)
-       (.setFaction invader "Invaders")
+       (set-weapon invader "mini-blaster")
+       (set-engine invader "microshove")
+       (set-size invader 3.5)
+       (set-faction invader "Invaders")
        (set-position invader (random-position player 1000.0))
-       (.setPilot invader (hypernova.pilots.PlayerHunter. invader))))))
+       (set-pilot invader (hypernova.pilots.PlayerHunter. invader))))))
