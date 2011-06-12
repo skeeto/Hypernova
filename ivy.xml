@@ -5,6 +5,6 @@
     <dependency org="log4j" name="log4j" rev="1.2.14"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.2"/>
     <dependency org="com.google.guava" name="guava" rev="r09"/>
-    <dependency org="org.codehaus.groovy" name="groovy" rev="1.8.0"/>
+    <dependency org="org.clojure" name="clojure" rev="1.2.1"/>
   </dependencies>
 </ivy-module>

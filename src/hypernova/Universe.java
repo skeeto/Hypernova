@@ -75,11 +75,11 @@ public class Universe extends Observable implements Runnable {
 
     public void initialize() {
 	Activity test = Activity.get(defaultActivity);
-	test.realize(this, 0, 0);
+	test.realize(0, 0);
     }
 
     public void addActivity(String name, double x, double y) {
-        Activity.get(name).realize(this, x, y);
+        Activity.get(name).realize(x, y);
     }
 
     public static Universe get() {
