@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
 
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -30,7 +29,7 @@ public class Hypernova {
         System.setProperty("sun.java2d.pmoffscreen", "false");
 
         /* Prepare logging. */
-        BasicConfigurator.configure();
+        //BasicConfigurator.configure();
         log.setLevel(Level.WARN);
 
         /* Parse the command line options. */
