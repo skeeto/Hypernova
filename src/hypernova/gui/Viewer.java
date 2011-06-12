@@ -121,12 +121,20 @@ public class Viewer extends JComponent implements Observer {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
 
+        /* Determine camera positioning. */
         scale = (0.8 * scale + 0.2 * targetScale);
-
         if (focus == null || !focus.isActive())
             focus = universe.getPlayer();
-        focusX = 0.6 * focusX + 0.4 * focus.getX(0);
-        focusY = 0.6 * focusY + 0.4 * focus.getY(0);
+        double px, py;
+        if (focus == null) {
+            px = 0;
+            py = 0;
+        } else {
+            px = focus.getX(0);
+            py = focus.getY(0);
+        }
+        focusX = 0.6 * focusX + 0.4 * px;
+        focusY = 0.6 * focusY + 0.4 * py;
 
         for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
