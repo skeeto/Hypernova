@@ -94,8 +94,6 @@ public class Mass {
     public void damage(double val) {
         hp -= val;
         if (hp <= 0) {
-            if (this == Universe.get().getPlayer())
-                Universe.get().queueMessage("Press 'c' to continue");
             destruct();
             return;
         }
