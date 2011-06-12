@@ -10,13 +10,6 @@ withNewPlayer(parts("monoship")) { player ->
     player.setWeapon("blaster", 0).setEngine("tourist", 0)
 }
 
-withNew(ship("tenderfoot")) { dummy ->
-    dummy.setPosition(45, 105, Math.PI / 3).setFaction("Humans")
-    dummy.setWeapon("blaster", 0).setEngine("tourist", 0)
-    dummy.setPilot(new hypernova.pilots.CirclePilot(dummy, 1.0))
-    dummy.setSize(6.0);
-}
-
 boolean stationAlive = true
 
 newSpatialRealization(300.0, 300.0, 200.0) { playerX, playerY ->
