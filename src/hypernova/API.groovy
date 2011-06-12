@@ -63,7 +63,29 @@ public class API {
         universe.addRealization(realization)
     }
 
+    public static void newDelayedRealization(double delayInSeconds, Closure event) {
+        long start = System.currentTimeMillis()
+        long end = start + delayInSeconds * 1000
+        boolean haveTriggered = false
+
+        def realization = [
+            'shouldTrigger': { playerX, playerY ->
+                if(!haveTriggered && System.currentTimeMillis() >= end) {
+                    haveTriggered = true
+                    return true
+                } else {
+                    return false
+                }
+            },
+            'trigger': event] as Realization
+        universe.addRealization(realization)
+    }
+
     public static void message(String message) {
         universe.queueMessage(message)
+    }
+
+    public static onDestruct(target, Closure closure) {
+        target.onDestruct(closure as DestructionListener)
     }
 }

@@ -29,7 +29,7 @@ import hypernova.pilots.KeyboardPilot;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
-    public static final double MESSAGE_TIME = 5.0; // seconds
+    public static final double MESSAGE_TIME = 2.0; // seconds
 
     public static final double ZOOM_RATE = 1.2;
 
