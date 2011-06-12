@@ -44,9 +44,13 @@
   (position-absolute (- (position-x p1) (position-x p2))
 		     (- (position-y p1) (position-y p2))))
 
+(defn rand- [variance]
+  "random value between +/- variance"
+  (- (rand (* variance 2)) variance))
+
 (defn random-position [center variance]
   "generate a random position around center with variance"
-  (add center (position-absolute (rand variance) (rand variance))))
+  (add center (position-absolute (rand- variance) (rand- variance))))
 
 (defn dist2 [p1 p2]
   (let [offset (sub p1 p2)]
@@ -77,15 +81,17 @@
 				       :or {position (position-relative 0 0)}}] & body]
   `(let [~symbol (~kind)]
      (set-position ~symbol ~position)
-     ~@body
-     (.setPlayer *universe* ~symbol)))
+     (let [result# (do ~@body)]
+       (.setPlayer *universe* ~symbol)
+       result#)))
 
 (defmacro with-new [[symbol kind & {:keys [position]
 				    :or {position (position-relative 0 0)}}] & body]
   `(let [~symbol (~kind)]
      (set-position ~symbol ~position)
-     ~@body
-     (.add *universe* ~symbol)))
+     (let [result# (do ~@body)]
+       (.add *universe* ~symbol)
+       result#)))
 
 (defn call-with-spatial-realization [event-pos event-radius func]
   (.addRealization *universe*
@@ -127,6 +133,48 @@
   (when-not (empty? forms)
     `(~@(first forms)
       (do ~(repack-event-sequence (rest forms))))))
+
+(defprotocol Destructable
+  "a thing that can be monitored for destruction"
+
+  (add-destruct-handler
+   [target func]
+   "func will be called when target is destroyed"))
+
+(extend Mass
+  Destructable
+  {:add-destruct-handler
+   (fn [mass func]
+     (.onDestruct mass
+       (reify
+	hypernova.DestructionListener
+	(destroyed [this mass] (func)))))})
+
+(defrecord watch-list
+  [targets handlers]
+
+  Destructable
+  (add-destruct-handler [this func] (swap! (:handlers this)
+					   conj
+					   func)))
+
+(defn make-watch-list [items]
+  (let [items-ref (atom (set items))
+	handlers-ref (atom [])]
+
+    ;; embed a watcher in each of our targets
+    (doseq [item items]
+      (add-destruct-handler item
+			    (fn []
+			      ;; remove the item
+			      (swap! items-ref disj item)
+			      ;; maybe notify our handlers
+			      (when (empty? @items-ref)
+				(doseq [hdlr @handlers-ref]
+				  (hdlr))))))
+
+    (watch-list. items-ref handlers-ref)))
+
 
 (defmacro event-sequence [& forms]
   "arranges for the realization events defined by forms to execute in
