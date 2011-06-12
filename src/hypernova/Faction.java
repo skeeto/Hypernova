@@ -11,6 +11,13 @@ public class Faction {
     private Color color;
     private String name;
 
+    public static Faction create(String name, Color color) {
+        Faction faction = new Faction(name, color);
+        store.put(name, faction);
+        if (def == null) def = faction;
+        return faction;
+    }
+
     public static Faction get(String name) {
         Faction faction = store.get(name);
         if (faction == null) {
@@ -24,12 +31,9 @@ public class Faction {
         return def;
     }
 
-    public Faction(String name, Color color) {
+    private Faction(String name, Color color) {
         this.name = name;
         this.color = color;
-        store.put(name, this);
-        if (def == null)
-            def = this;
     }
 
     public Color getColor() {
