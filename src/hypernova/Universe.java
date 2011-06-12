@@ -26,7 +26,7 @@ public class Universe extends Observable implements Runnable {
 
     private static Logger log = Logger.getLogger("Universe");
 
-    private static String defaultActivity = "test.act";
+    private static String defaultActivity = "test";
 
     private Ship player;
     private Thread thread = new Thread(this);
