@@ -27,7 +27,8 @@ public class Mass {
     private Faction faction;
     protected boolean shortlived;
     protected int ttl;
-    private final Collection<DestructionListener> destructionListeners = new LinkedList<DestructionListener>();
+    private final Collection<DestructionListener> listeners
+        = new LinkedList<DestructionListener>();
 
     protected Mass() {
     }
@@ -116,7 +117,7 @@ public class Mass {
             Universe.get().add(m);
         }
 
-	for(DestructionListener listener : destructionListeners) {
+	for(DestructionListener listener : listeners) {
 	    listener.destroyed(this);
 	}
 
@@ -124,7 +125,7 @@ public class Mass {
     }
 
     public void onDestruct(DestructionListener listener) {
-	destructionListeners.add(listener);
+	listeners.add(listener);
     }
 
     public double getMass() {
