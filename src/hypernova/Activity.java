@@ -9,7 +9,7 @@ import clojure.lang.Var;
 
 import org.apache.log4j.Logger;
 
-public class Activity {
+public abstract class Activity {
     private static Logger log = Logger.getLogger("Activity");
 
     private String script;
@@ -24,18 +24,23 @@ public class Activity {
 	    log.error("Failed to load activity " + name);
 	    return null;
 	}
-	return new Activity(prop.getProperty("script"));
+	return new Activity(prop.getProperty("script")) {
+            public void realize(double x, double y) {
+                ActivityRuntime.get().execute(this, x, y);
+            }
+        };
     }
 
-    private Activity(String script) {
-	this.script = script;
+    protected Activity() {
     }
 
     public String getScript() {
 	return script;
     }
 
-    public void realize(double realizationX, double realizationY) {
-	ActivityRuntime.get().execute(this, realizationX, realizationY);
+    private Activity(String script) {
+	this.script = script;
     }
+
+    public abstract void realize(double x, double y);
 }
