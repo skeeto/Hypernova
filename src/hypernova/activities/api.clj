@@ -22,23 +22,47 @@
 (defn message [string]
   (.queueMessage *universe* (str string)))
 
-(defrecord position
-  [x y])
+(defprotocol Positional
+  "a thing with position"
+  (position [this]))
+
+(defprotocol Velocital
+  "a thing with velocity"
+  (velocity [this]))
+
+(defrecord Vector2
+  [x y]
+
+  Positional
+  (position [this] this)
+
+  Velocital
+  (velocity [this] this))
 
 (defn position-absolute [x y]
   "create a position in absolute universe coords"
-  (position. x y))
+  (Vector2. x y))
 
 (defn position-relative [x y]
   "create a position that's relative to the center we were given"
   (position-absolute (+ *x* x)
 		     (+ *y* y)))
 
+(defn velocity [x y]
+  "creates a velocity"
+  (Vector2. x y))
+
 (defn position-x [p]
   (:x p))
 
 (defn position-y [p]
   (:y p))
+
+(defn velocity-x [v]
+  (:x v))
+
+(defn velocity-y [v]
+  (:y v))
 
 (defn add [p1 p2]
   "add two positions"
@@ -50,6 +74,38 @@
   (position-absolute (- (position-x p1) (position-x p2))
 		     (- (position-y p1) (position-y p2))))
 
+(defn scale [p s]
+  "scale the position by s"
+  (position-absolute (* (position-x p) s)
+		     (* (position-y p) s)))
+
+(defn direction [p1 p2]
+  "the angle from p1 to p2"
+  (let [delta (sub p2 p1)]
+    (Math/atan2 (position-y delta) (position-x delta))))
+
+(defn dotp [p1 p2]
+  "treat p1 and p2 as vectors and compute the dot product"
+  (+ (* (position-x p1) (position-x p2))
+     (* (position-y p1) (position-y p2))))
+
+(defn mag2 [offset]
+  "compute the magnitude squared of offset"
+  (dotp offset offset))
+
+(defn mag [offset]
+  "compute the magnitude of offset"
+  (Math/sqrt (mag2 offset)))
+
+(defn normalize [p]
+  "treat p like a vector and normalize"
+  (scale p (/ (mag p))))
+
+(defn project [p1 v1]
+  "project p1 into direction v1"
+  (let [v1n (normalize v1)]
+    (scale v1n (dotp p1 (normalize v1)))))
+
 (defn rand- [variance]
   "random value between +/- variance"
   (- (rand (* variance 2)) variance))
@@ -59,11 +115,11 @@
   (add center (position-absolute (rand- variance) (rand- variance))))
 
 (defn dist2 [p1 p2]
-  (let [offset (sub p1 p2)]
-    (+ (* (position-x offset) (position-x offset))
-       (* (position-y offset) (position-y offset)))))
+  "compute the distance squared between 2 points"
+  (mag2 (sub p1 p2)))
 
 (defn set-position [obj position]
+  "sets the position of obj (probably a mass) to position"
   (.setPosition obj (position-x position) (position-y position)))
 
 (defn set-weapon [obj weapon & {:keys [slot]
@@ -82,6 +138,27 @@
 
 (defn set-pilot [obj pilot]
   (.setPilot obj pilot))
+
+(defn set-engines [obj value]
+  (.setEngines obj value))
+
+(defn destruct [obj]
+  (.destruct obj))
+
+(defn pd-controller [p d p-in d-in output]
+  "returns a proportional/deriviative controller"
+  (fn [dt]
+    (output (+ (* p (p-in)) (* d d-in)))))
+
+(defn engine-pd-controller [ship target-ref p d]
+  "create a proportional/derivative controller to control the engine
+output"
+  (letfn [(p-in [] (mag (sub (position ship) (position @target-ref))))
+	  (d-in [] (dotp (sub (velocity ship) (velocity @target-ref))
+			 (normalize (sub (position ship)
+					 (position @target-ref)))))
+	  (output [val] (set-engines ship val))]
+    (pd-controller p d p-in d-in output)))
 
 (defmacro with-player
   [[symbol kind & {:keys [position]
@@ -117,7 +194,7 @@ then add the result of kind to the universe"
      hypernova.Realization
      (shouldTrigger [this px py]
 		    (let [player-pos (position-absolute px py)]
-		      (if (<= (dist2 player-pos event-pos)
+		      (if (<= (dist2 player-pos (position event-pos))
 			      (* event-radius event-radius))
 			(do
 			  (.removeRealization *universe* this)
@@ -172,6 +249,9 @@ an ordered sequence."
    [target func]
    "func will be called when target is destroyed"))
 
+(defprotocol Active
+  (active? [this]))
+
 (extend Mass
   Destructable
   {:add-destruct-handler
@@ -179,15 +259,32 @@ an ordered sequence."
      (.onDestruct mass
        (reify
 	hypernova.DestructionListener
-	(destroyed [this mass] (func)))))})
+	(destroyed [this mass] (func)))))}
+
+  Active
+  {:active? (fn [mass] (.isActive mass))}
+
+  Positional
+  {:position (fn [mass] (position-absolute (.getX mass 0)
+					   (.getY mass 0)))}
+
+  Velocital
+  {:velocity (fn [mass] (velocity (.getX mass 1)
+				  (.getY mass 1)))})
 
 (defrecord watch-list
   [targets handlers]
 
   Destructable
-  (add-destruct-handler [this func] (swap! (:handlers this)
-					   conj
-					   func)))
+  (add-destruct-handler
+   [this func]
+   (swap! (:handlers this) conj func))
+
+  Active
+  (active?
+   [this]
+   (and (not-empty @(:targets this))
+	(every? #'active? @(:targets this)))))
 
 (defn make-watch-list [items]
   "create an object that can be monitored for destruction events of
