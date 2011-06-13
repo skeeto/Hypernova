@@ -19,7 +19,6 @@ public class Loot extends Mass {
         ttl = LOOT_TTL;
         if (src != null) {
             setPosition(src);
-            setFaction(src.getFaction());
         }
         x[1] = RNG.nextGaussian() * DRIFT_RATE;
         y[1] = RNG.nextGaussian() * DRIFT_RATE;
