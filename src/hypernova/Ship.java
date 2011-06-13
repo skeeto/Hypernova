@@ -28,6 +28,7 @@ public class Ship extends Mass {
     private double turnleft, turnright;
     private Pilot pilot = new EmptyCockpit();
     private Collection<Mass> hold = new HashSet<Mass>();
+    private long gold;
 
     /* Derived from the above. */
     private double thrust, maneuverability;
@@ -219,6 +220,10 @@ public class Ship extends Mass {
     public void store(Mass m) {
         hold.add(m);
         calc();
+    }
+
+    public void store(long gold) {
+        this.gold += gold;
     }
 
     public void unstore(Mass m) {

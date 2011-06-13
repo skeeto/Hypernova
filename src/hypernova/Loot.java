@@ -10,8 +10,9 @@ public class Loot extends Mass {
     private static final Random RNG = new Random();
 
     private Mass cargo;
+    private long gold;
 
-    public Loot(Mass src, Mass cargo) {
+    public Loot(Mass src, Mass cargo, long gold) {
         super("loot");
         shortlived = true;
         suffersdrag = true;
@@ -24,6 +25,7 @@ public class Loot extends Mass {
         y[1] = RNG.nextGaussian() * DRIFT_RATE;
         a[1] = RNG.nextGaussian() * SPIN_RATE;
         this.cargo = cargo;
+        this.gold = gold;
     }
 
     @Override
@@ -47,11 +49,17 @@ public class Loot extends Mass {
     }
 
     private void cashout(Ship s) {
+        Universe u = Universe.get();
         if (cargo != null) {
             s.store(cargo);
-            Universe.get().queueMessage("Picked up a " + cargo);
+            u.queueMessage("Picked up a " + cargo);
         } else {
-            Universe.get().queueMessage("Nothing valuable here");
+            if (gold > 0) {
+                u.changeGold(gold);
+                u.queueMessage("Picked up " + gold + " gold.");
+            } else {
+                u.queueMessage("Nothing valuable here");
+            }
         }
         destruct();
     }

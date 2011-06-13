@@ -29,6 +29,7 @@ public class Universe extends Observable implements Runnable {
 
     private Ship player;
     private Thread thread = new Thread(this);
+    private long gold = 0;
 
     private boolean paused;
 
@@ -138,6 +139,14 @@ public class Universe extends Observable implements Runnable {
 
     public Ship getPlayer() {
         return player;
+    }
+
+    public void changeGold(long amt) {
+        gold += amt;
+    }
+
+    public long getGold() {
+        return gold;
     }
 
     private static long now() {
