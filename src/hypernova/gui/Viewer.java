@@ -42,6 +42,8 @@ public class Viewer extends JComponent implements Observer {
     public static final int INFO_Y = 10;
     public static final int INFO_PAD = 4;
     public static final Color INFO_COLOR = new Color(0x1f, 0x1f, 0x1f);
+    public static final Color INFO_BORDER = new Color(0x4f, 0x4f, 0x4f);
+    public static final Color INFO_TEXT = Color.WHITE;
     public static final Color HP_BACK = new Color(0x00, 0x4f, 0x00);
     public static final Color HP_FRONT = new Color(0x00, 0xbf, 0x00);
     public static final int HP_HEIGHT = 3;
@@ -191,9 +193,12 @@ public class Viewer extends JComponent implements Observer {
         int stringH = g.getFontMetrics().getAscent();
         int totalH = INFO_PAD * 3 + HP_HEIGHT + stringH;
 
-        /* Health bar */
         g.setColor(INFO_COLOR);
         g.fillRect(0, 0, INFO_WIDTH, totalH);
+        g.setColor(INFO_BORDER);
+        g.drawRect(0, 0, INFO_WIDTH, totalH);
+
+        /* Health bar */
         g.setColor(HP_BACK);
         int hpWMax = INFO_WIDTH - INFO_PAD * 2;
         g.fillRect(INFO_PAD, INFO_PAD, hpWMax, HP_HEIGHT);
@@ -202,7 +207,7 @@ public class Viewer extends JComponent implements Observer {
         g.fillRect(INFO_PAD, INFO_PAD, hpW, HP_HEIGHT);
 
         /* Score */
-        g.setColor(Color.WHITE);
+        g.setColor(INFO_TEXT);
         String str = "Gold: " + Universe.get().getGold();
         g.drawString(str, INFO_PAD, INFO_PAD * 2 + HP_HEIGHT + stringH);
     }
