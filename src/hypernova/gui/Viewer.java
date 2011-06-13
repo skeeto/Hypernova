@@ -30,6 +30,15 @@ import hypernova.pilots.KeyboardPilot;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
+    public static final int INFO_WIDTH = 120;
+    public static final int INFO_HEIGHT = 40;
+    public static final int INFO_X = 10;
+    public static final int INFO_Y = 10;
+    public static final int INFO_PAD = 4;
+    public static final Color INFO_COLOR = new Color(0x1f, 0x1f, 0x1f);
+    public static final Color HP_BACK = new Color(0x00, 0x4f, 0x00);
+    public static final Color HP_FRONT = new Color(0x00, 0xbf, 0x00);
+    public static final int HP_HEIGHT = 3;
 
     public static final double ZOOM_RATE = 1.2;
 
@@ -162,7 +171,32 @@ public class Viewer extends JComponent implements Observer {
         }
 
         g2d.setTransform(at);
+        paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, INFO_HEIGHT));
+        g2d.setTransform(at);
         paintOverlay(g2d);
+    }
+
+    private void paintInfo(Graphics g) {
+        Ship player = Universe.get().getPlayer();
+        if (player == null) return;
+
+        int stringH = g.getFontMetrics().getAscent();
+        int totalH = INFO_PAD * 3 + HP_HEIGHT + stringH;
+
+        /* Health bar */
+        g.setColor(INFO_COLOR);
+        g.fillRect(0, 0, INFO_WIDTH, totalH);
+        g.setColor(HP_BACK);
+        int hpWMax = INFO_WIDTH - INFO_PAD * 2;
+        g.fillRect(INFO_PAD, INFO_PAD, hpWMax, HP_HEIGHT);
+        int hpW = (int) (player.getHP() * 1d / player.getMaxHP() * hpWMax);
+        g.setColor(HP_FRONT);
+        g.fillRect(INFO_PAD, INFO_PAD, hpW, HP_HEIGHT);
+
+        /* Score */
+        g.setColor(Color.WHITE);
+        String str = "Gold: " + Universe.get().getGold();
+        g.drawString(str, INFO_PAD, INFO_PAD * 2 + HP_HEIGHT + stringH);
     }
 
     private void paintOverlay(Graphics2D g) {
