@@ -30,6 +30,11 @@ import hypernova.pilots.KeyboardPilot;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
+    public static final double DEFAULT_SCALE = 2.0;
+    public static final double SCALE_MAX = 4.0;
+    public static final double SCALE_MIN = 0.75;
+    public static final int DEFAULT_QUALITY = 2;
+
     public static final int INFO_WIDTH = 120;
     public static final int INFO_HEIGHT = 40;
     public static final int INFO_X = 10;
@@ -42,11 +47,7 @@ public class Viewer extends JComponent implements Observer {
 
     public static final double ZOOM_RATE = 1.2;
 
-    public static final Color[] stars = {
-        new Color(0xFF, 0xFF, 0xFF),
-        new Color(0xAF, 0xAF, 0xAF),
-        new Color(0x4F, 0x4F, 0x4F),
-    };
+    public static final float[] STAR_COLORS = {1.0f, 0.66f, 0.33f};
     public static final int STAR_SEED = 0x9d2c5680;
 
     /* Starting size. */
@@ -56,9 +57,9 @@ public class Viewer extends JComponent implements Observer {
     private final Universe universe;
     private Mass focus;
     private double focusX, focusY;
-    private double scale = 2.0;
-    private double targetScale = scale;
-    private int quality = 2; /* 0 - 2 quality setting. */
+    private double scale = DEFAULT_SCALE;
+    private double targetScale = DEFAULT_SCALE;
+    private int quality = DEFAULT_QUALITY; /* 0 - 2 quality setting. */
 
     private double msgTime;
     private String message;
@@ -106,7 +107,8 @@ public class Viewer extends JComponent implements Observer {
     }
 
     public void setScale(double scale) {
-        targetScale = scale;
+        targetScale = Math.min(scale, SCALE_MAX);
+        targetScale = Math.max(targetScale, SCALE_MIN);
     }
 
     public double getScale() {
@@ -146,8 +148,10 @@ public class Viewer extends JComponent implements Observer {
         focusY = 0.6 * focusY + 0.4 * py;
 
         g2d.translate(getWidth() / 2, getHeight() / 2);
-        for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
-            g.setColor(stars[i - 1]);
+        for (int i = quality + 1; i > 0; i--) {
+            float c = (float) (STAR_COLORS[i - 1] * scale / DEFAULT_SCALE);
+            c = Math.min(c, STAR_COLORS[i - 1]);
+            g.setColor(new Color(c, c, c));
             drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
         }
         g2d.setTransform(at);
@@ -239,8 +243,8 @@ public class Viewer extends JComponent implements Observer {
     public static final int STAR_TILE_SIZE = 256;
     public void drawStars(Graphics2D g, int xoff, int yoff, int starscale) {
         int size = STAR_TILE_SIZE / starscale;
-        int w = getWidth();
-        int h = getHeight();
+        int w = (int) (getWidth() / (scale / DEFAULT_SCALE));
+        int h = (int) (getHeight() / (scale / DEFAULT_SCALE));
 
         /* Top-left tile's top-left position. */
         int sx = ((xoff - w/2) / size) * size - size;
@@ -255,6 +259,8 @@ public class Viewer extends JComponent implements Observer {
                     hash >>= 3;
                     int py = (hash % size) + (j - yoff);
                     hash >>= 3;
+                    px *= scale / DEFAULT_SCALE;
+                    py *= scale / DEFAULT_SCALE;
                     g.drawLine(px, py, px, py);
                 }
             }
