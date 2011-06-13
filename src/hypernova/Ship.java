@@ -130,6 +130,16 @@ public class Ship extends Mass {
         return this;
     }
 
+    public void destruct() {
+        Universe u = Universe.get();
+        for (Mass m : hold) {
+            u.add(new Loot(this, m, 0));
+        }
+        if (gold > 0)
+            u.add(new Loot(this, null, gold));
+        super.destruct();
+    }
+
     private void calc() {
         thrust = 0;
         maneuverability = 0;
