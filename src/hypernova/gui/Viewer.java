@@ -33,7 +33,8 @@ public class Viewer extends JComponent implements Observer {
     public static final double DEFAULT_SCALE = 2.0;
     public static final double SCALE_MAX = 4.0;
     public static final double SCALE_MIN = 0.75;
-    public static final int DEFAULT_QUALITY = 2;
+    public static final int QUALITY_DEFAULT = 2;
+    public static final int QUALITY_MAX = 2;
 
     public static final int INFO_WIDTH = 120;
     public static final int INFO_HEIGHT = 40;
@@ -59,7 +60,7 @@ public class Viewer extends JComponent implements Observer {
     private double focusX, focusY;
     private double scale = DEFAULT_SCALE;
     private double targetScale = DEFAULT_SCALE;
-    private int quality = DEFAULT_QUALITY; /* 0 - 2 quality setting. */
+    private int quality = QUALITY_DEFAULT; /* 0 - 2 quality setting. */
 
     private double msgTime;
     private String message;
@@ -100,6 +101,7 @@ public class Viewer extends JComponent implements Observer {
     public void setQuality(int q) {
         log.info("quality adjusted to " + q);
         quality = Math.max(q, 0);
+        quality = Math.min(quality, QUALITY_MAX);
     }
 
     public int getQuality() {
