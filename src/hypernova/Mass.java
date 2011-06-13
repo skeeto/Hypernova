@@ -205,4 +205,12 @@ public class Mass {
     public boolean isActive() {
         return active;
     }
+
+    public double getHP() {
+        return hp;
+    }
+
+    public double getMaxHP() {
+        return hull.getHP();
+    }
 }
