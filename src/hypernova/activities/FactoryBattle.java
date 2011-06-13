@@ -1,5 +1,7 @@
 package hypernova.activities;
 
+import java.util.Random;
+
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
@@ -11,6 +13,7 @@ import hypernova.pilots.SpaceFactory;
 import hypernova.pilots.PilotFactory;
 
 public class FactoryBattle extends Activity implements Realization {
+    private static final Random RNG = new Random();
     public static final double SPREAD = 250.0;
     public static final double RATE = 150.0;
     public static final double GMEAN = 10;
@@ -60,7 +63,9 @@ public class FactoryBattle extends Activity implements Realization {
             for(int i = 0; i < EXTRAS; i++) {
                 Ship s = Ship.get("drone");
                 s.setPilot(pf.create(s));
-                s.setFaction(faction).setPosition(x, y, 0);
+                s.setFaction(faction);
+                s.setPosition(x + RNG.nextGaussian() * SPREAD,
+                              y + RNG.nextGaussian() * SPREAD, 0);
                 u.add(s);
             }
         }
