@@ -54,9 +54,9 @@ public class Ship extends Mass {
         Properties props = new Properties();
         try {
             props.load(Ship.class.getResourceAsStream(filename));
-        } catch (java.io.IOException e) {
+        } catch (Exception e) {
             /* TODO handle this more gracefully. */
-            log.error("Failed to load hull '" + name + "': " + e.getMessage());
+            log.error("Failed to load ship '" + name + "': " + e);
             return null;
         }
 
