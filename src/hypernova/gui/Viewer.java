@@ -145,10 +145,12 @@ public class Viewer extends JComponent implements Observer {
         focusX = 0.6 * focusX + 0.4 * px;
         focusY = 0.6 * focusY + 0.4 * py;
 
+        g2d.translate(getWidth() / 2, getHeight() / 2);
         for (int i = Math.min(quality + 1, stars.length); i > 0; i--) {
             g.setColor(stars[i - 1]);
             drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
         }
+        g2d.setTransform(at);
 
         /* Set up graphics */
         if (quality > 0) {
@@ -234,12 +236,19 @@ public class Viewer extends JComponent implements Observer {
         }
     }
 
-    public void drawStars(Graphics2D g, int xoff, int yoff, int scale) {
-        int size = 256 / scale;
-        int sx = (xoff / size) * size - size;
-        int sy = (yoff / size) * size - size;
-        for (int i = sx; i <= getWidth() + sx + size * 3; i += size) {
-            for (int j = sy; j <= getHeight() + sy + size * 3; j += size) {
+    public static final int STAR_TILE_SIZE = 256;
+    public void drawStars(Graphics2D g, int xoff, int yoff, int starscale) {
+        int size = STAR_TILE_SIZE / starscale;
+        int w = getWidth();
+        int h = getHeight();
+
+        /* Top-left tile's top-left position. */
+        int sx = ((xoff - w/2) / size) * size - size;
+        int sy = ((yoff - h/2) / size) * size - size;
+
+        /* Draw each tile currently in view. */
+        for (int i = sx; i <= w + sx + size * 3; i += size) {
+            for (int j = sy; j <= h + sy + size * 3; j += size) {
                 int hash = mix(STAR_SEED, i, j);
                 for (int n = 0; n < 3; n++) {
                     int px = (hash % size) + (i - xoff);
