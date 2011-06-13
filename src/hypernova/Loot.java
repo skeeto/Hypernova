@@ -19,9 +19,11 @@ public class Loot extends Mass {
         ttl = LOOT_TTL;
         if (src != null) {
             setPosition(src);
+            x[1] = src.x[1];
+            y[1] = src.y[1];
         }
-        x[1] = RNG.nextGaussian() * DRIFT_RATE;
-        y[1] = RNG.nextGaussian() * DRIFT_RATE;
+        x[1] += RNG.nextGaussian() * DRIFT_RATE;
+        y[1] += RNG.nextGaussian() * DRIFT_RATE;
         a[1] = RNG.nextGaussian() * SPIN_RATE;
         this.cargo = cargo;
         this.gold = gold;

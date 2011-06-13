@@ -2,6 +2,7 @@ name = Loot
 info = The remains of a desroyed object.
 
 hp    = 0.1
-mass  = 0.1
+mass  = 1.0
 model = loot
 size  = 2.5
+drag  = 5.0
