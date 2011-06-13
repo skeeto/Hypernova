@@ -3,6 +3,10 @@
 	   [java.io PushbackReader InputStreamReader]))
 
 (defonce *universe* (Universe/get))
+
+;;; these variables are bound dynamically when a given scenario is
+;;; realized. They are bound to values supplied by java at realization
+;;; time.
 (def *x* 0)
 (def *y* 0)
 
@@ -37,10 +41,12 @@
   (:y p))
 
 (defn add [p1 p2]
+  "add two positions"
   (position-absolute (+ (position-x p1) (position-x p2))
 		     (+ (position-y p1) (position-y p2))))
 
 (defn sub [p1 p2]
+  "subtract two positions"
   (position-absolute (- (position-x p1) (position-x p2))
 		     (- (position-y p1) (position-y p2))))
 
@@ -77,23 +83,35 @@
 (defn set-pilot [obj pilot]
   (.setPilot obj pilot))
 
-(defmacro with-player [[symbol kind & {:keys [position]
-				       :or {position (position-relative 0 0)}}] & body]
+(defmacro with-player
+  [[symbol kind & {:keys [position]
+		   :or {position (position-relative 0 0)}}] & body]
+  "bind symbol to the result of evaluating kind, execute body, and
+then add the result of kind to the universe as the player"
+
   `(let [~symbol (~kind)]
      (set-position ~symbol ~position)
      (let [result# (do ~@body)]
        (.setPlayer *universe* ~symbol)
        result#)))
 
-(defmacro with-new [[symbol kind & {:keys [position]
-				    :or {position (position-relative 0 0)}}] & body]
+(defmacro with-new
+  [[symbol kind & {:keys [position]
+		   :or {position (position-relative 0 0)}}] & body]
+  "bind symbol to the result of evaluating kind, execute body, and
+then add the result of kind to the universe"
+
   `(let [~symbol (~kind)]
      (set-position ~symbol ~position)
      (let [result# (do ~@body)]
        (.add *universe* ~symbol)
        result#)))
 
-(defn call-with-spatial-realization [event-pos event-radius func]
+;;; functions dealing with trigger objects and their associated
+;;; handlers
+(defn call-with-spatial-realization
+  [event-pos event-radius func]
+  "internal. helper for with-spatial-realization"
   (.addRealization *universe*
     (reify
      hypernova.Realization
@@ -109,10 +127,15 @@
      (trigger [this px py]
 	      (func (position-absolute px py))))))
 
-(defmacro with-spatial-realization [[player-pos event-pos event-radius] & body]
+(defmacro with-spatial-realization
+  [[player-pos event-pos event-radius] & body]
+  "execute body when player is within event-radius of
+event-pos. player-pos will be bound"
   `(call-with-spatial-realization ~event-pos ~event-radius (fn [~player-pos] ~@body)))
 
-(defn call-with-delayed-realization [delay func]
+(defn call-with-delayed-realization
+  [delay func]
+  "internal. helper for with-delayed-realization"
   (let [end-time (+ (System/currentTimeMillis) (* delay 1000))]
     (.addRealization *universe*
       (reify
@@ -126,13 +149,21 @@
        (trigger [this px py]
 		(func (position-absolute px py)))))))
 
-(defmacro with-delayed-realization [[player-pos delay] & body]
+(defmacro with-delayed-realization
+  [[player-pos delay] & body]
+  "executes body after delay has expired. player-pos will be bound"
   `(call-with-delayed-realization ~delay (fn [~player-pos] ~@body)))
 
 (defn repack-event-sequence [forms]
+  "internal. helper for event-sequence"
   (when-not (empty? forms)
     `(~@(first forms)
       (do ~(repack-event-sequence (rest forms))))))
+
+(defmacro event-sequence [& forms]
+  "arranges for the realization events defined by forms to execute as
+an ordered sequence."
+  (repack-event-sequence forms))
 
 (defprotocol Destructable
   "a thing that can be monitored for destruction"
@@ -159,6 +190,8 @@
 					   func)))
 
 (defn make-watch-list [items]
+  "create an object that can be monitored for destruction events of
+the entire aggregate"
   (let [items-ref (atom (set items))
 	handlers-ref (atom [])]
 
@@ -175,11 +208,6 @@
 
     (watch-list. items-ref handlers-ref)))
 
-
-(defmacro event-sequence [& forms]
-  "arranges for the realization events defined by forms to execute in
-  sequence."
-  (repack-event-sequence forms))
 
 ;; required functionality that is accessed from java
 (defn- get-resource [file]
