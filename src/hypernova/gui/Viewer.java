@@ -168,8 +168,6 @@ public class Viewer extends JComponent implements Observer {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
 
-        updateFocus();
-
         g2d.translate(getWidth() / 2, getHeight() / 2);
         for (int i = quality + 1; i > 0; i--) {
             float c = (float) (STAR_COLORS[i - 1] * scale / DEFAULT_SCALE);
