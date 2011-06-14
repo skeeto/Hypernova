@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observer;
 import java.util.Observable;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import java.awt.Font;
 import java.awt.Shape;
@@ -71,6 +73,7 @@ public class Viewer extends JComponent implements Observer {
     private boolean record;
     private int recordCount;
     private static final String RECORD_FORMAT = "record-%08d.png";
+    public BlockingQueue<File> saves = new LinkedBlockingQueue<File>(1);
 
     private double msgTime;
     private String message;
@@ -110,6 +113,8 @@ public class Viewer extends JComponent implements Observer {
             @Override
             public void keyTyped(KeyEvent e) {}
         });
+
+        new Thread(new Saver()).start();
     }
 
     public void setQuality(int q) {
@@ -315,13 +320,36 @@ public class Viewer extends JComponent implements Observer {
 
     public void screenshot(File file) {
         try {
-            BufferedImage img = new BufferedImage(getWidth(), getHeight(),
-                                                  BufferedImage.TYPE_INT_RGB);
-            paintComponent(img.getGraphics());
-            ImageIO.write(img, "PNG", file);
-            log.info("Wrote " + file);
-        } catch (java.io.IOException e) {
-            log.error("Failed to save screenshot: " + file + ": " +e);
+            saves.put(file);
+        } catch (Exception e) {
+            log.error("Failed to queue screenshot: " + file + ": " + e);
+        }
+    }
+
+    private class Saver implements Runnable {
+        @Override
+        public void run() {
+            BufferedImage img = null;
+            int w = 0, h = 0;
+            File file = null;
+            while (true) {
+                try {
+                    file = saves.take();
+                    if (w != getWidth() || h != getHeight()) {
+                        img = new BufferedImage(getWidth(), getHeight(),
+                                                BufferedImage.TYPE_INT_RGB);
+                        w = getWidth();
+                        h = getHeight();
+                    }
+                    Graphics g = img.getGraphics();
+                    paintComponent(g);
+                    g.dispose();
+                    ImageIO.write(img, "PNG", file);
+                    log.info("Wrote " + file);
+                } catch (Exception e) {
+                    log.error("Failed to save screenshot: " + file + ": " + e);
+                }
+            }
         }
     }
 }
