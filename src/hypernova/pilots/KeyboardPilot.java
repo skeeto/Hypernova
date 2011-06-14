@@ -31,15 +31,19 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
+        case KeyEvent.VK_A:
             ship.turnLeft(true);
             break;
         case KeyEvent.VK_RIGHT:
+        case KeyEvent.VK_D:
             ship.turnRight(true);
             break;
         case KeyEvent.VK_UP:
+        case KeyEvent.VK_W:
             ship.setEngines(1.0);
             break;
         case KeyEvent.VK_DOWN:
+        case KeyEvent.VK_S:
             ship.setEngines(-1.0);
             break;
         case KeyEvent.VK_SPACE:
@@ -61,15 +65,19 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
+        case KeyEvent.VK_A:
             ship.turnLeft(false);
             break;
         case KeyEvent.VK_RIGHT:
+        case KeyEvent.VK_D:
             ship.turnRight(false);
             break;
         case KeyEvent.VK_UP:
+        case KeyEvent.VK_W:
             ship.setEngines(false);
             break;
         case KeyEvent.VK_DOWN:
+        case KeyEvent.VK_S:
             ship.setEngines(false);
             break;
         case KeyEvent.VK_SPACE:
