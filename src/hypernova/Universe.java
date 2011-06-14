@@ -20,7 +20,8 @@ import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
 
 public class Universe extends Observable implements Runnable {
-    public static final int SPEED = 50;
+    public static final int DELAY_MSEC = 50;
+    public static final double SIM_TIMESTEP = 1.0;
     public static final Universe INSTANCE = new Universe();
 
     private static Logger log = Logger.getLogger("Universe");
@@ -174,7 +175,7 @@ public class Universe extends Observable implements Runnable {
             }
             synchronized (objects) {
                 for (Mass m : objects)
-                    m.step(1.0);
+                    m.step(SIM_TIMESTEP);
                 ships = null;
                 for (Realization r : realizations) {
                     if(r.shouldTrigger(player.getX(0), player.getY(0))) {
@@ -204,7 +205,7 @@ public class Universe extends Observable implements Runnable {
 
     private void sleep(long start) {
         try {
-            Thread.sleep(SPEED - (now() - start));
+            Thread.sleep(DELAY_MSEC - (now() - start));
         } catch (Throwable t) {
             /* We don't care, really. */
         }
