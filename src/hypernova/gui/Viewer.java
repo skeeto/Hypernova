@@ -1,5 +1,7 @@
 package hypernova.gui;
 
+import java.io.File;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observer;
@@ -16,8 +18,10 @@ import java.awt.FontMetrics;
 import java.awt.geom.AffineTransform;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
@@ -294,5 +298,17 @@ public class Viewer extends JComponent implements Observer {
 
     private static double now() {
         return Calendar.getInstance().getTimeInMillis() / 1000.0d;
+    }
+
+    public void screenshot(File file) {
+        try {
+            BufferedImage img = new BufferedImage(getWidth(), getHeight(),
+                                                  BufferedImage.TYPE_INT_RGB);
+            paintComponent(img.getGraphics());
+            ImageIO.write(img, "PNG", file);
+            log.info("Wrote " + file);
+        } catch (java.io.IOException e) {
+            log.error("Failed to save screenshot: " + file + ": " +e);
+        }
     }
 }
