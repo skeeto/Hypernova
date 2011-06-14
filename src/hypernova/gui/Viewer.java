@@ -9,6 +9,8 @@ import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import java.text.DecimalFormat;
+
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Color;
@@ -43,7 +45,6 @@ public class Viewer extends JComponent implements Observer {
     public static final int QUALITY_MAX = 2;
 
     public static final int INFO_WIDTH = 120;
-    public static final int INFO_HEIGHT = 40;
     public static final int INFO_X = 10;
     public static final int INFO_Y = 10;
     public static final int INFO_PAD = 4;
@@ -203,17 +204,19 @@ public class Viewer extends JComponent implements Observer {
         }
 
         g2d.setTransform(at);
-        paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, INFO_HEIGHT));
+        paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
         paintOverlay(g2d);
     }
 
+    private static final DecimalFormat COORD_FMT = new DecimalFormat("0");
     private void paintInfo(Graphics g) {
         Ship player = Universe.get().getPlayer();
         if (player == null) return;
 
-        int stringH = g.getFontMetrics().getAscent();
-        int totalH = INFO_PAD * 3 + HP_HEIGHT + stringH;
+        FontMetrics fm = g.getFontMetrics();
+        int stringH = fm.getAscent();
+        int totalH = INFO_PAD * 4 + HP_HEIGHT + stringH * 2;
 
         g.setColor(INFO_COLOR);
         g.fillRect(0, 0, INFO_WIDTH, totalH);
@@ -228,10 +231,18 @@ public class Viewer extends JComponent implements Observer {
         g.setColor(HP_FRONT);
         g.fillRect(INFO_PAD, INFO_PAD, hpW, HP_HEIGHT);
 
-        /* Score */
         g.setColor(INFO_TEXT);
+
+        /* Position */
+        String coords = "(" + COORD_FMT.format(focusX) + ", "
+            + COORD_FMT.format(focusY) + ")";
+        int coordsW = fm.stringWidth(coords);
+        g.drawString(coords, INFO_WIDTH / 2 - coordsW / 2,
+                     INFO_PAD * 2 + HP_HEIGHT + stringH);
+
+        /* Score */
         String str = "Gold: " + Universe.get().getGold();
-        g.drawString(str, INFO_PAD, INFO_PAD * 2 + HP_HEIGHT + stringH);
+        g.drawString(str, INFO_PAD, INFO_PAD * 3 + HP_HEIGHT + stringH * 2);
     }
 
     private void paintOverlay(Graphics2D g) {
