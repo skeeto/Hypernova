@@ -129,18 +129,11 @@ public class Viewer extends JComponent implements Observer {
 
     @Override
     public void update(Observable o, Object msg) {
+        updateFocus();
         repaint();
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform at = g2d.getTransform();
-
-        /* Determine camera positioning. */
+    private void updateFocus() {
         scale = (0.8 * scale + 0.2 * targetScale);
         if (focus == null || !focus.isActive())
             focus = universe.getPlayer();
@@ -154,6 +147,17 @@ public class Viewer extends JComponent implements Observer {
         }
         focusX = 0.6 * focusX + 0.4 * px;
         focusY = 0.6 * focusY + 0.4 * py;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform at = g2d.getTransform();
+
+        updateFocus();
 
         g2d.translate(getWidth() / 2, getHeight() / 2);
         for (int i = quality + 1; i > 0; i--) {
