@@ -22,7 +22,6 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        log.trace("keyPressed() " + e);
 	Ship ship = getShip();
 	if(ship == null) {
 	    log.trace("no ship");
@@ -46,7 +45,7 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         case KeyEvent.VK_S:
             ship.setEngines(-1.0);
             break;
-        case KeyEvent.VK_SPACE:
+        case KeyEvent.VK_CONTROL:
             ship.setFire(0, true);
             break;
         default:
@@ -56,7 +55,6 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        log.trace("keyReleased() " + e);
 	Ship ship = getShip();
 	if(ship == null) {
 	    log.trace("no ship");
@@ -80,7 +78,7 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         case KeyEvent.VK_S:
             ship.setEngines(false);
             break;
-        case KeyEvent.VK_SPACE:
+        case KeyEvent.VK_CONTROL:
             ship.setFire(0, false);
             break;
         }

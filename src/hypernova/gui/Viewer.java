@@ -86,7 +86,7 @@ public class Viewer extends JComponent implements Observer {
         addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
-                log.trace("keyPressed() " + e);
+                log.trace("keyPressed() " + e.getKeyCode());
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_PAGE_UP:
                     setScale(getScale() * ZOOM_RATE);
