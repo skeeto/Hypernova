@@ -1,7 +1,8 @@
 * Non-ammo collisions
 * Ship script helpers
 * Gravity
-* Quests (Brian's idea)
-* Health bar
-* Large on screen messages (i.e. "Press 'c' to continue" on death)
+* Randomly generated asteroids
+* Inventory management
+* Minimap
+* Restart game (multiple lives, etc.) without full restart
 * --log flag
