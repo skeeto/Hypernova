@@ -68,6 +68,10 @@ public class Viewer extends JComponent implements Observer {
     private double targetScale = DEFAULT_SCALE;
     private int quality = QUALITY_DEFAULT; /* 0 - 2 quality setting. */
 
+    private boolean record;
+    private int recordCount;
+    private static final String RECORD_FORMAT = "record-%08d.png";
+
     private double msgTime;
     private String message;
 
@@ -92,6 +96,10 @@ public class Viewer extends JComponent implements Observer {
                     break;
                 case KeyEvent.VK_P:
                     universe.togglePause();
+                    break;
+                case KeyEvent.VK_R:
+                    record ^= true;
+                    log.info("Recording set to " + record);
                     break;
                 default:
                     log.trace("Unkown key " + e.getKeyCode());
@@ -130,6 +138,9 @@ public class Viewer extends JComponent implements Observer {
     @Override
     public void update(Observable o, Object msg) {
         updateFocus();
+        if (record) {
+            screenshot(new File(String.format(RECORD_FORMAT, recordCount++)));
+        }
         repaint();
     }
 
