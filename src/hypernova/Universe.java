@@ -20,8 +20,8 @@ import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
 
 public class Universe extends Observable implements Runnable {
-    public static final int DELAY_MSEC = 50;
-    public static final double SIM_TIMESTEP = 1.0;
+    public static final int DELAY_MSEC = 40;
+    public static final double SIM_TIMESTEP = 0.8;
     public static final Universe INSTANCE = new Universe();
 
     private static Logger log = Logger.getLogger("Universe");
