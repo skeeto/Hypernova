@@ -38,10 +38,14 @@ public class Universe extends Observable implements Runnable {
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
     private Collection<Mass> objects = new HashSet<Mass>();
-    private Collection<Realization> realizations = new HashSet<Realization>();
+    private Queue<Mass> incoming = new ConcurrentLinkedQueue<Mass>();
+    private Queue<Mass> outgoing = new ConcurrentLinkedQueue<Mass>();
 
-    private Collection<Object> incoming = new HashSet<Object>();
-    private Collection<Object> outgoing = new HashSet<Object>();
+    private Collection<Realization> realizations = new HashSet<Realization>();
+    private Queue<Realization> inReals
+        = new ConcurrentLinkedQueue<Realization>();
+    private Queue<Realization> outReals
+        = new ConcurrentLinkedQueue<Realization>();
 
     /** Cache of ship list. */
     private Collection<Mass> ships;
@@ -112,13 +116,17 @@ public class Universe extends Observable implements Runnable {
     }
 
     public Collection<Mass> getObjects() {
-        return new ArrayList<Mass>(objects);
+        synchronized (objects) {
+            return new ArrayList<Mass>(objects);
+        }
     }
 
     public Collection<Mass> getShips() {
-        if (ships == null)
-            ships = Collections2.filter(objects, shipfilter);
-        return ships;
+        synchronized (objects) {
+            if (ships == null)
+                ships = Collections2.filter(objects, shipfilter);
+            return ships;
+        }
     }
 
     public void add(Mass m) {
@@ -132,12 +140,12 @@ public class Universe extends Observable implements Runnable {
         m.setActive(false);
     }
 
-    public void addRealization(Realization r) {
-	incoming.add(r);
+    public void add(Realization r) {
+        inReals.add(r);
     }
 
-    public void removeRealization(Realization r) {
-	outgoing.add(r);
+    public void remove(Realization r) {
+        outReals.add(r);
     }
 
     public Ship getPlayer() {
@@ -160,45 +168,45 @@ public class Universe extends Observable implements Runnable {
     public void run() {
         while (true) {
             long start = now();
-            if (!paused) {
+            if (paused) {
+                sleep(start);
+                continue;
+            }
+            synchronized (objects) {
                 for (Mass m : objects)
                     m.step(1.0);
                 ships = null;
-		synchronized (realizations) {
-		    for (Realization r : realizations) {
-			if(r.shouldTrigger(player.getX(0), player.getY(0))) {
-			    r.trigger(player.getX(0), player.getY(0));
-			}
-		    }
-		}
-                synchronized (outgoing) {
-		    for(Object obj : outgoing) {
-			if (obj instanceof Mass) {
-			    objects.remove((Mass)obj);
-			} else if (obj instanceof Realization) {
-			    realizations.remove((Realization)obj);
-			}
-		    }
-                    outgoing.clear();
+                for (Realization r : realizations) {
+                    if(r.shouldTrigger(player.getX(0), player.getY(0))) {
+                        r.trigger(player.getX(0), player.getY(0));
+                    }
                 }
-                synchronized (incoming) {
-		    for(Object obj : incoming) {
-			if (obj instanceof Mass) {
-			    objects.add((Mass)obj);
-			} else if (obj instanceof Realization) {
-			    realizations.add((Realization)obj);
-			}
-		    }
-                    incoming.clear();
+                Mass m;
+                while ((m = outgoing.poll()) != null) {
+                    objects.remove(m);
                 }
-                setChanged();
-                notifyObservers();
+                while ((m = incoming.poll()) != null ) {
+                    objects.add(m);
+                }
+                Realization r;
+                while ((r = outReals.poll()) != null) {
+                    realizations.remove(r);
+                }
+                while ((r = inReals.poll()) != null) {
+                    realizations.add(r);
+                }
             }
-            try {
-                Thread.sleep(SPEED - (now() - start));
-            } catch (Throwable t) {
-                /* We don't care, really. */
-            }
+            setChanged();
+            notifyObservers();
+            sleep(start);
+        }
+    }
+
+    private void sleep(long start) {
+        try {
+            Thread.sleep(SPEED - (now() - start));
+        } catch (Throwable t) {
+            /* We don't care, really. */
         }
     }
 }

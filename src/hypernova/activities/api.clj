@@ -189,7 +189,7 @@ then add the result of kind to the universe"
 (defn call-with-spatial-realization
   [event-pos event-radius func]
   "internal. helper for with-spatial-realization"
-  (.addRealization *universe*
+  (.add *universe*
     (reify
      hypernova.Realization
      (shouldTrigger [this px py]
@@ -197,7 +197,7 @@ then add the result of kind to the universe"
 		      (if (<= (dist2 player-pos (position event-pos))
 			      (* event-radius event-radius))
 			(do
-			  (.removeRealization *universe* this)
+			  (.remove *universe* this)
 			  true)
 			 false)))
 
@@ -214,13 +214,13 @@ event-pos. player-pos will be bound"
   [delay func]
   "internal. helper for with-delayed-realization"
   (let [end-time (+ (System/currentTimeMillis) (* delay 1000))]
-    (.addRealization *universe*
+    (.add *universe*
       (reify
        hypernova.Realization
        (shouldTrigger [this px py]
 		      (if (>= (System/currentTimeMillis) end-time)
 			(do
-			  (.removeRealization *universe* this)
+			  (.remove *universe* this)
 			  true)
 			false))
        (trigger [this px py]

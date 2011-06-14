@@ -30,7 +30,7 @@ public class FactoryBattle extends Activity implements Realization {
         this.y = y;
         zone = new Rectangle2D.Double(x - SPREAD, y - SPREAD,
                                       SPREAD * 2, SPREAD * 2);
-        Universe.get().addRealization(this);
+        Universe.get().add(this);
     }
 
     public boolean shouldTrigger(double x, double y) {
@@ -38,7 +38,7 @@ public class FactoryBattle extends Activity implements Realization {
     }
 
     public void trigger(double px, double py) {
-        Universe.get().removeRealization(this);
+        Universe.get().remove(this);
         Universe.get().queueMessage("These automated factories are battling!");
         createFactory("Humans", x, y, RATE / 1.5, false);
         for (int i = 0; i < 2; i++) {
