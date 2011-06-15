@@ -239,7 +239,7 @@ public class Viewer extends JComponent implements Observer {
 
         AffineTransform at = new AffineTransform();
         for (Mass m : objects) {
-            if (m.isShortlived()) continue;
+            if (m.isShortlived() && !(m instanceof hypernova.Loot)) continue;
             at.setToTranslation(m.getX(0), m.getY(0));
             g.setColor(m.getFaction().getColor());
             g.fill(at.createTransformedShape(MM_MASS));
