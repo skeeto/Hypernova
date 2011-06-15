@@ -19,6 +19,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.FontMetrics;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.AffineTransform;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -44,6 +46,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int QUALITY_DEFAULT = 2;
     public static final int QUALITY_MAX = 2;
 
+    /* Info box */
     public static final int INFO_WIDTH = 120;
     public static final int INFO_X = 10;
     public static final int INFO_Y = 10;
@@ -54,6 +57,17 @@ public class Viewer extends JComponent implements Observer {
     public static final Color HP_BACK = new Color(0x00, 0x4f, 0x00);
     public static final Color HP_FRONT = new Color(0x00, 0xbf, 0x00);
     public static final int HP_HEIGHT = 3;
+
+    /* Minimap */
+    public static final int MM_PAD = 10;
+    public static final int MM_SIZE = 150;
+    public static final double MM_SCALE = 0.025;
+    public static final double MM_MSIZE = 50;
+    public static final Shape MM_MASS
+        = new Rectangle2D.Double(-MM_MSIZE, -MM_MSIZE,
+                                 MM_MSIZE * 2, MM_MSIZE * 2);
+    public static final Shape MINIMAP
+        = new Ellipse2D.Double(1, 1, MM_SIZE - 2, MM_SIZE - 2);
 
     public static final double ZOOM_RATE = 1.2;
 
@@ -202,11 +216,34 @@ public class Viewer extends JComponent implements Observer {
         for (Mass m : objects) {
             drawMass(g2d, m);
         }
-
         g2d.setTransform(at);
+
+        /* Minimap */
+        minimap(objects, (Graphics2D) g2d.create(getWidth() - MM_PAD - MM_SIZE,
+                                                 MM_PAD, MM_SIZE, MM_SIZE));
+
         paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
         paintOverlay(g2d);
+    }
+
+    private void minimap(Collection<Mass> objects, Graphics2D g) {
+        g.setColor(INFO_COLOR);
+        g.fill(MINIMAP);
+        g.setColor(INFO_BORDER);
+        g.draw(MINIMAP);
+        g.setClip(MINIMAP);
+        g.translate(-(focusX * MM_SCALE - MM_SIZE / 2),
+                    -(focusY * MM_SCALE - MM_SIZE / 2));
+        g.scale(MM_SCALE, MM_SCALE);
+
+        AffineTransform at = new AffineTransform();
+        for (Mass m : objects) {
+            if (m.isShortlived()) continue;
+            at.setToTranslation(m.getX(0), m.getY(0));
+            g.setColor(m.getFaction().getColor());
+            g.fill(at.createTransformedShape(MM_MASS));
+        }
     }
 
     private static final DecimalFormat COORD_FMT = new DecimalFormat("0");

@@ -213,4 +213,8 @@ public class Mass {
     public double getMaxHP() {
         return hull.getHP();
     }
+
+    public boolean isShortlived() {
+        return shortlived;
+    }
 }
