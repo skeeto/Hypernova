@@ -4,3 +4,7 @@ info = A small, unmanned, automated, single-purpose drone.
 hull    = drone
 weapons = mini-blaster
 engines = microshove
+
+goldmean = 10
+goldvar  = 5
+goldrate = 0.2
