@@ -64,10 +64,7 @@
 	 (make-watch-list
 	  (map
 	   (fn [idx]
-	     (with-new [invader (ship "drone")]
-	       (set-weapon invader "mini-blaster")
-	       (set-engine invader "microshove")
-	       (set-size invader 3.5)
+	     (with-new [invader (parts "drone")]
 	       (set-faction invader "Invaders")
 	       (set-position invader (random-position player 1000.0))
 	       (set-pilot invader (hypernova.pilots.PlayerHunter. invader))
