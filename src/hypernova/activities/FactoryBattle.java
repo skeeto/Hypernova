@@ -17,9 +17,6 @@ public class FactoryBattle extends Activity implements Realization {
     public static final double SPREAD = 250.0;
     public static final double RATE = 150.0;
     public static final int SUPPORT = 20;
-    public static final double GMEAN = 10;
-    public static final double GVAR = 5;
-    public static final double GRATE = 0.2;
     public static final int EXTRAS = 3;
 
     private double x, y;
@@ -57,7 +54,6 @@ public class FactoryBattle extends Activity implements Realization {
         f.setFaction(faction).setPosition(x, y, 0);
         PilotFactory pf = new PilotFactory.HunterSeekerFactory();
         SpaceFactory p = new SpaceFactory(f, "drone", rate, SUPPORT, pf);
-        p.addGold(GMEAN, GVAR, GRATE);
         f.setPilot(p);
         u.add(f);
         if (extras) {
