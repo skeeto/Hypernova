@@ -32,6 +32,8 @@ public class Ship extends Mass {
     private Collection<Mass> hold = new HashSet<Mass>();
     private long gold;
 
+    private double goldrate, goldmean, goldvar;
+
     /* Derived from the above. */
     private double thrust, maneuverability;
     private double mass;
@@ -79,6 +81,9 @@ public class Ship extends Mass {
                 ship.setEngine(e, i++);
             }
         }
+        ship.goldrate = Weapon.attempt(props, "goldrate", 0);
+        ship.goldmean = Weapon.attempt(props, "goldmean", 0);
+        ship.goldvar = Weapon.attempt(props, "goldvar", 0);
         cache.put(name, ship);
         return ship.copy();
     }
@@ -91,6 +96,13 @@ public class Ship extends Mass {
             copy.setWeapon(weapons[i].copy(), i);
         for (int i = 0; i < engines.length; i++)
             copy.setEngine(engines[i], i);
+        copy.goldrate = goldrate;
+        copy.goldmean = goldmean;
+        copy.goldvar = goldvar;
+        if (RNG.nextDouble() < goldrate) {
+            double r = RNG.nextGaussian();
+            copy.gold = (long) Math.max(0, r * goldvar + goldmean);
+        }
         return copy;
     }
 
