@@ -2,6 +2,7 @@ package hypernova;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Random;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Ship extends Mass {
 
     private static Map<String, Ship> cache = new HashMap<String, Ship>();
     private static Logger log = Logger.getLogger("Ship");
+    private static final Random RNG = new Random();
 
     public String name, info;
 
