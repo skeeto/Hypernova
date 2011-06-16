@@ -73,7 +73,7 @@ public class Ammo extends Mass {
         boolean teamDamage = Universe.get().teamDamage;
         Faction team = getFaction();
         for (Mass m : Universe.get().getObjects()) {
-            if (!m.shortlived) {
+            if (!m.shortlived && m.isActive()) {
                 if (m != source && (teamDamage || m.getFaction() != team)) {
                     for (double dt = t; dt > 0; dt -= t / HIT_DIVISION) {
                         double tx = x[0] - x[1] * dt;
