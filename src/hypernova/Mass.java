@@ -14,9 +14,12 @@ public class Mass {
     public static final double BREAKUP_TTL_VAR = 40;
     public static final double DRAG = 0.005;
 
-    private static final Random rng = new Random();
+    private static final Random RNG = new Random();
+
+    private static int idCount = 0;
 
     /* State vectors -- {pos, vel, acc}. */
+    public final int ID;
     private boolean active;
     protected double[] x = new double[3];
     protected double[] y = new double[3];
@@ -32,9 +35,15 @@ public class Mass {
         = new LinkedList<DestructionListener>();
 
     protected Mass() {
+        this(createID());
+    }
+
+    protected Mass(int id) {
+        ID = id;
     }
 
     public Mass(Hull hull) {
+        this();
         this.hull = hull;
         setSize(hull.getSize());
         hp = hull.getHP();
@@ -43,6 +52,10 @@ public class Mass {
 
     public Mass(String hullname) {
         this(Hull.get(hullname));
+    }
+
+    private static synchronized int createID() {
+        return idCount++;
     }
 
     public void step(double t) {
@@ -106,11 +119,11 @@ public class Mass {
             Mass m = new Mass(new Hull(models[i]));
             m.setSize(size);
             m.setPosition(this);
-            m.x[1] = x[1] + rng.nextGaussian() * BREAKUP_SPEED;
-            m.y[1] = y[1] + rng.nextGaussian() * BREAKUP_SPEED;
-            m.a[1] = a[1] + rng.nextGaussian() * BREAKUP_ANGLE;
+            m.x[1] = x[1] + RNG.nextGaussian() * BREAKUP_SPEED;
+            m.y[1] = y[1] + RNG.nextGaussian() * BREAKUP_SPEED;
+            m.a[1] = a[1] + RNG.nextGaussian() * BREAKUP_ANGLE;
             m.shortlived = true;
-            m.ttl = (int) (BREAKUP_TTL + rng.nextGaussian() * BREAKUP_TTL_VAR);
+            m.ttl = (int) (BREAKUP_TTL + RNG.nextGaussian() * BREAKUP_TTL_VAR);
             m.setFaction(faction);
             Universe.get().add(m);
         }
