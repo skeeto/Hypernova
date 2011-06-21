@@ -23,7 +23,8 @@ import org.apache.log4j.Logger;
 import hypernova.Mass;
 
 public class Model {
-    public static final double BREAKUP_DIVISION = 0.05;
+    public static final double BREAKUP_DIVISION = 0.005;
+    public static final double STICKY = 3.0;
 
     private Shape shapes;
     private Shape filled;
@@ -145,28 +146,54 @@ public class Model {
         return copy;
     }
 
+    private static int shapeSides(Shape s) {
+        int c = 0;
+        PathIterator i = s.getPathIterator(null, BREAKUP_DIVISION);
+        while (!i.isDone()) {
+            i.next();
+            c++;
+        }
+        return c;
+    }
+
     public Model[] breakup() {
         List<Model> models = new ArrayList<Model>();
         double[] coords = new double[6];
         double[] last = new double[2];
         PathIterator i = shapes.getPathIterator(null, BREAKUP_DIVISION);
+        int sides = shapeSides(shapes);
+        Path2D.Double path = null;
+        int pathcount = 0;
+        double sticky = 0;
         while (!i.isDone()) {
             int type = i.currentSegment(coords);
             switch (type) {
             case PathIterator.SEG_MOVETO:
+                sticky = 0;
                 last[0] = coords[0];
                 last[1] = coords[1];
                 break;
+            case PathIterator.SEG_CLOSE:
             case PathIterator.SEG_LINETO:
-                Line2D.Double l = new Line2D.Double(last[0], last[1],
-                                                    coords[0], coords[1]);
-                models.add(new Model(l, size));
+                sticky -= Math.random();
+                if (sticky < 0) {
+                    if (pathcount > 0)
+                        models.add(new Model(path, size));
+                    pathcount = 0;
+                    path = new Path2D.Double();
+                    sticky = STICKY * sides * BREAKUP_DIVISION;
+                    path.moveTo(last[0], last[1]);
+                }
+                pathcount++;
+                path.lineTo(coords[0], coords[1]);
                 break;
             }
             last[0] = coords[0];
             last[1] = coords[1];
             i.next();
         }
+        if (pathcount > 0)
+            models.add(new Model(path, size));
         return models.toArray(new Model[0]);
     }
 }
