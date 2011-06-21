@@ -15,16 +15,16 @@ public abstract class Activity {
     private String script;
 
     public static Activity get(String name) {
-	Properties prop = new Properties();
-	String fname = "activities/" + name + ".act";
+        Properties prop = new Properties();
+        String fname = "activities/" + name + ".act";
         log.debug("Loading activity " + name + " (" + fname + ")");
-	try {
-	    prop.load(Activity.class.getResourceAsStream(fname));
-	} catch (IOException ex) {
-	    log.error("Failed to load activity " + name);
-	    return null;
-	}
-	return new Activity(prop.getProperty("script")) {
+        try {
+            prop.load(Activity.class.getResourceAsStream(fname));
+        } catch (IOException ex) {
+            log.error("Failed to load activity " + name);
+            return null;
+        }
+        return new Activity(prop.getProperty("script")) {
             public void realize(double x, double y) {
                 ActivityRuntime.get().execute(this, x, y);
             }
@@ -35,11 +35,11 @@ public abstract class Activity {
     }
 
     public String getScript() {
-	return script;
+        return script;
     }
 
     private Activity(String script) {
-	this.script = script;
+        this.script = script;
     }
 
     public abstract void realize(double x, double y);

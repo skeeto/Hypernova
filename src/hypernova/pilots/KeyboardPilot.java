@@ -17,16 +17,16 @@ public class KeyboardPilot extends Pilot implements KeyListener {
     }
 
     public static KeyboardPilot get() {
-	return INSTANCE;
+        return INSTANCE;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-	Ship ship = getShip();
-	if(ship == null) {
-	    log.trace("no ship");
-	    return;
-	}
+        Ship ship = getShip();
+        if (ship == null) {
+            log.trace("no ship");
+            return;
+        }
 
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
@@ -55,11 +55,11 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-	Ship ship = getShip();
-	if(ship == null) {
-	    log.trace("no ship");
-	    return;
-	}
+        Ship ship = getShip();
+        if (ship == null) {
+            log.trace("no ship");
+            return;
+        }
 
         switch (e.getKeyCode()) {
         case KeyEvent.VK_LEFT:

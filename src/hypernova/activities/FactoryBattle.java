@@ -57,7 +57,7 @@ public class FactoryBattle extends Activity implements Realization {
         f.setPilot(p);
         u.add(f);
         if (extras) {
-            for(int i = 0; i < EXTRAS; i++) {
+            for (int i = 0; i < EXTRAS; i++) {
                 Ship s = Ship.get("drone");
                 s.setPilot(pf.create(s));
                 s.setFaction(faction);

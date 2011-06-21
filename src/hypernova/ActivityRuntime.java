@@ -33,38 +33,38 @@ public class ActivityRuntime {
     private static ActivityRuntime INSTANCE = null;
 
     private ActivityRuntime() throws Exception {
-	CLOJURE_MAIN = Symbol.intern("clojure.main");
-	REQUIRE = RT.var("clojure.core", "require");
-	API = Symbol.intern("hypernova.activities.api");
+        CLOJURE_MAIN = Symbol.intern("clojure.main");
+        REQUIRE = RT.var("clojure.core", "require");
+        API = Symbol.intern("hypernova.activities.api");
 
-	REQUIRE.invoke(CLOJURE_MAIN);
-	REQUIRE.invoke(API);
+        REQUIRE.invoke(CLOJURE_MAIN);
+        REQUIRE.invoke(API);
 
-	API_LOADER = RT.var("hypernova.activities.api", "loader");
-	API_REPL = RT.var("hypernova.activities.api", "repl");
+        API_LOADER = RT.var("hypernova.activities.api", "loader");
+        API_REPL = RT.var("hypernova.activities.api", "repl");
     }
 
     public static ActivityRuntime get() {
-	if(INSTANCE == null) {
-	    try {
-		INSTANCE = new ActivityRuntime();
-	    } catch (Exception ex) {
-		System.out.println("baddness! " + ex);
-		System.exit(1);
-	    }
-	}
+        if (INSTANCE == null) {
+            try {
+                INSTANCE = new ActivityRuntime();
+            } catch (Exception ex) {
+                System.out.println("baddness! " + ex);
+                System.exit(1);
+            }
+        }
 
-	return INSTANCE;
+        return INSTANCE;
     }
 
     public void execute(Activity activity, Double x, Double y) {
-	try {
-	    Object result = API_LOADER.applyTo(RT.seq(RT.vector(activity.getScript(), x, y)));
-	    System.out.println("result: " + result);
-	} catch (Exception ex) {
-	    System.out.println("something went poorly: " + ex);
-	    System.exit(1);
-	}
+        try {
+            Object result = API_LOADER.applyTo(RT.seq(RT.vector(activity.getScript(), x, y)));
+            System.out.println("result: " + result);
+        } catch (Exception ex) {
+            System.out.println("something went poorly: " + ex);
+            System.exit(1);
+        }
     }
 
     public void startRepl() {
@@ -73,11 +73,11 @@ public class ActivityRuntime {
             @Override
             public void run() {
                 try {
-		    API_REPL.applyTo(RT.seq(RT.vector()));
+                    API_REPL.applyTo(RT.seq(RT.vector()));
                 } catch (Exception e) {
                     log.warn("REPL threw exception " + e);
                 }
             }
-        }.start();
+        } .start();
     }
 }

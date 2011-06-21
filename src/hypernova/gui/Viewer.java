@@ -64,10 +64,10 @@ public class Viewer extends JComponent implements Observer {
     public static final double MM_SCALE = 0.025;
     public static final double MM_MSIZE = 50;
     public static final Shape MM_MASS
-        = new Rectangle2D.Double(-MM_MSIZE, -MM_MSIZE,
-                                 MM_MSIZE * 2, MM_MSIZE * 2);
+    = new Rectangle2D.Double(-MM_MSIZE, -MM_MSIZE,
+                             MM_MSIZE * 2, MM_MSIZE * 2);
     public static final Shape MINIMAP
-        = new Ellipse2D.Double(1, 1, MM_SIZE - 2, MM_SIZE - 2);
+    = new Ellipse2D.Double(1, 1, MM_SIZE - 2, MM_SIZE - 2);
 
     public static final double ZOOM_RATE = 1.2;
 
@@ -220,7 +220,7 @@ public class Viewer extends JComponent implements Observer {
 
         /* Minimap */
         minimap(objects, (Graphics2D) g2d.create(getWidth() - MM_PAD - MM_SIZE,
-                                                 MM_PAD, MM_SIZE, MM_SIZE));
+                MM_PAD, MM_SIZE, MM_SIZE));
 
         paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
@@ -272,7 +272,7 @@ public class Viewer extends JComponent implements Observer {
 
         /* Position */
         String coords = "(" + COORD_FMT.format(focusX) + ", "
-            + COORD_FMT.format(focusY) + ")";
+                        + COORD_FMT.format(focusY) + ")";
         int coordsW = fm.stringWidth(coords);
         g.drawString(coords, INFO_WIDTH / 2 - coordsW / 2,
                      INFO_PAD * 2 + HP_HEIGHT + stringH);

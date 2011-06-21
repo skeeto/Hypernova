@@ -44,9 +44,9 @@ public class Universe extends Observable implements Runnable {
 
     private Collection<Realization> realizations = new HashSet<Realization>();
     private Queue<Realization> inReals
-        = new ConcurrentLinkedQueue<Realization>();
+    = new ConcurrentLinkedQueue<Realization>();
     private Queue<Realization> outReals
-        = new ConcurrentLinkedQueue<Realization>();
+    = new ConcurrentLinkedQueue<Realization>();
 
     /** Cache of ship list. */
     private Collection<Mass> ships;
@@ -64,23 +64,23 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void movePlayerControlsTo(Ship newPlayer) {
-	// remove the player pilot from wherever it is right now
-	Ship oldShip = KeyboardPilot.get().getShip();
-	if(oldShip != null) {
-	    oldShip.setPilot(new EmptyCockpit());
-	}
-	newPlayer.setPilot(KeyboardPilot.get());
-	KeyboardPilot.get().setShip(newPlayer);
+        // remove the player pilot from wherever it is right now
+        Ship oldShip = KeyboardPilot.get().getShip();
+        if (oldShip != null) {
+            oldShip.setPilot(new EmptyCockpit());
+        }
+        newPlayer.setPilot(KeyboardPilot.get());
+        KeyboardPilot.get().setShip(newPlayer);
     }
 
     public void setPlayer(Ship thePlayer) {
-	player = thePlayer;
-	movePlayerControlsTo(player);
-	add(player);
+        player = thePlayer;
+        movePlayerControlsTo(player);
+        add(player);
     }
 
     public void initialize() {
-	Activity.get(defaultActivity).realize(0, 0);
+        Activity.get(defaultActivity).realize(0, 0);
     }
 
     public void addActivity(String name, double x, double y) {
@@ -178,7 +178,7 @@ public class Universe extends Observable implements Runnable {
                     m.step(SIM_TIMESTEP);
                 ships = null;
                 for (Realization r : realizations) {
-                    if(r.shouldTrigger(player.getX(0), player.getY(0))) {
+                    if (r.shouldTrigger(player.getX(0), player.getY(0))) {
                         r.trigger(player.getX(0), player.getY(0));
                     }
                 }

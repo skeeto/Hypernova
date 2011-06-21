@@ -21,7 +21,7 @@ public class Hunter extends Pilot {
     public void drive(double dt) {
         if (target == null) return;
 
-	Ship ship = getShip();
+        Ship ship = getShip();
         double x = ship.getX(0);
         double y = ship.getY(0);
         double px = target.getX(0);

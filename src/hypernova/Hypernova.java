@@ -42,7 +42,7 @@ public class Hypernova {
         }
 
         viewer = new Viewer();
-	Universe.get().initialize();
+        Universe.get().initialize();
 
         /* Determine quality settings. */
         if (line.hasOption("quality")) {

@@ -32,7 +32,7 @@ public class Mass {
     protected boolean suffersdrag = true;
     protected int ttl;
     private final Collection<DestructionListener> listeners
-        = new LinkedList<DestructionListener>();
+    = new LinkedList<DestructionListener>();
 
     protected Mass() {
         this(createID());
@@ -128,15 +128,15 @@ public class Mass {
             Universe.get().add(m);
         }
 
-	for(DestructionListener listener : listeners) {
-	    listener.destroyed(this);
-	}
+        for (DestructionListener listener : listeners) {
+            listener.destroyed(this);
+        }
 
         zenThing();
     }
 
     public void onDestruct(DestructionListener listener) {
-	listeners.add(listener);
+        listeners.add(listener);
     }
 
     public double getMass() {
