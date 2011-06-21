@@ -153,25 +153,14 @@ public class Model {
         while (!i.isDone()) {
             int type = i.currentSegment(coords);
             switch (type) {
+            case PathIterator.SEG_MOVETO:
+                last[0] = coords[0];
+                last[1] = coords[1];
+                break;
             case PathIterator.SEG_LINETO:
                 Line2D.Double l = new Line2D.Double(last[0], last[1],
                                                     coords[0], coords[1]);
                 models.add(new Model(l, size));
-                break;
-            case PathIterator.SEG_QUADTO:
-                QuadCurve2D.Double q
-                = new QuadCurve2D.Double(last[0], last[1],
-                                         coords[0], coords[1],
-                                         coords[2], coords[3]);
-                models.add(new Model(q, size));
-                break;
-            case PathIterator.SEG_CUBICTO:
-                CubicCurve2D.Double c =
-                    new CubicCurve2D.Double(last[0], last[1],
-                                            coords[0], coords[1],
-                                            coords[2], coords[3],
-                                            coords[4], coords[5]);
-                models.add(new Model(c, size));
                 break;
             }
             last[0] = coords[0];
