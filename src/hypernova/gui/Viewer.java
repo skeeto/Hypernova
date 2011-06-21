@@ -307,14 +307,8 @@ public class Viewer extends JComponent implements Observer {
     public void drawMass(Graphics2D g, Mass m) {
         g.setColor(m.getFaction().getColor());
         Model model = m.getModel();
-        Shape[] shapes = model.getShapes();
-        boolean[] filled = model.getFilled();
-        for (int i = 1; i < shapes.length; i++) {
-            if (filled[i])
-                g.fill(shapes[i]);
-            else
-                g.draw(shapes[i]);
-        }
+        g.draw(model.getShape());
+        g.fill(model.getFilled());
     }
 
     public static final int STAR_TILE_SIZE = 256;

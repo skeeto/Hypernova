@@ -25,71 +25,49 @@ import hypernova.Mass;
 public class Model {
     public static final double BREAKUP_DIVISION = 0.05;
 
-    private Shape[] shapes;
-    private Shape[] transformed;
-    private boolean[] filled;
+    private Shape shapes;
+    private Shape filled;
     private AffineTransform at = new AffineTransform();
     private double size = 1.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");
 
-    protected Model() {
+    protected Model(Shape s, double size) {
+        shapes = s;
+        filled = new Path2D.Double();
+        this.size = size;
     }
 
-    protected Model(Shape s, double size) {
-        shapes = new Shape[2];
-        transformed = new Shape[2];
-        shapes[0] = s;
-        shapes[1] = s;
-        apply();
-        filled = new boolean[2];
-        this.size = size;
+    protected Model() {
     }
 
     public static synchronized Model get(String name) {
         Model model = cache.get(name);
         if (model != null) return model.copy();
         model = new Model();
-        List<Shape> shapes = new ArrayList<Shape>();
-        shapes.add(null);
-        List<Boolean> filled = new ArrayList<Boolean>();
-        filled.add(false);
         String filename = "models/" + name + ".mdl";
         log.debug("Loading model '" + name + "' (" + filename + ")");
+        Path2D.Double solid = new Path2D.Double();
+        Path2D.Double line = new Path2D.Double();
         try {
             InputStream s = Model.class.getResourceAsStream(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(s));
-            Shape hit = null;
             while (true) {
                 String str = in.readLine();
                 if (str == null || str.length() < 5) break;
                 if ("path".equals(str.substring(0, 4))) {
-                    shapes.add(path(readList(str.substring(4), 1)));
-                    filled.add(false);
+                    line.append(path(readList(str.substring(4), 1)), false);
                 } else if ("fpath".equals(str.substring(0, 5))) {
-                    shapes.add(path(readList(str.substring(5), 1)));
-                    filled.add(true);
-                } else if ("hpath".equals(str.substring(0, 5))) {
-                    hit = path(readList(str.substring(5), 1));
+                    solid.append(path(readList(str.substring(5), 1)), false);
                 } else if ("oval".equals(str.substring(0, 4))) {
-                    shapes.add(oval(readList(str.substring(4), 1)));
-                    filled.add(false);
+                    line.append(oval(readList(str.substring(4), 1)), false);
                 } else if ("foval".equals(str.substring(0, 5))) {
-                    shapes.add(oval(readList(str.substring(5), 1)));
-                    filled.add(true);
-                } else if ("hoval".equals(str.substring(0, 5))) {
-                    hit = oval(readList(str.substring(5), 1));
+                    solid.append(oval(readList(str.substring(5), 1)), false);
                 }
             }
-            if (hit == null)
-                hit = shapes.get(1);
-            shapes.set(0, hit);
-            model.shapes = shapes.toArray(new Shape[0]);
-            model.transformed = new Shape[shapes.size()];
-            model.filled = new boolean[shapes.size()];
-            for (int i = 0; i < filled.size(); i++)
-                model.filled[i] = filled.get(i);
+            model.shapes = line;
+            model.filled = solid;
             cache.put(name, model);
         } catch (java.io.IOException e) {
             log.error("Failed to load model '" + name + "' " + e.getMessage());
@@ -141,38 +119,29 @@ public class Model {
         size = val;
     }
 
-    public Shape[] getShapes() {
-        return transformed;
+    public Shape getShape() {
+        return at.createTransformedShape(shapes);
     }
 
-    public boolean[] getFilled() {
-        return filled;
+    public Shape getFilled() {
+        return at.createTransformedShape(filled);
     }
 
     public void transform(double x, double y, double rotate) {
         at.setToTranslation(x, y);
         at.scale(size, size);
         at.rotate(rotate);
-        apply();
     }
 
     public void transform(Mass src) {
         transform(src.getX(0), src.getY(0), src.getA(0));
     }
 
-    private void apply() {
-        for (int i = 0; i < shapes.length; i++) {
-            transformed[i] = at.createTransformedShape(shapes[i]);
-        }
-    }
-
     public Model copy() {
         Model copy = new Model();
         copy.shapes = shapes;
-        copy.transformed = new Shape[shapes.length];
         copy.filled = filled;
         copy.size = size;
-        copy.apply();
         return copy;
     }
 
@@ -180,36 +149,34 @@ public class Model {
         List<Model> models = new ArrayList<Model>();
         double[] coords = new double[6];
         double[] last = new double[2];
-        for (int n = 1; n < shapes.length; n++) {
-            PathIterator i = shapes[n].getPathIterator(null, BREAKUP_DIVISION);
-            while (!i.isDone()) {
-                int type = i.currentSegment(coords);
-                switch (type) {
-                case PathIterator.SEG_LINETO:
-                    Line2D.Double l = new Line2D.Double(last[0], last[1],
-                                                        coords[0], coords[1]);
-                    models.add(new Model(l, size));
-                    break;
-                case PathIterator.SEG_QUADTO:
-                    QuadCurve2D.Double q
-                    = new QuadCurve2D.Double(last[0], last[1],
-                                             coords[0], coords[1],
-                                             coords[2], coords[3]);
-                    models.add(new Model(q, size));
-                    break;
-                case PathIterator.SEG_CUBICTO:
-                    CubicCurve2D.Double c =
-                        new CubicCurve2D.Double(last[0], last[1],
-                                                coords[0], coords[1],
-                                                coords[2], coords[3],
-                                                coords[4], coords[5]);
-                    models.add(new Model(c, size));
-                    break;
-                }
-                last[0] = coords[0];
-                last[1] = coords[1];
-                i.next();
+        PathIterator i = shapes.getPathIterator(null, BREAKUP_DIVISION);
+        while (!i.isDone()) {
+            int type = i.currentSegment(coords);
+            switch (type) {
+            case PathIterator.SEG_LINETO:
+                Line2D.Double l = new Line2D.Double(last[0], last[1],
+                                                    coords[0], coords[1]);
+                models.add(new Model(l, size));
+                break;
+            case PathIterator.SEG_QUADTO:
+                QuadCurve2D.Double q
+                = new QuadCurve2D.Double(last[0], last[1],
+                                         coords[0], coords[1],
+                                         coords[2], coords[3]);
+                models.add(new Model(q, size));
+                break;
+            case PathIterator.SEG_CUBICTO:
+                CubicCurve2D.Double c =
+                    new CubicCurve2D.Double(last[0], last[1],
+                                            coords[0], coords[1],
+                                            coords[2], coords[3],
+                                            coords[4], coords[5]);
+                models.add(new Model(c, size));
+                break;
             }
+            last[0] = coords[0];
+            last[1] = coords[1];
+            i.next();
         }
         return models.toArray(new Model[0]);
     }
