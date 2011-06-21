@@ -13,7 +13,7 @@
 (defn station-destroyed []
   "called when the artifact station is destroyed"
   (cond
-   (active? @invaders)
+   (and @invaders (active? @invaders))
    (do
      (message "$@%# invaders!")
      (add-destruct-handler @invaders
