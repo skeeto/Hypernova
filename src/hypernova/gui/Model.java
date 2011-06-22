@@ -1,8 +1,8 @@
 package hypernova.gui;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 import java.io.InputStream;
@@ -14,11 +14,11 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.QuadCurve2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.AffineTransform;
 import java.awt.font.GlyphVector;
 import java.awt.font.FontRenderContext;
 
