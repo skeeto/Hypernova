@@ -101,7 +101,7 @@ public class Mass {
     }
 
     public Shape getHit() {
-        return getModel().getShape();
+        return getModel().getHit();
     }
 
     public void damage(double val) {

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
@@ -17,6 +18,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
+import java.awt.font.GlyphVector;
+import java.awt.font.FontRenderContext;
 
 import org.apache.log4j.Logger;
 
@@ -24,18 +28,25 @@ import hypernova.Mass;
 
 public class Model {
     public static final double BREAKUP_DIVISION = 0.005;
-    public static final double STICKY = 3.0;
+    public static final double STICKY = 1.5;
 
     private Shape shapes;
     private Shape filled;
+    private Shape hit;
     private AffineTransform at = new AffineTransform();
     private double size = 1.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");
 
+    public Model(String message) {
+        shapes = new Path2D.Double();
+        hit = filled = text2shape(message);
+        setSize(size);
+    }
+
     protected Model(Shape s, double size) {
-        shapes = s;
+        hit = shapes = s;
         filled = new Path2D.Double();
         this.size = size;
     }
@@ -69,6 +80,10 @@ public class Model {
             }
             model.shapes = line;
             model.filled = solid;
+            if (line.getCurrentPoint() == null)
+                model.hit = solid;
+            else
+                model.hit = line;
             cache.put(name, model);
         } catch (java.io.IOException e) {
             log.error("Failed to load model '" + name + "' " + e.getMessage());
@@ -128,6 +143,10 @@ public class Model {
         return at.createTransformedShape(filled);
     }
 
+    public Shape getHit() {
+        return at.createTransformedShape(hit);
+    }
+
     public void transform(double x, double y, double rotate) {
         at.setToTranslation(x, y);
         at.scale(size, size);
@@ -142,6 +161,7 @@ public class Model {
         Model copy = new Model();
         copy.shapes = shapes;
         copy.filled = filled;
+        copy.hit = hit;
         copy.size = size;
         return copy;
     }
@@ -160,8 +180,8 @@ public class Model {
         List<Model> models = new ArrayList<Model>();
         double[] coords = new double[6];
         double[] last = new double[2];
-        PathIterator i = shapes.getPathIterator(null, BREAKUP_DIVISION);
-        int sides = shapeSides(shapes);
+        PathIterator i = hit.getPathIterator(null, BREAKUP_DIVISION);
+        int sides = shapeSides(hit);
         Path2D.Double path = null;
         int pathcount = 0;
         double sticky = 0;
@@ -195,5 +215,16 @@ public class Model {
         if (pathcount > 0)
             models.add(new Model(path, size));
         return models.toArray(new Model[0]);
+    }
+
+    private static Shape text2shape(String msg) {
+        FontRenderContext frc = new FontRenderContext(null, true, true);
+        Font font = new Font(null, Font.PLAIN, 3);
+        GlyphVector gv = font.createGlyphVector(frc, msg);
+        Shape text = gv.getOutline();
+        Rectangle2D border = text.getBounds2D();
+        AffineTransform at = new AffineTransform();
+        at.translate(border.getWidth() / -2, border.getHeight() / 2);
+        return at.createTransformedShape(text);
     }
 }
