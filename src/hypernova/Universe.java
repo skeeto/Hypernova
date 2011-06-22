@@ -34,8 +34,6 @@ public class Universe extends Observable implements Runnable {
 
     private boolean paused;
 
-    public boolean teamDamage = false;
-
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
     private Collection<Mass> objects = new HashSet<Mass>();

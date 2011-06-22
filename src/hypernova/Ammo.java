@@ -70,7 +70,7 @@ public class Ammo extends Mass {
     public void step(double t) {
         super.step(t);
 
-        boolean teamDamage = Universe.get().teamDamage;
+        boolean teamDamage = Config.teamDamage();
         Faction team = getFaction();
         for (Mass m : Universe.get().getObjects()) {
             if (!m.shortlived && m.isActive()) {
