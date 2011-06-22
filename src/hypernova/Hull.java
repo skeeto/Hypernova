@@ -20,10 +20,10 @@ public class Hull {
 
     public final String name, info;
 
-    private double hp;
-    private double mass;
+    private double hp = DEFAULT_HP;
+    private double mass = DEFAULT_MASS;
     private Model model;
-    private double size;
+    private double size = DEFAULT_SIZE;
     private double drag;
     private int numweapons;
     private Point2D.Double[] weaponslots;
@@ -41,8 +41,6 @@ public class Hull {
         name = null;
         info = null;
         this.model = model;
-        hp = DEFAULT_HP;
-        mass = DEFAULT_MASS;
     }
 
     public static Hull get(String name) {
