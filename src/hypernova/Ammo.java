@@ -92,6 +92,17 @@ public class Ammo extends Mass {
         /* TODO: calculate damage
                  remove object from the universe if below 0. */
         m.damage(damage);
+        if (Config.showDamage()) {
+            Mass txt = new Mass(new Hull(new Model("" + damage)));
+            txt.setPosition(this);
+            txt.setFaction(getFaction());
+            txt.shortlived = true;
+            txt.ttl = 15;
+            txt.setA(0, 0);
+            txt.setY(-0.7, 1);
+            txt.setSize(2.0);
+            Universe.get().add(txt);
+        }
         zenThing();
     }
 }
