@@ -97,6 +97,10 @@ public class Hull {
         return drag;
     }
 
+    public void setDrag(double drag) {
+        this.drag = drag;
+    }
+
     public int numWeapons() {
         return numweapons;
     }
