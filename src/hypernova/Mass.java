@@ -66,8 +66,11 @@ public class Mass {
 
         /* Add drag. */
         if (suffersdrag) {
-            drag(x);
-            drag(y);
+            double v = Math.sqrt(x[1] * x[1] + y[1] * y[1]);
+            double a = Math.atan2(y[1], x[1]);
+            double d = drag(v);
+            x[1] += d * -Math.cos(a) * t;
+            y[1] += d * -Math.sin(a) * t;
         }
         x[1] += x[2] * t;
         y[1] += y[2] * t;
@@ -80,9 +83,8 @@ public class Mass {
         hull.getModel().transform(x[0], y[0], a[0]);
     }
 
-    private void drag(double[] v) {
-        double drag = v[1] * v[1] * DRAG * hull.getDrag();
-        v[2] += drag * -Math.signum(v[1]) / getMass();
+    private double drag(double v) {
+        return v * v * DRAG * hull.getDrag() / getMass();
     }
 
     /** Remove oneself from the equation. */
