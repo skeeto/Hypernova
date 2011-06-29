@@ -12,6 +12,12 @@ public class Mass {
     public static final double BREAKUP_ANGLE = 0.01;
     public static final double BREAKUP_TTL = 100;
     public static final double BREAKUP_TTL_VAR = 40;
+
+    public static final double SPARK_SPEED = 60;
+    public static final double SPARK_SPEED_VAR = 3;
+    public static final int SPARK_TTL = 20;
+    public static final double SPARK_DRAG = 30;
+
     public static final double DRAG = 0.005;
 
     private static final Random RNG = new Random();
@@ -134,6 +140,26 @@ public class Mass {
             listener.destroyed(this);
         }
 
+        zenThing();
+    }
+
+    public void explode(int count) {
+        Universe u = Universe.get();
+        for(int i = 0; i < count; i++) {
+            Mass spark = new Mass(new Hull(Model.get("spark")));
+            spark.setPosition(this).setFaction(getFaction());
+            double a = RNG.nextDouble() * Math.PI * 2;
+            spark.a[0] = a;
+            spark.x[1] = Math.cos(a) * SPARK_SPEED
+                + RNG.nextGaussian() * SPARK_SPEED_VAR;
+            spark.y[1] = Math.sin(a) * SPARK_SPEED
+                + RNG.nextGaussian() * SPARK_SPEED_VAR;
+            spark.hull.setDrag(SPARK_DRAG);
+            spark.suffersdrag = true;
+            spark.shortlived = true;
+            spark.ttl = SPARK_TTL;
+            u.add(spark);
+        }
         zenThing();
     }
 
