@@ -150,10 +150,9 @@ public class Mass {
             spark.setPosition(this).setFaction(getFaction());
             double a = RNG.nextDouble() * Math.PI * 2;
             spark.a[0] = a;
-            spark.x[1] = Math.cos(a) * SPARK_SPEED
-                + RNG.nextGaussian() * SPARK_SPEED_VAR;
-            spark.y[1] = Math.sin(a) * SPARK_SPEED
-                + RNG.nextGaussian() * SPARK_SPEED_VAR;
+            double speed = SPARK_SPEED + RNG.nextGaussian() * SPARK_SPEED_VAR;
+            spark.x[1] = Math.cos(a) * speed;
+            spark.y[1] = Math.sin(a) * speed;
             spark.hull.setDrag(SPARK_DRAG);
             spark.suffersdrag = true;
             spark.shortlived = true;
