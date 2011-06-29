@@ -103,6 +103,6 @@ public class Ammo extends Mass {
             txt.setSize(2.0);
             Universe.get().add(txt);
         }
-        zenThing();
+        explode(50);
     }
 }
