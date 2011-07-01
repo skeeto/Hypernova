@@ -4,3 +4,5 @@ info = Tiny, lightweight version of the Blaster.
 cooldown = 10.0
 ammo     = mini-bolt
 mass     = 0.1
+
+sound = null

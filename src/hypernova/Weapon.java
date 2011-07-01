@@ -10,16 +10,14 @@ public class Weapon {
     public static final double DEFAULT_COOLDOWN = 3.0;
     public static final double DEFAULT_MASS = 1.0;
     public static final String DEFAULT_AMMO = "bolt";
-    public static final int DEFAULT_CHANNEL = 0;
-    public static final int DEFAULT_NOTE = 40;
-    public static final int DEFAULT_VOLUME = 75;
+    public static final String DEFAULT_SOUND = "flaunch";
 
     public final String name, info;
 
     private double cooldown, timeout;
     private double mass;
     private Ammo ammo;
-    private int channel, note, volume;
+    private String sound = DEFAULT_SOUND;
 
     private static Map<String, Weapon> cache = new HashMap<String, Weapon>();
     private static Logger log = Logger.getLogger("Weapon");
@@ -48,14 +46,16 @@ public class Weapon {
                             props.getProperty("info"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
-        weapon.channel = (int) Weapon.attempt(props, "channel",
-                                              DEFAULT_CHANNEL);
-        weapon.note = (int) Weapon.attempt(props, "note", DEFAULT_NOTE);
-        weapon.volume = (int) Weapon.attempt(props, "volume", DEFAULT_VOLUME);
         String ammoname = props.getProperty("ammo");
         if (ammoname == null)
             ammoname = DEFAULT_AMMO;
         weapon.ammo = Ammo.get(ammoname);
+        String sound = props.getProperty("sound");
+        if (sound == null)
+            sound = DEFAULT_SOUND;
+        if ("null".equals(sound))
+            sound = null;
+        weapon.sound = sound;
         cache.put(name, weapon);
         return weapon.copy();
     }
@@ -74,7 +74,8 @@ public class Weapon {
 
     public void fire(Mass src) {
         if (timeout <= 0) {
-            Sound.play("fire");
+            if (sound != null)
+                Sound.play(sound);
             Universe.get().add(ammo.copy(src));
             timeout = cooldown;
         }
@@ -90,12 +91,10 @@ public class Weapon {
 
     public Weapon copy() {
         Weapon weapon = new Weapon(name, info);
+        weapon.sound = sound;
         weapon.ammo = ammo;
         weapon.mass = mass;
         weapon.cooldown = cooldown;
-        weapon.channel = channel;
-        weapon.note = note;
-        weapon.volume = volume;
         return weapon;
     }
 }
