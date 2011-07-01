@@ -30,6 +30,7 @@ public class Model {
     public static final double BREAKUP_DIVISION = 0.005;
     public static final double STICKY = 1.5;
 
+    private String name;
     private Shape shapes;
     private Shape filled;
     private Shape hit;
@@ -43,12 +44,14 @@ public class Model {
         shapes = new Path2D.Double();
         hit = filled = text2shape(message);
         setSize(size);
+        name = null;
     }
 
     protected Model(Shape s, double size) {
         hit = shapes = s;
         filled = new Path2D.Double();
         this.size = size;
+        name = null;
     }
 
     protected Model() {
@@ -78,6 +81,7 @@ public class Model {
                     solid.append(oval(readList(str.substring(5), 1)), false);
                 }
             }
+            model.name = name;
             model.shapes = line;
             model.filled = solid;
             if (line.getCurrentPoint() == null)
@@ -159,6 +163,7 @@ public class Model {
 
     public Model copy() {
         Model copy = new Model();
+        copy.name = name;
         copy.shapes = shapes;
         copy.filled = filled;
         copy.hit = hit;
