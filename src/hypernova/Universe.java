@@ -59,6 +59,14 @@ public class Universe extends Observable implements Runnable {
         Faction.create("Humans", Color.GREEN);
         Faction.create("Aliens", new Color(0xcc, 0x00, 0xcc));
         Faction.create("Invaders", Color.RED);
+
+        Mass hi = new Mass(new Hull(new hypernova.gui.Model("Bang!")));
+        //hi.setSize(5.0);
+        hi.setPosition(0, 0, 0);
+        hi.setA(0.05, 1);
+        hi.setX(1.2, 1);
+        hi.setY(0.4, 1);
+        add(hi);
     }
 
     public void movePlayerControlsTo(Ship newPlayer) {
