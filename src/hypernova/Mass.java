@@ -140,6 +140,7 @@ public class Mass {
             listener.destroyed(this);
         }
 
+        Sound.play("explode");
         zenThing();
     }
 
