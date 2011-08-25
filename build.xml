@@ -23,10 +23,6 @@
     </fileset>
   </path>
 
-  <!-- Additional build tools -->
-  <taskdef resource="checkstyletask.properties"/>
-  <taskdef name="hotswap" classname="dak.ant.taskdefs.Hotswap"/>
-
   <!-- Targets -->
 
   <target name="init">
@@ -73,6 +69,7 @@
   </target>
 
   <target name="hotswap" depends="compile">
+    <taskdef name="hotswap" classname="dak.ant.taskdefs.Hotswap2"/>
     <antcall target="compile"/>
     <hotswap verbose="true" port="9000">
       <fileset dir="${build.classes.dir}" includes="**/*.class">
@@ -104,6 +101,7 @@
   </target>
 
   <target name="check">
+    <taskdef resource="checkstyletask.properties"/>
     <checkstyle config="doc/sun_checks.xml">
       <fileset dir="src" includes="**/*.java"/>
     </checkstyle>

@@ -2,7 +2,8 @@ To build you'll need, in addition to a JDK,
 
 * Ant (http://ant.apache.org/)
 * Ivy (http://ant.apache.org/ivy/)
-* Hotswap (http://code.google.com/p/hotswap/)
 
-Hotswap is technically optional, but you'll have to remove the taskdef
-from the build script.
+With the "hotswap" target, you can replace running code when it was
+launched with the "run" target. You'll need the hotswap Ant extension,
+
+* Hotswap (http://code.google.com/p/hotswap/)
