@@ -41,6 +41,14 @@ public class Hypernova {
             log.info("extra debugging information enabled");
         }
 
+        /* Sound */
+        // TODO, from playlist
+        MinimWrapper.init();
+        MinimWrapper.loadSong("mp3/test.mp3");
+        MinimWrapper.nextSong();
+        MinimWrapper.loadSong("mp3/test2.mp3");
+
+
         viewer = new Viewer();
         Universe.get().initialize();
 
@@ -65,9 +73,6 @@ public class Hypernova {
         frame.setVisible(true);
         viewer.requestFocusInWindow();
 
-        if (!line.hasOption("nosound")) {
-            Sound.init();
-        }
 
         if (line.hasOption("repl")) {
             ActivityRuntime.get().startRepl();

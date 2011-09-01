@@ -36,6 +36,7 @@ import hypernova.Mass;
 import hypernova.Universe;
 import hypernova.Hypernova;
 import hypernova.pilots.KeyboardPilot;
+import hypernova.MinimWrapper;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
@@ -162,6 +163,7 @@ public class Viewer extends JComponent implements Observer {
 
     @Override
     public void update(Observable o, Object msg) {
+        MinimWrapper.loop();
         updateFocus();
         if (record) {
             screenshot(new File(String.format(RECORD_FORMAT, recordCount++)));
@@ -188,7 +190,13 @@ public class Viewer extends JComponent implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.BLACK);
+
+        float x = (MinimWrapper.fft(4))[0];
+        if(x < 25) g.setColor(Color.BLACK);
+        else if(x > 75) g.setColor(Color.WHITE);
+        else if (x < 50) g.setColor(Color.DARK_GRAY);
+        else g.setColor(Color.LIGHT_GRAY);
+
         g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
@@ -334,7 +342,14 @@ public class Viewer extends JComponent implements Observer {
         int size = STAR_TILE_SIZE / starscale;
         int w = (int) (getWidth() / (scale / DEFAULT_SCALE));
         int h = (int) (getHeight() / (scale / DEFAULT_SCALE));
+        int c = (int)(MinimWrapper.fft(4))[starscale];
 
+
+        /* Set colors */
+        if(starscale == 1) g.setColor(Color.cyan);
+        else if(starscale == 2) g.setColor(Color.blue);
+        else if(starscale == 3) g.setColor(Color.yellow);
+        
         /* Top-left tile's top-left position. */
         int sx = ((xoff - w/2) / size) * size - size;
         int sy = ((yoff - h/2) / size) * size - size;
@@ -350,7 +365,11 @@ public class Viewer extends JComponent implements Observer {
                     hash >>= 3;
                     px *= scale / DEFAULT_SCALE;
                     py *= scale / DEFAULT_SCALE;
-                    g.drawLine(px, py, px, py);
+                    g.drawLine(px - c, py - c, px+c, py+ c);
+                    g.drawLine(px + c, py - c, px-c, py+c);
+                    g.drawLine(px-c, py , px + c, py);
+                    g.drawLine(px, py-c , px, py+c);
+
                 }
             }
         }
