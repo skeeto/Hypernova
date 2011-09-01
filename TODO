@@ -6,3 +6,21 @@
 * Minimap
 * Restart game (multiple lives, etc.) without full restart
 * --log flag
+
+* Magnetic money
+* Thruster images
+* Playlist code
+* Error handling for empty sound
+* Cooldown bar
+* Arrows on minimap
+* Multiple Galaxies
+* Looping galaxy
+* Positional sounds
+* Options menu
+* Command-line resolution set
+* Re-add in sample music reactive pilots
+* Allow color and shape changes based on FFT
+* Finish FFT averaging
+* Volume control
+* Forward-back music buttons
+
