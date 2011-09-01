@@ -93,6 +93,11 @@ public class Viewer extends JComponent implements Observer {
     private double msgTime;
     private String message;
 
+    private long framesElapsed = 0;
+    private long lastFrames = 0;
+    private long lastTime = System.currentTimeMillis();
+    private boolean isFaded = false;
+
     private static Logger log = Logger.getLogger("gui.Viewer");
 
     public Viewer() {
@@ -163,7 +168,7 @@ public class Viewer extends JComponent implements Observer {
         }
         repaint();
     }
-
+ 
     private void updateFocus() {
         scale = (0.8 * scale + 0.2 * targetScale);
         if (focus == null || !focus.isActive())
@@ -280,6 +285,19 @@ public class Viewer extends JComponent implements Observer {
         /* Score */
         String str = "Gold: " + Universe.get().getGold();
         g.drawString(str, INFO_PAD, INFO_PAD * 3 + HP_HEIGHT + stringH * 2);
+         
+        /* FPS */
+        if(Hypernova.debug) {
+           long tmpTime = System.currentTimeMillis();
+           framesElapsed ++;
+           if (tmpTime >= lastTime + 1000) {
+               lastTime = tmpTime;
+               lastFrames = framesElapsed;
+               framesElapsed = 0;
+           }
+           str = "FPS: " + lastFrames;
+           g.drawString(str, INFO_PAD, INFO_PAD * 3 + HP_HEIGHT + stringH * 5);
+        }
     }
 
     private void paintOverlay(Graphics2D g) {
