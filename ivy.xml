@@ -2,6 +2,7 @@
 <ivy-module version="2.0">
   <info organisation="com.nullprogram" module="Hypernova"/>
   <dependencies>
+    <dependency org="log4j" name="core"/>
     <dependency org="log4j" name="log4j" rev="1.2.14"/>
     <dependency org="commons-cli" name="commons-cli" rev="1.2"/>
     <dependency org="com.google.guava" name="guava" rev="r09"/>

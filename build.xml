@@ -82,7 +82,6 @@
     <delete dir="${doc.dir}/javadoc"/>
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
-    <delete dir="${lib.dir}"/>
   </target>
 
   <target name="javadoc" description="Generate Javadoc HTML.">

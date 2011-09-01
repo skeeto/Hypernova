@@ -51,7 +51,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int INFO_X = 10;
     public static final int INFO_Y = 10;
     public static final int INFO_PAD = 4;
-    public static final Color INFO_COLOR = new Color(0x1f, 0x1f, 0x1f);
+    public static final Color INFO_COLOR = new Color(0x1f, 0x1f, 0x1f, 0xa0);
     public static final Color INFO_BORDER = new Color(0x4f, 0x4f, 0x4f);
     public static final Color INFO_TEXT = Color.WHITE;
     public static final Color HP_BACK = new Color(0x00, 0x4f, 0x00);
