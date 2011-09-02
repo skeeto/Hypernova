@@ -86,6 +86,14 @@ public class MinimWrapper
    }
 
 
+
+   public static void playSoundAsync(String file)
+   {
+      MinimThread p = new MinimThread(file);
+      p.start();
+    
+   }
+ 
   /**
    * Play a sound once from a file location
    * Meant for sounds that only happen once (efficiency)

@@ -31,3 +31,5 @@
 * Weapon positions on ship
 * Wrap starfields to have different types
 * Saving game
+* Clean sound async crap, and made songs async too
+* Preload sounds

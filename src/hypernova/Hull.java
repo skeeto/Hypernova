@@ -29,6 +29,7 @@ public class Hull {
     private Point2D.Double[] weaponslots;
     private int numengines;
     private int explosionSize = 0;
+    private String destroySound = "";
 
     private static Logger log = Logger.getLogger("Hull");
 
@@ -61,12 +62,17 @@ public class Hull {
         hull = new Hull(props.getProperty("name"), props.getProperty("info"));
         hull.hp = Weapon.attempt(props, "hp", DEFAULT_HP);
         hull.mass = Weapon.attempt(props, "mass", DEFAULT_MASS);
+ 
+        String destSound = props.getProperty("destroySound");
+        if(destSound != null) hull.destroySound = destSound;
+ 
         String exp = props.getProperty("explosionSize");
         if(exp != null) 
         {
            try { hull.explosionSize = Integer.parseInt(exp);}
            catch (NumberFormatException e) { log.warn("Invalid property value for 'explosionSize'");}
         }
+
         String model = props.getProperty("model");
         if (model == null)
             model = DEFAULT_MODEL;
@@ -104,6 +110,9 @@ public class Hull {
         return drag;
     }
 
+    public String getDestroySound() {
+        return destroySound;
+    }
     public int getExplosionSize() {
         return explosionSize ;
     }
@@ -136,6 +145,7 @@ public class Hull {
         copy.size = size;
         copy.drag = drag;
         copy.explosionSize = explosionSize;
+        copy.destroySound = destroySound;
         copy.numweapons = numweapons;
         copy.numengines = numengines;
         if (numweapons > 0)

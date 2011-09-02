@@ -140,6 +140,7 @@ public class Mass {
             listener.destroyed(this);
         }
 
+        if(!"".equals(hull.getDestroySound())) MinimWrapper.playSoundAsync(hull.getDestroySound());
         if(hull.getExplosionSize() == 0) zenThing();
         else explode(hull.getExplosionSize());
     }

@@ -16,6 +16,8 @@ import hypernova.pilots.HunterSeeker;
 import hypernova.pilots.CirclePilot;
 import hypernova.pilots.SpaceFactory;
 import hypernova.pilots.PilotFactory;
+import hypernova.gui.Viewer;
+
 
 public class ChuckToTheFuture extends Activity implements Realization {
     private static final Random RNG = new Random();
@@ -42,7 +44,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
     public void trigger(double px, double py) {
         Universe u = Universe.get();
         u.remove(this);
-        MinimWrapper.playSound("sounds/chuckToTheFuture.mp3");
+        MinimWrapper.playSoundAsync("sounds/chuckToTheFuture.mp3");
         u.queueMessage("CHUCK TO THE FUTURE");
         for(int i = 0; i < 4; i ++)
         {

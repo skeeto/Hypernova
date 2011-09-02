@@ -93,6 +93,7 @@ public class Viewer extends JComponent implements Observer {
 
     private double msgTime;
     private String message;
+    private static boolean clearScreen = true;
 
     private long framesElapsed = 0;
     private long lastFrames = 0;
@@ -187,6 +188,10 @@ public class Viewer extends JComponent implements Observer {
         focusY = 0.6 * focusY + 0.4 * py;
     }
 
+    public static void setClearScreen(boolean doClear) { 
+        clearScreen = doClear;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -197,7 +202,7 @@ public class Viewer extends JComponent implements Observer {
         else if (x < 50) g.setColor(Color.DARK_GRAY);
         else g.setColor(Color.LIGHT_GRAY);
 
-        g.fillRect(0, 0, getWidth(), getHeight());
+        if(clearScreen) g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
 
