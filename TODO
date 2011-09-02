@@ -9,7 +9,7 @@
 
 * Magnetic money
 * Thruster images
-* Playlist code
+* Playlist code fixes (Changing song during crossfade)
 * Error handling for empty sound
 * Cooldown bar
 * Arrows on minimap
@@ -21,7 +21,7 @@
 * Allow color and shape changes based on FFT
 * Finish FFT averaging
 * Volume control
-* Forward-back music buttons
 * Cut out processing core dependency 
 * Trim strings for loading parts
 * Fix key focus lost in xmonad
+* Have ability to disable universe scrolling

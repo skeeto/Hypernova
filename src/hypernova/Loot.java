@@ -38,7 +38,8 @@ public class Loot extends Mass {
         Ship player = Universe.get().getPlayer();
         if (player.getHit().intersects(bounds)) {
             cashout(player);
-        }
+        } 
+            
     }
 
     @Override
