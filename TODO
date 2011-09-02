@@ -21,7 +21,13 @@
 * Allow color and shape changes based on FFT
 * Finish FFT averaging
 * Volume control
+* Explosion sounds and config
 * Cut out processing core dependency 
 * Trim strings for loading parts
 * Fix key focus lost in xmonad
-* Have ability to disable universe scrolling
+* Fix ivy dependencies for audio
+* Make easy to add to info box
+* Full maps with waypoints
+* Weapon positions on ship
+* Wrap starfields to have different types
+* Saving game

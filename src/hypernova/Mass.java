@@ -14,9 +14,9 @@ public class Mass {
     public static final double BREAKUP_TTL_VAR = 40;
 
     public static final double SPARK_SPEED = 60;
-    public static final double SPARK_SPEED_VAR = 3;
+    public static final double SPARK_SPEED_VAR = 25;
     public static final int SPARK_TTL = 20;
-    public static final double SPARK_DRAG = 30;
+    public static final double SPARK_DRAG = 5;
 
     public static final double DRAG = 0.005;
 
@@ -140,7 +140,8 @@ public class Mass {
             listener.destroyed(this);
         }
 
-        zenThing();
+        if(hull.getExplosionSize() == 0) zenThing();
+        else explode(hull.getExplosionSize());
     }
 
     public void explode(int count) {

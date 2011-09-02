@@ -1,7 +1,7 @@
 name = Beamer
 info = It has no cockpit, just space for a DSP
 
-hp    = 150.0
+hp    = 15.0
 mass  = 2.0
 model = beamer
 size  = 8.0
@@ -10,3 +10,5 @@ numweapons  = 4
 weaponslots = 1.0 0.0 2.0 0.0 3.0 0.0 4.0 0.0
 
 numengines = 1
+
+explosionSize = 255

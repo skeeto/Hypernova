@@ -42,7 +42,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
     public void trigger(double px, double py) {
         Universe u = Universe.get();
         u.remove(this);
-        MinimWrapper.playSound("mp3/chuckToTheFuture.mp3");
+        MinimWrapper.playSound("sounds/chuckToTheFuture.mp3");
         u.queueMessage("CHUCK TO THE FUTURE");
         for(int i = 0; i < 4; i ++)
         {
