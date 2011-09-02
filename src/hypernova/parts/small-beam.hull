@@ -1,0 +1,7 @@
+name = Small Beam
+info = A small beam.
+
+hp    = 0.1
+mass  = 0.0
+model = small-beam
+size  = 0.5

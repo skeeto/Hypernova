@@ -79,10 +79,13 @@ public class Hypernova {
         }
 
         Universe.start();
-        Universe.get().addActivity("test", 0, 0);
+        Universe.get().addActivity("test", -500, 500);
 
         Activity battle = new hypernova.activities.FactoryBattle();
         Universe.get().addActivity(battle, -500, -500);
+        
+        Activity chuck = new hypernova.activities.ChuckToTheFuture();
+        Universe.get().addActivity(chuck, 500, -500);
     }
 
     private static CommandLine parseArgs(String[] args) {

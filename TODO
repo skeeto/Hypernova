@@ -23,4 +23,5 @@
 * Finish FFT averaging
 * Volume control
 * Forward-back music buttons
-
+* Cut out processing core dependency 
+* Trim strings for loading parts

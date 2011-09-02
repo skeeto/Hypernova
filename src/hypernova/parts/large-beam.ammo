@@ -1,0 +1,8 @@
+name = Small Plasma Beam
+info = Weak plasma beam
+
+speed  = 5
+damage = 0.50
+ttl    = 35
+
+hull   = large-beam

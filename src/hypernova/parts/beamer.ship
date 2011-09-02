@@ -1,0 +1,10 @@
+name = Beam 
+info = Ship with music reactive beam
+
+hull    = beamer
+weapons = small-beam large-beam
+engines = microshove
+
+goldmean = 100
+goldvar  = 10
+goldrate = 1.0
