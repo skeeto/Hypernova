@@ -166,7 +166,6 @@ public class MinimWrapper
      
       // TODO Other FFT averages 8/16, make the calculations for this efficient (One loop)
       // FFT Averages
-      instance.fftCalc.forward(instance.curSong.mix);
       float val32 = 0;
       for(int i = 0; i < 32; i++, x = 0) 
       {
@@ -183,6 +182,7 @@ public class MinimWrapper
          for(int j = 0; j < 8; j ++) x += instance.fft_32[8*i + j];
          instance.fft_4[i] = x / 8;
       }
+      instance.fftCalc.forward(instance.curSong.mix);
       
    }
 

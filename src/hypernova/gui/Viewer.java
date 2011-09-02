@@ -163,12 +163,12 @@ public class Viewer extends JComponent implements Observer {
 
     @Override
     public void update(Observable o, Object msg) {
-        MinimWrapper.loop();
         updateFocus();
         if (record) {
             screenshot(new File(String.format(RECORD_FORMAT, recordCount++)));
         }
         repaint();
+        MinimWrapper.loop();
     }
  
     private void updateFocus() {
