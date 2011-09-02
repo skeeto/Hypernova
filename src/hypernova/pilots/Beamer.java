@@ -11,8 +11,11 @@ public class Beamer extends Hunter{
    
     public void fireShots(Ship ship)
     {
-      if(MinimWrapper.fft(4)[0] > 10) ship.fire(1);
-      else ship.fire(0);
+      int max = 0;
+      if(MinimWrapper.fft(4)[1] > MinimWrapper.fft(4)[max]) max = 1;
+      if(MinimWrapper.fft(4)[2] > MinimWrapper.fft(4)[max]) max = 2;
+      if(MinimWrapper.fft(4)[3] > MinimWrapper.fft(4)[max]) max = 3;
+      if(max != 0 || MinimWrapper.fft(4)[0] > 10) ship.fire(max);
     }
 
     private Ship getPlayer() {

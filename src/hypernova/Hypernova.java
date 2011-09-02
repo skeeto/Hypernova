@@ -44,10 +44,10 @@ public class Hypernova {
         /* Sound */
         // TODO, from playlist
         MinimWrapper.init();
-        MinimWrapper.loadSong("mp3/test.mp3");
-        MinimWrapper.nextSong();
-        MinimWrapper.loadSong("mp3/test2.mp3");
-
+        SongPlaylist.addFile("mp3s/foo.m3u");
+        SongPlaylist.setShuffle(true);
+        SongPlaylist.debug();
+        SongPlaylist.forwardSong();
 
         viewer = new Viewer();
         Universe.get().initialize();

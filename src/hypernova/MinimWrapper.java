@@ -15,7 +15,7 @@ import java.lang.Math;
  */
 public class MinimWrapper
 {
-   private static MinimWrapper instance = null;
+   protected static MinimWrapper instance = null;
    
    private PApplet empty;
    private Minim minim;
@@ -45,7 +45,7 @@ public class MinimWrapper
       public void draw() {}
    }
 
-   private MinimWrapper() 
+   protected MinimWrapper() 
    {
       empty = new Embedded();     
       empty.init();
@@ -100,12 +100,20 @@ public class MinimWrapper
    */
    public static void nextSong()
    {
-      if((!instance.crossFade && instance.curSong != null) || (instance.curSong == null && instance.song0 != null))
-      { 
+      if( (!instance.crossFade && instance.curSong != null) 
+      ||  (instance.curSong == null && instance.song0 != null)
+      ||  instance.doFade )
+      {  
+         if(instance.doFade)
+         {
+            instance.doFade = false;
+            instance.fadeStop = 0;
+            instance.fadeOut.pause();
+         }
          if(instance.curSong == null) instance.curSong = instance.song0;
          else {
            instance.curSong.pause();
-           instance.songCount ++;
+           instance.forwardSong();
            if(instance.curSong == instance.song0) instance.curSong = instance.song1;
            else instance.curSong = instance.song0;
          }
@@ -114,6 +122,8 @@ public class MinimWrapper
       } else instance.doFade = true;
     
    }
+
+   protected static void forwardSong(){}
 
   /**
    * Perform cleanup
@@ -146,7 +156,7 @@ public class MinimWrapper
              if(t <= 0) 
              {
                  instance.fadeOut.pause();
-                 instance.songCount ++;
+                 instance.forwardSong();
                  instance.fadeStop = 0;
                  instance.doFade = false;
              }

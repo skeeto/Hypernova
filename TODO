@@ -18,10 +18,10 @@
 * Positional sounds
 * Options menu
 * Command-line resolution set
-* Re-add in sample music reactive pilots
 * Allow color and shape changes based on FFT
 * Finish FFT averaging
 * Volume control
 * Forward-back music buttons
 * Cut out processing core dependency 
 * Trim strings for loading parts
+* Fix key focus lost in xmonad

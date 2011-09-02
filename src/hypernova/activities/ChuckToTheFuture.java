@@ -48,10 +48,10 @@ public class ChuckToTheFuture extends Activity implements Realization {
         {
            Ship s = Ship.get("beamer");
            s.setFaction("Invaders");
-           if(i == 0) s.setPosition(x - 100, y + 100, 0);
-           else if(i == 1) s.setPosition(x - 100, y - 100, 0);
-           else if(i == 2) s.setPosition(x + 100, y - 100, 0);
-           else if(i == 3) s.setPosition(x + 100, y + 100, 0);
+           if(i == 0) s.setPosition(px - 500, py + 500, 0);
+           else if(i == 1) s.setPosition(px - 500, py - 500, 0);
+           else if(i == 2) s.setPosition(px + 500, py - 500, 0);
+           else if(i == 3) s.setPosition(px + 500, py + 500, 0);
            Beamer p = new Beamer(s);
            p.setShip(s);
            s.setPilot(p);

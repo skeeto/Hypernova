@@ -173,7 +173,17 @@ public class Universe extends Observable implements Runnable {
             }
             synchronized (objects) {
                 for (Mass m : objects)
+                {
                     m.step(SIM_TIMESTEP);
+                  // TODO: Make this a scenario to test
+                  /*  double newX = m.getX(0);
+                    double newY = m.getY(0);
+                    if(newX > 300) newX = -300;
+                    if(newX < -300) newX = 300;
+                    if(newY > 300) newY = -300;
+                    if(newY < -300) newY = 300;
+                    m.setPosition(newX, newY); */
+                }
                 ships = null;
                 for (Realization r : realizations) {
                     if (r.shouldTrigger(player.getX(0), player.getY(0))) {

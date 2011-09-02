@@ -2,7 +2,7 @@ name = Beam
 info = Ship with music reactive beam
 
 hull    = beamer
-weapons = small-beam large-beam
+weapons = large-beam small-beam small-beam small-beam
 engines = microshove
 
 goldmean = 100

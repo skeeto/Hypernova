@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import hypernova.Universe;
 import hypernova.Ship;
+import hypernova.SongPlaylist;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
     private static Logger log = Logger.getLogger("KeyboardPilot");
@@ -47,6 +48,12 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             break;
         case KeyEvent.VK_CONTROL:
             ship.setFire(0, true);
+            break;
+        case KeyEvent.VK_COMMA:
+            SongPlaylist.backwardSong();
+            break;
+        case KeyEvent.VK_PERIOD:
+            SongPlaylist.forwardSong();
             break;
         default:
             log.trace("Unkown key " + e.getKeyCode());
