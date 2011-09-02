@@ -113,7 +113,7 @@ public class MinimWrapper
          if(instance.curSong == null) instance.curSong = instance.song0;
          else {
            instance.curSong.pause();
-           instance.forwardSong();
+           SongPlaylist.forwardSong();
            if(instance.curSong == instance.song0) instance.curSong = instance.song1;
            else instance.curSong = instance.song0;
          }
@@ -122,8 +122,6 @@ public class MinimWrapper
       } else instance.doFade = true;
     
    }
-
-   protected static void forwardSong(){}
 
   /**
    * Perform cleanup
@@ -137,7 +135,8 @@ public class MinimWrapper
       float x = 0;
       
       // Crossfader
-      if((instance.crossFade && timeleft() < FADE_START) || instance.doFade)
+      if(instance.crossFade && timeleft() < FADE_START && !instance.doFade) SongPlaylist.forwardSong();
+      else if(instance.doFade)
       {
           if(instance.fadeStop== 0)
           {
@@ -156,7 +155,6 @@ public class MinimWrapper
              if(t <= 0) 
              {
                  instance.fadeOut.pause();
-                 instance.forwardSong();
                  instance.fadeStop = 0;
                  instance.doFade = false;
              }

@@ -67,7 +67,6 @@ public class Hull {
            try { hull.explosionSize = Integer.parseInt(exp);}
            catch (NumberFormatException e) { log.warn("Invalid property value for 'explosionSize'");}
         }
-        System.out.println("isNow: " + hull.getExplosionSize());
         String model = props.getProperty("model");
         if (model == null)
             model = DEFAULT_MODEL;
