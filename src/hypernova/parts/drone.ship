@@ -2,7 +2,7 @@ name = Drone
 info = A small, unmanned, automated, single-purpose drone.
 
 hull    = drone
-weapons = mini-blaster
+weapons = mini-blaster mini-blaster
 engines = microshove
 
 goldmean = 10

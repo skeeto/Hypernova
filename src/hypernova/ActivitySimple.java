@@ -1,0 +1,87 @@
+package hypernova;
+
+import java.util.Random;
+
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+import hypernova.pilots.*;
+
+public class ActivitySimple extends Activity implements Realization {
+    protected static final double WIDTH  = 250;
+    protected static final double HEIGHT = 250;
+    protected static final Random RNG = new Random();
+ 
+    protected Universe u = Universe.get();
+
+    private double x, y;
+    private Shape zone;
+
+
+    public enum PilotType { BEAMER
+                          , PLAYER_HUNTER
+                          , CIRCLE_PILOT 
+                          };
+
+
+    // Basic event handler to call in case of an action
+    public void eventHandler(int event, String eventArgs)
+    {
+        log.debug("Activity Event: " + event + " " + eventArgs);
+    }
+
+    // Wait for a set amount of milleseconds and call the handler
+    public void setTimeout(int event, int timeMillis)
+    {
+       // TODO: HOW?      
+    }
+   
+    public void addShip(String design, String faction, PilotType pilot, double sx, double sy)
+    {
+           Ship s = Ship.get(design);
+           s.setFaction(faction);
+           s.setPosition(sx, sy);
+           Pilot p = null;
+           switch(pilot)
+           {
+              case BEAMER:
+                 p = new Beamer(s);
+                 break;
+              case PLAYER_HUNTER:
+                 p = new PlayerHunter(s);
+                 break;
+              case CIRCLE_PILOT:
+                 p = new CirclePilot(s, 10);
+                 break;
+              default:
+                 log.error("Invalid Ship");
+           }
+           p.setShip(s);
+           s.setPilot(p);
+           (Universe.get()).add(s);
+    }
+
+    // On added to world
+    public void realize(double x, double y) {
+        this.x = x;
+        this.y = y;
+        zone = new Rectangle2D.Double(x - WIDTH, y - HEIGHT,
+                                      WIDTH * 2, HEIGHT * 2);
+        Universe.get().add(this);
+    }
+
+    // Not started
+    public boolean shouldTrigger(double x, double y) {
+        return zone.contains(x, y);
+    }
+
+    // Start
+    public void trigger(double px, double py) {
+        u.remove(this);
+        this.begin(px, py);
+    }
+    
+    public void begin(double px, double py) {
+        log.debug("Activity Triggered");
+    }
+
+}

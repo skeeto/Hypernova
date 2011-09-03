@@ -6,7 +6,7 @@ mass  = 2.0
 model = drone
 size  = 4.0
 
-numweapons  = 1
-weaponslots = 1.0 0.0
+numweapons  = 2
+weaponslots = 1.0 0.0 2.0 0.0
 
 numengines = 1

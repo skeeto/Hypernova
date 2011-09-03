@@ -10,7 +10,7 @@ import clojure.lang.Var;
 import org.apache.log4j.Logger;
 
 public abstract class Activity {
-    private static Logger log = Logger.getLogger("Activity");
+    protected static Logger log = Logger.getLogger("Activity");
 
     private String script;
 
