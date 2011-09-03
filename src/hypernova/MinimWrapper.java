@@ -41,6 +41,7 @@ public class MinimWrapper
 
    private class Embedded extends PApplet 
    {
+      private static final long serialVersionUID = 8526472195634776147L;
       public void setup() {noLoop();}
       public void draw() {}
    }

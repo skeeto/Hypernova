@@ -74,7 +74,7 @@ public class Weapon {
 
     public void fire(Mass src) {
         if (timeout <= 0) {
-            Sound.play("fire");
+            // Sound.play("fire");
             Universe.get().add(ammo.copy(src));
             timeout = cooldown;
         }
