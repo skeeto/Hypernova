@@ -29,12 +29,19 @@ public class ChuckToTheFuture extends Activity implements Realization {
     private double x, y;
     private Shape zone;
 
+    public static void shipsDead()
+    {
+        Universe u = Universe.get();
+        u.queueMessage("The End?");
+    }
+
     public void realize(double x, double y) {
         this.x = x;
         this.y = y;
         zone = new Rectangle2D.Double(x - SPREAD, y - SPREAD,
                                       SPREAD * 2, SPREAD * 2);
         Universe.get().add(this);
+        System.out.println("trig");
     }
 
     public boolean shouldTrigger(double x, double y) {

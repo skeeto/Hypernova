@@ -3,10 +3,25 @@ package hypernova.pilots;
 import hypernova.Ship;
 import hypernova.Universe;
 import hypernova.MinimWrapper;
+import hypernova.Mass;
+import hypernova.DestructionListener;
+import hypernova.activities.ChuckToTheFuture;
 
-public class Beamer extends Hunter{
+public class Beamer extends Hunter implements DestructionListener{
+    public static int beamersDead = 0;
     public Beamer(Ship ship) {
         super(ship, null);
+    }
+
+    public void setShip(Ship ship) {
+      ship.onDestruct(this);
+      super.setShip(ship);
+    }
+
+    public void destroyed(Mass m)
+    {
+      beamersDead ++;
+      if(beamersDead >= 4) ChuckToTheFuture.shipsDead();
     }
    
     public void fireShots(Ship ship)

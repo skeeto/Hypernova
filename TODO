@@ -16,12 +16,15 @@
 * Multiple Galaxies
 * Looping galaxy
 * Positional sounds
+* Preload sounds
 * Options menu
+* Allow player ship to change weapons
+* Allow player ship to change appearance
 * Command-line resolution set
+* Fullscreen
 * Allow color and shape changes based on FFT
 * Finish FFT averaging
 * Volume control
-* Explosion sounds and config
 * Cut out processing core dependency 
 * Trim strings for loading parts
 * Fix key focus lost in xmonad
@@ -31,5 +34,7 @@
 * Weapon positions on ship
 * Wrap starfields to have different types
 * Saving game
+* Java generated sounds/effects
 * Clean sound async crap, and made songs async too
-* Preload sounds
+* Make activities work in place and be able to do timeouts
+  > Add the Activity to each pilot, and have an interface for callbacks
