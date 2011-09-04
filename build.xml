@@ -35,6 +35,11 @@
     <ivy:retrieve type="jar,bundle"/>
   </target>
 
+  <target name="music">
+    <get src="http://devrand.org:8080/mp3s.tar" dest="."/>
+    <untar src="mp3s.tar" dest="."/>
+  </target>
+
   <target name="compile" depends="init,resolve"
 	  description="Compile all source files.">
     <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
