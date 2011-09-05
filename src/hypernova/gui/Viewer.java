@@ -37,6 +37,7 @@ import hypernova.Universe;
 import hypernova.Hypernova;
 import hypernova.pilots.KeyboardPilot;
 import hypernova.MinimWrapper;
+import hypernova.gui.backgrounds.*;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
@@ -93,12 +94,12 @@ public class Viewer extends JComponent implements Observer {
 
     private double msgTime;
     private String message;
-    private static boolean clearScreen = true;
 
     private long framesElapsed = 0;
     private long lastFrames = 0;
     private long lastTime = System.currentTimeMillis();
     private boolean isFaded = false;
+    private static Background background = new MusicStarfield();
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 
@@ -149,9 +150,14 @@ public class Viewer extends JComponent implements Observer {
         return quality;
     }
 
+    public static void setBackground (Background bg) {
+        background = bg;
+    }
+
     public void setScale(double scale) {
         targetScale = Math.min(scale, SCALE_MAX);
         targetScale = Math.max(targetScale, SCALE_MIN);
+        background.setScale(targetScale);
     }
 
     public double getScale() {
@@ -174,6 +180,7 @@ public class Viewer extends JComponent implements Observer {
  
     private void updateFocus() {
         scale = (0.8 * scale + 0.2 * targetScale);
+        background.setScale(scale);
         if (focus == null || !focus.isActive())
             focus = universe.getPlayer();
         double px, py;
@@ -188,31 +195,12 @@ public class Viewer extends JComponent implements Observer {
         focusY = 0.6 * focusY + 0.4 * py;
     }
 
-    public static void setClearScreen(boolean doClear) { 
-        clearScreen = doClear;
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        float x = (MinimWrapper.fft(4))[0];
-        if(x < 25) g.setColor(Color.BLACK);
-        else if(x > 75) g.setColor(Color.WHITE);
-        else if (x < 50) g.setColor(Color.DARK_GRAY);
-        else g.setColor(Color.LIGHT_GRAY);
-
-        if(clearScreen) g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
-
-        g2d.translate(getWidth() / 2, getHeight() / 2);
-        for (int i = quality + 1; i > 0; i--) {
-            float c = (float) (STAR_COLORS[i - 1] * scale / DEFAULT_SCALE);
-            c = Math.min(c, STAR_COLORS[i - 1]);
-            g.setColor(new Color(c, c, c));
-            drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
-        }
+        background.drawBackground(g, g2d, focusX, focusY);
         g2d.setTransform(at);
 
         /* Set up graphics */

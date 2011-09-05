@@ -7,7 +7,6 @@
 * Restart game (multiple lives, etc.) without full restart
 * --log flag
 
-* Magnetic money
 * Thruster images
 * Playlist code fixes (Changing song during crossfade)
 * Error handling for empty sound
@@ -32,7 +31,6 @@
 * Make easy to add to info box
 * Full maps with waypoints
 * Weapon positions on ship
-* Wrap starfields to have different types
 * Saving game
 * Java generated sounds/effects
 * Clean sound async crap, and made songs async too

@@ -127,6 +127,7 @@ public class MinimWrapper
            else instance.curSong = instance.song0;
          }
          instance.fftCalc = new FFT(instance.curSong.bufferSize(), instance.curSong.sampleRate());
+         instance.curSong.skip(5); // TODO: Is it really synced :P
          instance.curSong.play();
       } else instance.doFade = true;
     
@@ -188,9 +189,19 @@ public class MinimWrapper
       {
          for(int j = 0; j < 8; j ++) x += instance.fft_32[8*i + j];
          instance.fft_4[i] = x / 8;
+         instance.fft_total += instance.fft_4[i];
       }
+      instance.fft_total /= 4;
       instance.fftCalc.forward(instance.curSong.mix);
       
+   }
+
+  /**
+   * Get the FFT total average
+   */
+   public static float fft()
+   {
+     return instance.fft_total;
    }
 
   /**

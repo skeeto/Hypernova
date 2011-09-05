@@ -12,22 +12,32 @@ import hypernova.Realization;
 import hypernova.MinimWrapper;
 import hypernova.pilots.Beamer;
 import hypernova.pilots.Pilot;
+import hypernova.gui.backgrounds.MusicStarfield;
+import hypernova.gui.backgrounds.EqualizerBackground;
 import hypernova.gui.Viewer;
 
 
 public class ChuckToTheFuture extends Activity implements Realization {
     private static final Random RNG = new Random();
     public static final double SPREAD = 250.0;
-
+    public static boolean didDead = false;
+  
     private double x, y;
     private Shape zone;
 
     public static void shipsDead()
     {
         Universe u = Universe.get();
-        Viewer.setClearScreen(true);
-        u.queueMessage("The End?");
-        u.addActivity(new hypernova.activities.ChuckToTheFuture2(), 1500, 1500);
+        if(!didDead)
+        {
+           MusicStarfield.setClearScreen(true);
+           u.queueMessage("The End?");
+           didDead = true;
+           u.addActivity(new hypernova.activities.ChuckToTheFuture2(), 1500, 1500);
+        } else {
+           Viewer.setBackground(new EqualizerBackground());
+           u.queueMessage("True End?");
+        }
     }
 
     public void realize(double x, double y) {
