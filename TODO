@@ -7,6 +7,8 @@
 * Restart game (multiple lives, etc.) without full restart
 * --log flag
 
+* Icons when close to map marker
+* Minimap shows ship direction
 * Thruster images
 * Playlist code fixes (Changing song during crossfade)
 * Error handling for empty sound

@@ -75,7 +75,7 @@ public class Viewer extends JComponent implements Observer {
 
     public static final float[] STAR_COLORS = {1.0f, 0.66f, 0.33f};
     public static final int STAR_SEED = 0x9d2c5680;
-
+ 
     /* Starting size. */
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -238,6 +238,10 @@ public class Viewer extends JComponent implements Observer {
         g.fill(MINIMAP);
         g.setColor(INFO_BORDER);
         g.draw(MINIMAP);
+     
+        (new MapMarker(2900,1450)).draw(focusX, focusY, g);       
+
+
         g.setClip(MINIMAP);
         g.translate(-(focusX * MM_SCALE - MM_SIZE / 2),
                     -(focusY * MM_SCALE - MM_SIZE / 2));
