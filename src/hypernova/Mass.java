@@ -160,12 +160,10 @@ public class Mass {
             double ap = a[0] + Math.PI - r/2 + RNG.nextDouble() * Math.PI / 4;
             spark.a[0] = ap;
             double speed = THRUST_SPEED + RNG.nextGaussian() * THRUST_SPEED_VAR;
-            spark.x[0] = x[0] - x[1];
-            spark.y[0] = y[0] - y[1];
             spark.x[1] = Math.cos(ap) * speed;
             spark.y[1] = Math.sin(ap) * speed;
-           // spark.x[0] += spark.x[1];
-           // spark.y[0] += spark.y[1];
+            spark.x[0] += spark.x[1];
+            spark.y[0] += spark.y[1];
             spark.hull.setDrag(SPARK_DRAG);
             spark.suffersdrag = false;
             spark.shortlived = true;
