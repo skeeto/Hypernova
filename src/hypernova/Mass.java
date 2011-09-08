@@ -71,8 +71,6 @@ public class Mass {
             zenThing();
             return;
         }
-        int accVector =(int) (25 * ( Math.abs(x[2]) + Math.abs(y[2]) ));
-        if(!shortlived && accVector > 1) thrust(accVector);
 
         /* Add drag. */
         if (suffersdrag) {
@@ -91,6 +89,9 @@ public class Mass {
         while (a[0] < -Math.PI) a[0] += Math.PI * 2;
         while (a[0] > Math.PI) a[0] -= Math.PI * 2;
         hull.getModel().transform(x[0], y[0], a[0]);
+
+        int accVector =(int) (25 * ( Math.abs(x[2]) + Math.abs(y[2]) ));
+        if(!shortlived && accVector > 1) thrust(accVector);
     }
 
     private double drag(double v) {
@@ -155,13 +156,16 @@ public class Mass {
         for(int i = 0; i < count; i++) {
             Mass spark = new Mass(new Hull(Model.get("spark")));
             spark.setPosition(this).setFaction(getFaction());
-            double ap = a[0] + 7*Math.PI/8 + RNG.nextDouble() * Math.PI / 4;
+            double r = RNG.nextDouble() * Math.PI / 4;
+            double ap = a[0] + Math.PI - r/2 + RNG.nextDouble() * Math.PI / 4;
             spark.a[0] = ap;
             double speed = THRUST_SPEED + RNG.nextGaussian() * THRUST_SPEED_VAR;
+            spark.x[0] = x[0] - x[1];
+            spark.y[0] = y[0] - y[1];
             spark.x[1] = Math.cos(ap) * speed;
             spark.y[1] = Math.sin(ap) * speed;
-            spark.x[0] += spark.x[1];
-            spark.y[0] += spark.y[1];
+           // spark.x[0] += spark.x[1];
+           // spark.y[0] += spark.y[1];
             spark.hull.setDrag(SPARK_DRAG);
             spark.suffersdrag = false;
             spark.shortlived = true;
