@@ -238,10 +238,7 @@ public class Viewer extends JComponent implements Observer {
         g.fill(MINIMAP);
         g.setColor(INFO_BORDER);
         g.draw(MINIMAP);
-     
-        (new MapMarker(2900,1450)).draw(focusX, focusY, g);       
-
-
+        MapMarker.drawAll(focusX, focusY, g);       
         g.setClip(MINIMAP);
         g.translate(-(focusX * MM_SCALE - MM_SIZE / 2),
                     -(focusY * MM_SCALE - MM_SIZE / 2));

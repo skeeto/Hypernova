@@ -3,15 +3,20 @@ package hypernova;
 import java.util.Random;
 
 import java.awt.Shape;
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import hypernova.pilots.*;
+import hypernova.gui.MapMarker;
 
 public class ActivitySimple extends Activity implements Realization {
-    protected static final double WIDTH  = 250;
-    protected static final double HEIGHT = 250;
     protected static final Random RNG = new Random();
+    
+    protected double WIDTH  = 250;
+    protected double HEIGHT = 250;
  
     protected Universe u = Universe.get();
+    protected Color markerColor = new Color(255,0,0);
+    protected MapMarker m;
 
     private double x, y;
     private Shape zone;
@@ -34,7 +39,12 @@ public class ActivitySimple extends Activity implements Realization {
     {
        // TODO: HOW?      
     }
-   
+ 
+    public void finish()
+    {
+        m.setVisible(false);
+    }
+  
     public void addShip(String design, String faction, PilotType pilot, double sx, double sy)
     {
            Ship s = Ship.get(design);
@@ -64,6 +74,8 @@ public class ActivitySimple extends Activity implements Realization {
     public void realize(double x, double y) {
         this.x = x;
         this.y = y;
+        m = new MapMarker(x,y,markerColor,true);
+        MapMarker.add(m);
         zone = new Rectangle2D.Double(x - WIDTH, y - HEIGHT,
                                       WIDTH * 2, HEIGHT * 2);
         Universe.get().add(this);

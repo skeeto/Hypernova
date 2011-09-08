@@ -1,5 +1,7 @@
 package hypernova.gui;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.awt.BasicStroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
@@ -9,6 +11,7 @@ import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.Graphics;
+
 
 public class MapMarker
 {
@@ -20,7 +23,17 @@ public class MapMarker
     private double mx = 0;
     private double my = 0;
     private Color c = null;
+  
+    private static ArrayList<MapMarker> markers = new ArrayList<MapMarker>();
 
+    public static void add(MapMarker marker) {markers.add(marker);}
+    public static void clear() {markers.clear();}
+
+    public static void drawAll(double focusX, double focusY, Graphics2D g)
+    {
+      Iterator it = markers.iterator();
+      while(it.hasNext()) ((MapMarker) it.next()).draw(focusX, focusY, g);
+    }
 
     public void setValues(double x, double y, Color col, boolean visible)
     { 

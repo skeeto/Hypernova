@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import hypernova.Ship;
 import hypernova.Universe;
 import hypernova.Activity;
+import hypernova.gui.MapMarker;
 import hypernova.Realization;
 import hypernova.pilots.SpaceFactory;
 import hypernova.pilots.PilotFactory;
@@ -25,6 +26,7 @@ public class FactoryBattle extends Activity implements Realization {
     public void realize(double x, double y) {
         this.x = x;
         this.y = y;
+        MapMarker.add(new MapMarker(x,y,0,255,0));
         zone = new Rectangle2D.Double(x - SPREAD, y - SPREAD,
                                       SPREAD * 2, SPREAD * 2);
         Universe.get().add(this);

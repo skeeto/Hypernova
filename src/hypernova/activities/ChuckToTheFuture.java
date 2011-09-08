@@ -15,6 +15,7 @@ import hypernova.pilots.Pilot;
 import hypernova.gui.backgrounds.MusicStarfield;
 import hypernova.gui.backgrounds.EqualizerBackground;
 import hypernova.gui.Viewer;
+import hypernova.gui.MapMarker;
 
 
 public class ChuckToTheFuture extends Activity implements Realization {
@@ -24,6 +25,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
   
     private double x, y;
     private Shape zone;
+    private static MapMarker m;
 
     public static void shipsDead()
     {
@@ -33,6 +35,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
            MusicStarfield.setClearScreen(true);
            u.queueMessage("The End?");
            didDead = true;
+           m.setVisible(false);
            u.addActivity(new hypernova.activities.ChuckToTheFuture2(), 1500, 1500);
         } else {
            Viewer.setBackground(new EqualizerBackground());
@@ -41,6 +44,8 @@ public class ChuckToTheFuture extends Activity implements Realization {
     }
 
     public void realize(double x, double y) {
+        m = new MapMarker(x,y,0,255,255);
+        MapMarker.add(m);
         this.x = x;
         this.y = y;
         zone = new Rectangle2D.Double(x - SPREAD, y - SPREAD,
