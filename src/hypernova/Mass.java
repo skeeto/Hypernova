@@ -13,6 +13,8 @@ public class Mass {
     public static final double BREAKUP_TTL = 100;
     public static final double BREAKUP_TTL_VAR = 40;
 
+    public static final double THRUST_SPEED = 15;
+    public static final double THRUST_SPEED_VAR = 5;
     public static final double SPARK_SPEED = 60;
     public static final double SPARK_SPEED_VAR = 25;
     public static final int SPARK_TTL = 20;
@@ -69,6 +71,8 @@ public class Mass {
             zenThing();
             return;
         }
+        int accVector =(int) (25 * ( Math.abs(x[2]) + Math.abs(y[2]) ));
+        if(!shortlived && accVector > 1) thrust(accVector);
 
         /* Add drag. */
         if (suffersdrag) {
@@ -143,6 +147,27 @@ public class Mass {
         if(!"".equals(hull.getDestroySound())) MinimWrapper.playSoundAsync(hull.getDestroySound());
         if(hull.getExplosionSize() == 0) zenThing();
         else explode(hull.getExplosionSize());
+    }
+
+
+    public void thrust(int count) {
+        Universe u = Universe.get();
+        for(int i = 0; i < count; i++) {
+            Mass spark = new Mass(new Hull(Model.get("spark")));
+            spark.setPosition(this).setFaction(getFaction());
+            double ap = a[0] + 7*Math.PI/8 + RNG.nextDouble() * Math.PI / 4;
+            spark.a[0] = ap;
+            double speed = THRUST_SPEED + RNG.nextGaussian() * THRUST_SPEED_VAR;
+            spark.x[1] = Math.cos(ap) * speed;
+            spark.y[1] = Math.sin(ap) * speed;
+            spark.x[0] += spark.x[1];
+            spark.y[0] += spark.y[1];
+            spark.hull.setDrag(SPARK_DRAG);
+            spark.suffersdrag = false;
+            spark.shortlived = true;
+            spark.ttl = 1;
+            u.add(spark);
+        }
     }
 
     public void explode(int count) {
