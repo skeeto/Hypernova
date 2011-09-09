@@ -157,7 +157,7 @@ public class Mass {
             Mass spark = new Mass(new Hull(Model.get("spark")));
             spark.setPosition(this).setFaction(getFaction());
             double r = RNG.nextDouble() * Math.PI / 4;
-            double ap = a[0] + Math.PI - r/2 + RNG.nextDouble() * Math.PI / 4;
+            double ap = a[0] + 7*Math.PI/8 + RNG.nextDouble() * Math.PI / 4;
             spark.a[0] = ap;
             double speed = THRUST_SPEED + RNG.nextGaussian() * THRUST_SPEED_VAR;
             spark.x[1] = Math.cos(ap) * speed;

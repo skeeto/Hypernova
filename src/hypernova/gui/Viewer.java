@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Color;
+import java.awt.Polygon;
 import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -64,12 +65,13 @@ public class Viewer extends JComponent implements Observer {
     public static final int MM_PAD = 10;
     public static final int MM_SIZE = 150;
     public static final double MM_SCALE = 0.025;
-    public static final double MM_MSIZE = 50;
-    public static final Shape MM_MASS
-    = new Rectangle2D.Double(-MM_MSIZE, -MM_MSIZE,
-                             MM_MSIZE * 2, MM_MSIZE * 2);
-    public static final Shape MINIMAP
-    = new Ellipse2D.Double(1, 1, MM_SIZE - 2, MM_SIZE - 2);
+    public static final double MM_MSIZE = 75;
+    public static final int MM_TSIZE = 100;
+    public static final Shape MM_MASS = new Rectangle2D.Double(-MM_MSIZE, -MM_MSIZE, MM_MSIZE * 2, MM_MSIZE * 2);
+    public static final Shape MINIMAP = new Ellipse2D.Double(1, 1, MM_SIZE - 2, MM_SIZE - 2);
+    public static final int[] MM_XPOINTS = {-MM_TSIZE,-MM_TSIZE,MM_TSIZE*2};
+    public static final int[] MM_YPOINTS = { MM_TSIZE,-MM_TSIZE,0};
+    public static final Shape MM_SHIP = new Polygon(MM_XPOINTS,MM_YPOINTS,3);
 
     public static final double ZOOM_RATE = 1.2;
 
@@ -249,6 +251,13 @@ public class Viewer extends JComponent implements Observer {
             if (m.isShortlived() && !(m instanceof hypernova.Loot)) continue;
             at.setToTranslation(m.getX(0), m.getY(0));
             g.setColor(m.getFaction().getColor());
+            if(m instanceof hypernova.Ship && ((Ship) m).getCanMove())
+            {
+              at.rotate(m.getA(0));
+              g.fill(at.createTransformedShape(MM_SHIP));
+            } else {
+              g.fill(at.createTransformedShape(MM_MASS));
+            }
             g.fill(at.createTransformedShape(MM_MASS));
         }
     }

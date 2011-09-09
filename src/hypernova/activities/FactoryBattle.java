@@ -53,6 +53,7 @@ public class FactoryBattle extends Activity implements Realization {
                                double rate, boolean extras) {
         Universe u = Universe.get();
         Ship f = new Ship("factory");
+        f.setCanMove(false);
         f.setFaction(faction).setPosition(x, y, 0);
         PilotFactory pf = new PilotFactory.HunterSeekerFactory();
         SpaceFactory p = new SpaceFactory(f, "drone", rate, SUPPORT, pf);

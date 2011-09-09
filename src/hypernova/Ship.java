@@ -23,6 +23,7 @@ public class Ship extends Mass {
 
     public String name, info;
 
+    private boolean canMove = true;
     private Weapon[] weapons;
     private Engine[] engines;
     private double enginestate;
@@ -104,6 +105,10 @@ public class Ship extends Mass {
             copy.gold = (long) Math.max(0, r * goldvar + goldmean);
         }
         return copy;
+    }
+
+    public void setCanMove(boolean moves) {
+        canMove = moves;
     }
 
     public Ship setWeapon(String w, int slot) {
@@ -227,6 +232,10 @@ public class Ship extends Mass {
 
     public double getMass() {
         return mass;
+    }
+
+    public boolean getCanMove() {
+        return canMove;
     }
 
     public double getManeuverability() {
