@@ -27,6 +27,8 @@ public class ChuckToTheFuture extends Activity implements Realization {
     private Shape zone;
     private static MapMarker m;
 
+    private static ChuckToTheFuture2 chuck2 = new hypernova.activities.ChuckToTheFuture2();
+
     public static void shipsDead()
     {
         Universe u = Universe.get();
@@ -36,9 +38,10 @@ public class ChuckToTheFuture extends Activity implements Realization {
            u.queueMessage("The End?");
            didDead = true;
            m.setVisible(false);
-           u.addActivity(new hypernova.activities.ChuckToTheFuture2(), 1500, 1500);
+           u.addActivity(chuck2, 1500, 1500);
         } else {
            Viewer.setBackground(new EqualizerBackground());
+           chuck2.finish();
            u.queueMessage("True End?");
         }
     }

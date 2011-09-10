@@ -128,26 +128,33 @@ public class Mass {
     public void destruct() {
         Model[] models = hull.getModel().breakup();
         Hull[] hulls = new Hull[models.length];
-        for (int i = 0; i < models.length; i++) {
-            Mass m = new Mass(new Hull(models[i]));
-            m.setSize(size);
-            m.setPosition(this);
-            m.x[1] = x[1] + RNG.nextGaussian() * BREAKUP_SPEED;
-            m.y[1] = y[1] + RNG.nextGaussian() * BREAKUP_SPEED;
-            m.a[1] = a[1] + RNG.nextGaussian() * BREAKUP_ANGLE;
-            m.shortlived = true;
-            m.ttl = (int) (BREAKUP_TTL + RNG.nextGaussian() * BREAKUP_TTL_VAR);
-            m.setFaction(faction);
-            Universe.get().add(m);
+        if(this instanceof Loot) 
+        {
+          zenThing();
+        } else {
+          if(!"".equals(hull.getDestroySound())) MinimWrapper.playSoundAsync(hull.getDestroySound());
+          if(hull.getExplosionSize() == 0)
+          { 
+            for (int i = 0; i < models.length; i++) {
+              Mass m = new Mass(new Hull(models[i]));
+              m.setSize(size);
+              m.setPosition(this);
+              m.x[1] = x[1] + RNG.nextGaussian() * BREAKUP_SPEED;
+              m.y[1] = y[1] + RNG.nextGaussian() * BREAKUP_SPEED;
+              m.a[1] = a[1] + RNG.nextGaussian() * BREAKUP_ANGLE;
+              m.shortlived = true;
+              m.ttl = (int) (BREAKUP_TTL + RNG.nextGaussian() * BREAKUP_TTL_VAR);
+              m.setFaction(faction);
+              Universe.get().add(m);
+            }
+            zenThing();
+          } else explode(hull.getExplosionSize());
         }
 
         for (DestructionListener listener : listeners) {
             listener.destroyed(this);
         }
 
-        if(!"".equals(hull.getDestroySound())) MinimWrapper.playSoundAsync(hull.getDestroySound());
-        if(hull.getExplosionSize() == 0) zenThing();
-        else explode(hull.getExplosionSize());
     }
 
 
