@@ -34,13 +34,14 @@ public class ChuckToTheFuture extends Activity implements Realization {
         Universe u = Universe.get();
         if(!didDead)
         {
-           MusicStarfield.setClearScreen(true);
            u.queueMessage("The End?");
            didDead = true;
            m.setVisible(false);
            u.addActivity(chuck2, 1500, 1500);
         } else {
-           Viewer.setBackground(new EqualizerBackground());
+           MusicStarfield.bg = MusicStarfield.BackgroundType.ROTATE;
+           MusicStarfield.setClearScreen(true);
+           //Viewer.setBackground(new EqualizerBackground());
            chuck2.finish();
            u.queueMessage("True End?");
         }

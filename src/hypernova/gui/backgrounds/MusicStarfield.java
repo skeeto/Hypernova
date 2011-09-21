@@ -8,44 +8,69 @@ import hypernova.gui.Background;
 import hypernova.gui.Viewer;
 
 public class MusicStarfield extends Background{
-    public static final float[] STAR_COLORS = {1.0f, 0.66f, 0.33f};
     public static final int STAR_SEED = 0x9d2c5680;
     private static boolean clearScreen = true;
+    public static BackgroundType bg = BackgroundType.MOVE;
+    public enum BackgroundType { ASTERIK 
+                               , MOVE
+                               , ROTATE 
+                               };
     
     public static void setClearScreen(boolean doClear) { clearScreen = doClear; }
 
     public void drawBackground(Graphics g, Graphics2D g2d, double focusX, double focusY) {
         float x = (MinimWrapper.fft(4))[0];
-        if(x < 25) g.setColor(Color.BLACK);
-        else if(x > 75) g.setColor(Color.WHITE);
-        else if (x < 50) g.setColor(Color.DARK_GRAY);
-        else g.setColor(Color.LIGHT_GRAY);
+        if(bg == BackgroundType.ASTERIK)
+        {
+          if(x < 25) g.setColor(Color.BLACK);
+          else if(x > 75) g.setColor(Color.WHITE);
+          else if (x < 50) g.setColor(Color.DARK_GRAY);
+          else g.setColor(Color.LIGHT_GRAY);
+        } else {
+          g.setColor(Color.BLACK);
+        }
+
         if(clearScreen) g.fillRect(0, 0, width, height);
-        g2d.translate(width / 2, height / 2);
+        g2d.translate(width / 2, height / 2); 
+ //       if( bg == BackgroundType.MOVE && x < 5 ) return;
         for (int i = quality + 1; i > 0; i--) {
-            float c = (float) (STAR_COLORS[i - 1] * scale / Viewer.DEFAULT_SCALE);
-            c = Math.min(c, STAR_COLORS[i - 1]);
-            g.setColor(new Color(c, c, c));
             drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
         }
     }
 
     public static final int STAR_TILE_SIZE = 256;
+    public static float r[] = {0,0,0};
     public void drawStars(Graphics2D g, int xoff, int yoff, int starscale) {
         int size = STAR_TILE_SIZE / starscale;
         int w = (int) (width / (scale / Viewer.DEFAULT_SCALE));
         int h = (int) (height / (scale / Viewer.DEFAULT_SCALE));
-        int c = (int)(MinimWrapper.fft(4))[starscale];
+        float c = (MinimWrapper.fft(4))[0];
+        int c1 = (int)(MinimWrapper.fft(4))[1];
+        int c2 = (int)(MinimWrapper.fft(4))[2];
+        int c3 = (int)(MinimWrapper.fft(4))[3];
 
         /* Set colors */
-        if(starscale == 1) g.setColor(Color.cyan);
-        else if(starscale == 2) g.setColor(Color.blue);
-        else if(starscale == 3) g.setColor(Color.yellow);
-        
+        if( bg == BackgroundType.ASTERIK )
+        {
+          if(starscale == 1) g.setColor(Color.cyan);
+          else if(starscale == 2) g.setColor(Color.blue);
+          else if(starscale == 3) g.setColor(Color.yellow);
+        } else { 
+          if(starscale == 1) g.setColor(new Color((30 + c1*100) % 255, (30 + c2*100) % 255, (30 + c3*100) % 255));
+          else if(starscale == 2) g.setColor(new Color( (30 + c2*100) % 255, (30 + c3*100) % 255, (30 + c1*100) % 255));
+          else if(starscale == 3) g.setColor(new Color((30 + c3*100) % 255, (30 + c1*100) % 255, (30 + c2*100) % 255));
+        }
         /* Top-left tile's top-left position. */
         int sx = ((xoff - w/2) / size) * size - size;
         int sy = ((yoff - h/2) / size) * size - size;
-
+        
+        if( bg == BackgroundType.ROTATE)
+        {
+          float deltaVal = (MinimWrapper.fft(4))[starscale] / 250;
+          if(starscale == 2) deltaVal = -deltaVal;
+          r[starscale - 1] += deltaVal;
+          g.rotate(r[starscale-1]);//(MinimWrapper.fft(4))[starscale] / 50);
+        }
         /* Draw each tile currently in view. */
         for (int i = sx; i <= w + sx + size * 3; i += size) {
             for (int j = sy; j <= h + sy + size * 3; j += size) {
@@ -57,11 +82,22 @@ public class MusicStarfield extends Background{
                     hash >>= 3;
                     px *= scale / Viewer.DEFAULT_SCALE;
                     py *= scale / Viewer.DEFAULT_SCALE;
-                    g.drawLine(px - c, py - c, px+c, py+ c);
-                    g.drawLine(px + c, py - c, px-c, py+c);
-                    g.drawLine(px-c, py , px + c, py);
-                    g.drawLine(px, py-c , px, py+c);
-
+                    switch(bg)
+                    {
+                        case MOVE:
+                            g.drawOval(px - c1, py - c2, 2 + c3,  2 + c3); 
+                            break;
+                        case ASTERIK:
+                            int d = (int)(MinimWrapper.fft(4))[starscale];
+                            g.drawLine(px - d, py - d, px+d, py+ d);
+                            g.drawLine(px + d, py - d, px-d, py+d);
+                            g.drawLine(px-d, py , px + d, py);
+                            g.drawLine(px, py-d , px, py+d);
+                            break;
+                        case ROTATE:
+                            g.draw3DRect(px, py,  5, 5, true); //5 + (int)(c/10), 5 + (int)(c/10), true);
+                            break;
+                    }
                 }
             }
         }

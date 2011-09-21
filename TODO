@@ -1,40 +1,37 @@
-* Non-ammo collisions
-* Ship script helpers
-* Gravity
-* Randomly generated asteroids
-* Inventory management
-* Minimap
-* Restart game (multiple lives, etc.) without full restart
-* --log flag
+Features
+  * Saving game
+  * Restart game (multiple lives, etc.) without full restart
+  * Gravity
+  * Randomly generated asteroids
+  * Inventory management
+  * Non-ammo collisions
+  * Icons when close to map marker
+  * Cooldown bar
+  * Multiple Galaxies
+  * Looping galaxy
+  * Fullscreen
+  * Options menu
+  * Allow color and shape changes based on FFT
+  * Preloadable sounds
+  * Positional sounds
+  * Allow player ship to change weapons
+  * Allow player ship to change appearance
+  * Volume control
+  * Make easy to add to info box
 
-* Icons when close to map marker
-* Minimap shows ship direction
-* Thruster images
-* Playlist code fixes (Changing song during crossfade)
-* Error handling for empty sound
-* Cooldown bar
-* Arrows on minimap
-* Multiple Galaxies
-* Looping galaxy
-* Positional sounds
-* Preload sounds
-* Options menu
-* Allow player ship to change weapons
-* Allow player ship to change appearance
-* Command-line resolution set
-* Fullscreen
-* Allow color and shape changes based on FFT
-* Finish FFT averaging
-* Volume control
-* Cut out processing core dependency 
-* Trim strings for loading parts
-* Fix key focus lost in xmonad
-* Fix ivy dependencies for audio
-* Make easy to add to info box
-* Full maps with waypoints
-* Weapon positions on ship
-* Saving game
-* Java generated sounds/effects
-* Clean sound async crap, and made songs async too
-* Make activities work in place and be able to do timeouts
-  > Add the Activity to each pilot, and have an interface for callbacks
+Fixes/Polish
+  * --log flag
+  * Playlist code fixes (Changing song during crossfade)
+  * Error handling for empty sound
+  * Finish FFT averaging
+  * Command-line resolution set
+  * Cut out processing core dependency 
+  * Trim strings for loading parts
+  * Fix ivy dependencies for audio
+  * Full maps with waypoints
+  * Weapon positions on ship
+  * Java generated sounds/effects
+  * Clean sound async crap, and made songs async too
+  * Activity timeouts
+  * Generic pilot with destruction callback
+  * Stub Audio
