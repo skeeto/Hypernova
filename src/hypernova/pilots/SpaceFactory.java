@@ -8,6 +8,8 @@ import hypernova.Ship;
 import hypernova.Universe;
 
 public class SpaceFactory extends Pilot {
+    public static final double SHIP_OFFSET = 25;
+
     private final Random RNG = new Random();
     private String tooling;
     private PilotFactory pilots;
@@ -46,7 +48,11 @@ public class SpaceFactory extends Pilot {
         Ship forged = Ship.get(tooling);
         forged.setFaction(ship.getFaction());
         forged.setPilot(pilots.create(forged));
-        forged.setPosition(ship);
+        double modX = SHIP_OFFSET;
+        double modY = SHIP_OFFSET;
+        if(RNG.nextInt(2) == 0) modX = -modX;
+        if(RNG.nextInt(2) == 0) modY = -modY;
+        forged.setPosition(ship.getX(0) + modX, ship.getY(0) + modY);
         if (RNG.nextDouble() < dropRate) {
             long gold = (long) (RNG.nextGaussian() * varGold + meanGold);
             if (gold > 0) forged.store(gold);
