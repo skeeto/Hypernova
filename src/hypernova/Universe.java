@@ -177,7 +177,7 @@ public class Universe extends Observable implements Runnable {
             if (paused) {
                 sleep(start);
                 if(clear) {
-                  objects.clear();
+                  synchronized(objects) { objects.clear(); }
                   add(player);
                   realizations.clear();
                   MapMarker.clear();
