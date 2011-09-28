@@ -42,7 +42,6 @@ public class Hypernova {
         }
 
         /* Sound */
-        // TODO, from playlist
         MinimWrapper.init();
         SongPlaylist.addFile("mp3s/foo.m3u");
         SongPlaylist.setShuffle(true);
@@ -86,6 +85,8 @@ public class Hypernova {
         
         Activity chuck = new hypernova.activities.ChuckToTheFuture();
         Universe.get().addActivity(chuck, 500, -500);
+        
+        Universe.get().addActivity(new hypernova.activities.WarpZoneTest(),0,3000);
     }
 
     private static CommandLine parseArgs(String[] args) {

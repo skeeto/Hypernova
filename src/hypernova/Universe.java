@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
+import hypernova.gui.MapMarker;
 
 public class Universe extends Observable implements Runnable {
     public static final int DELAY_MSEC = 40;
@@ -33,6 +34,7 @@ public class Universe extends Observable implements Runnable {
     private long gold = 0;
 
     private boolean paused;
+    private boolean clear = false;
 
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
@@ -59,6 +61,11 @@ public class Universe extends Observable implements Runnable {
         Faction.create("Humans", Color.GREEN);
         Faction.create("Aliens", new Color(0xcc, 0x00, 0xcc));
         Faction.create("Invaders", Color.RED);
+    }
+
+    public void clear() {
+      clear = true;
+      paused = true;
     }
 
     public void movePlayerControlsTo(Ship newPlayer) {
@@ -169,12 +176,21 @@ public class Universe extends Observable implements Runnable {
             long start = now();
             if (paused) {
                 sleep(start);
+                if(clear) {
+                  objects.clear();
+                  add(player);
+                  realizations.clear();
+                  MapMarker.clear();
+                  clear = false;
+                  paused = false;
+                }
                 continue;
             }
             synchronized (objects) {
                 for (Mass m : objects)
                     m.step(SIM_TIMESTEP);
                 ships = null;
+                
                 for (Realization r : realizations) {
                     if (r.shouldTrigger(player.getX(0), player.getY(0))) {
                         r.trigger(player.getX(0), player.getY(0));
