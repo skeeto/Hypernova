@@ -7,7 +7,7 @@ Features
   * Other types of collision besides bounce
   * Icons when close to map marker
   * Cooldown bar
-  * Multiple Galaxies
+  * Nice transitions between universes
   * Looping galaxy
   * Fullscreen
   * Options menu
@@ -20,6 +20,7 @@ Features
   * Make easy to add to info box
 
 Fixes/Polish
+  * repaint error on new universe load
   * --log flag
   * Playlist code fixes (Changing song during crossfade)
   * Error handling for empty sound
@@ -35,3 +36,4 @@ Fixes/Polish
   * Activity timeouts
   * Generic pilot with destruction callback
   * Stub Audio
+  * Move backgrounds out of gui

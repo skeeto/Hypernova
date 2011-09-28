@@ -101,7 +101,7 @@ public class Viewer extends JComponent implements Observer {
     private long lastFrames = 0;
     private long lastTime = System.currentTimeMillis();
     private boolean isFaded = false;
-    private static Background background = new MusicStarfield();
+    private static Background background;
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 
@@ -202,7 +202,7 @@ public class Viewer extends JComponent implements Observer {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
-        background.drawBackground(g, g2d, focusX, focusY);
+        if(background != null) background.drawBackground(g, g2d, focusX, focusY);
         g2d.setTransform(at);
 
         /* Set up graphics */

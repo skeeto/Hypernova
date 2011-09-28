@@ -15,6 +15,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLineParser;
 
 import hypernova.gui.Viewer;
+import hypernova.universes.Start;
 
 public class Hypernova {
     public static final String PROGRAM = "Hypernova";
@@ -78,15 +79,7 @@ public class Hypernova {
         }
 
         Universe.start();
-        Universe.get().addActivity("test", 0, 0);
-
-        Activity battle = new hypernova.activities.FactoryBattle();
-        Universe.get().addActivity(battle, -500, -500);
-        
-        Activity chuck = new hypernova.activities.ChuckToTheFuture();
-        Universe.get().addActivity(chuck, 500, -500);
-        
-        Universe.get().addActivity(new hypernova.activities.WarpZoneTest(),0,3000);
+        Universe.get().loadUniverse(new Start());
     }
 
     private static CommandLine parseArgs(String[] args) {

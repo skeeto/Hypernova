@@ -35,6 +35,7 @@ public class Universe extends Observable implements Runnable {
 
     private boolean paused;
     private boolean clear = false;
+    private static NewUniverse currentUniverse;
 
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 
@@ -63,7 +64,8 @@ public class Universe extends Observable implements Runnable {
         Faction.create("Invaders", Color.RED);
     }
 
-    public void clear() {
+    public void loadUniverse(NewUniverse n) {
+      currentUniverse = n;
       clear = true;
       paused = true;
     }
@@ -181,6 +183,7 @@ public class Universe extends Observable implements Runnable {
                   add(player);
                   realizations.clear();
                   MapMarker.clear();
+                  currentUniverse.begin();
                   clear = false;
                   paused = false;
                 }
