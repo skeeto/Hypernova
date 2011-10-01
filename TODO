@@ -1,12 +1,14 @@
 Features
   * Saving game
   * Restart game (multiple lives, etc.) without full restart
-  * Gravity
+  * Other types of collision besides bounce (And update ammo collisions)
+  * Add wormholes
   * Randomly generated asteroids
-  * Inventory management
-  * Other types of collision besides bounce
-  * Icons when close to map marker
+  * Gravity
+  * Make easy to add to info box
   * Cooldown bar
+  * Inventory management
+  * Icons when close to map marker
   * Nice transitions between universes
   * Looping galaxy
   * Fullscreen
@@ -17,11 +19,10 @@ Features
   * Allow player ship to change weapons
   * Allow player ship to change appearance
   * Volume control
-  * Make easy to add to info box
 
 Fixes/Polish
-  * repaint error on new universe load
   * --log flag
+  * Thread savegame
   * Playlist code fixes (Changing song during crossfade)
   * Error handling for empty sound
   * Finish FFT averaging

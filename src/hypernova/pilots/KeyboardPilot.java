@@ -30,6 +30,9 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         }
 
         switch (e.getKeyCode()) {
+        case KeyEvent.VK_L:
+            hypernova.SaveGame.autoLoad();
+            break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A:
             ship.turnLeft(true);

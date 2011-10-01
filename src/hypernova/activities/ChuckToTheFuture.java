@@ -16,7 +16,7 @@ import hypernova.gui.backgrounds.MusicStarfield;
 import hypernova.gui.backgrounds.EqualizerBackground;
 import hypernova.gui.Viewer;
 import hypernova.gui.MapMarker;
-
+import hypernova.universes.Start;
 
 public class ChuckToTheFuture extends Activity implements Realization {
     private static final Random RNG = new Random();
@@ -34,6 +34,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
         Universe u = Universe.get();
         if(!didDead)
         {
+           Start.chuckDone = true;
            u.queueMessage("The End?");
            didDead = true;
            m.setVisible(false);
@@ -41,8 +42,8 @@ public class ChuckToTheFuture extends Activity implements Realization {
         } else {
            MusicStarfield.bg = MusicStarfield.BackgroundType.ROTATE;
            MusicStarfield.setClearScreen(true);
-           //Viewer.setBackground(new EqualizerBackground());
            chuck2.finish();
+           Start.chuck2Done = true;
            u.queueMessage("True End?");
         }
     }
