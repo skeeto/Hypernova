@@ -1,81 +1,119 @@
 package hypernova;
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
+import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.lang.Class;
 
-public class SaveGame implements Serializable
+import hypernova.universes.*;
+
+
+public class SaveGame extends Thread implements Serializable
 {
    private long totalPlayTime = 0;
    private double restoreX = 0;
    private double restoreY = 0;   
    private UniName restoreU = UniName.START;
-   private static SaveGame sg = new SaveGame();
-   
+   private static int curSlot = 0;
+
+   protected static SaveGame INSTANCE = new SaveGame();
+   public static void autosave() { save(0); }
+
    static final long serialVersionUID = 1027533472837495L;  
 
    public enum UniName { TEST
                        , START
                        };
 
-   public static void autoLoad(){ load(0); }
-  
-   public static void autoSave(double x, double y, UniName u)
+   public static void checkpoint(){ load(0); }
+   public static void setCheckpoint(double x, double y, UniName u)
    {
-     sg.restoreX = x;
-     sg.restoreY = y;
-     sg.restoreU = u;
-     save(0); 
+     INSTANCE.restoreX = x;
+     INSTANCE.restoreY = y;
+     INSTANCE.restoreU = u;
+     autosave();
+   }
+
+   public static void writeFile(SaveGame obj)
+   {
+      String filename = obj.getClass().getName() + ".dat";
+      FileOutputStream fos = null;
+      ObjectOutputStream out = null;
+      try
+      {
+        fos = new FileOutputStream("saves/" + curSlot + "/" + filename);
+        out = new ObjectOutputStream(fos);
+        out.writeObject(obj);
+        out.close();
+      } catch(IOException ex) {
+        ex.printStackTrace();
+      }
+   }
+
+   public static SaveGame loadFile(SaveGame obj)
+   {
+      SaveGame ret = null;
+      String filename = obj.getClass().getName() + ".dat";
+      FileInputStream fis = null;
+      ObjectInputStream in = null;
+      try
+      {
+         fis = new FileInputStream("saves/" + curSlot + "/" + filename);
+         in = new ObjectInputStream(fis);
+         ret = (SaveGame)in.readObject();
+         in.close();
+      } catch(Exception ex) {
+         ex.printStackTrace();
+      }
+      return ret;
    }
 
    public static void load(int slot)
    {
-     try {
-        FileInputStream fis = new FileInputStream("saves/" + slot + ".sav"); 
-        GZIPInputStream gzis = new GZIPInputStream(fis); 
-        ObjectInputStream in = new ObjectInputStream(gzis);  
-        sg = (SaveGame)in.readObject();
-        in.close();
-     } catch (Exception e) {
-        e.printStackTrace();
-     }
+     curSlot = slot;
+     SaveGame.INSTANCE = loadFile(SaveGame.INSTANCE);
+     Test.INSTANCE = (Test)loadFile(Test.INSTANCE);
+     Start.INSTANCE = (Start)loadFile(Start.INSTANCE);
+
 
      NewUniverse nu = null;
-     switch(sg.restoreU)
+     switch(INSTANCE.restoreU)
      {
         case TEST:
-          nu = new hypernova.universes.Test();
+          nu = new Test();
           break;
         case START:
-          nu = new hypernova.universes.Start();
+          nu = new Start();
           break;
      }     
      Universe u = Universe.get();
      Ship p = u.getPlayer();   
      u.loadUniverse(nu);
-     p.setX(sg.restoreX,0);
-     p.setY(sg.restoreY,0);
-     p.setA(0,0);
+     p.setX(INSTANCE.restoreX,0);
+     p.setY(INSTANCE.restoreY,0);
+     p.setA(Math.PI/2,0);
      p.setX(0,1);
      p.setY(0,1);
      p.setA(0,1);
      p.setX(0,2);
      p.setY(0,2);
      p.setA(0,2);
+     p.setHP(p.getMaxHP());
    }
 
    public static void save(int slot)
-   {
-     try
-     {
-        FileOutputStream fos = new FileOutputStream("saves/" + slot + ".sav");
-        GZIPOutputStream gzos = new GZIPOutputStream(fos); 
-        ObjectOutputStream out = new ObjectOutputStream(gzos);
-        out.writeObject(sg);
-        out.flush();
-        out.close();
-     } catch (Exception e) {
-        e.printStackTrace();
-     }
+   { 
+     curSlot = slot; 
+     (new SaveGame()).start(); 
    }
+     
+   public void run() {
+     writeFile(SaveGame.INSTANCE);
+     writeFile(Start.INSTANCE);
+     writeFile(Test.INSTANCE);
+   }
+
 }

@@ -35,7 +35,7 @@ public class Universe extends Observable implements Runnable {
 
     private boolean paused;
     private boolean clear = false;
-    private static NewUniverse currentUniverse;
+    private NewUniverse currentUniverse;
 
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
 

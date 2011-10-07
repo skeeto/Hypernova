@@ -12,6 +12,7 @@
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="dist.dir" value="dist"/>
+  <property name="save.dir" value="saves"/>
   <property name="lib.dir" value="lib"/>
   <property name="doc.dir" value="doc"/>
 
@@ -28,6 +29,18 @@
   <target name="init">
     <mkdir dir="${build.classes.dir}"/>
     <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${save.dir}"/>
+    <mkdir dir="${save.dir}/0"/>
+    <mkdir dir="${save.dir}/1"/>
+    <mkdir dir="${save.dir}/2"/>
+    <mkdir dir="${save.dir}/3"/>
+    <mkdir dir="${save.dir}/4"/>
+    <mkdir dir="${save.dir}/5"/>
+    <mkdir dir="${save.dir}/6"/>
+    <mkdir dir="${save.dir}/7"/>
+    <mkdir dir="${save.dir}/8"/>
+    <mkdir dir="${save.dir}/9"/>
+    <mkdir dir="${save.dir}/10"/>
   </target>
 
   <target name="resolve" unless="lib.present"
@@ -87,6 +100,7 @@
     <delete dir="${doc.dir}/javadoc"/>
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
+    <delete dir="${save.dir}"/>
   </target>
 
   <target name="javadoc" description="Generate Javadoc HTML.">

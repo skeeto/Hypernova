@@ -79,7 +79,19 @@ public class Hypernova {
         }
 
         Universe.start();
-        Universe.get().loadUniverse(new Start());
+        if (line.hasOption("load")) {
+            String str = line.getOptionValue("load");
+            try {
+                int slot = Integer.parseInt(str);
+                if (slot < 0 || slot > 10) throw new Exception();
+                SaveGame.load(slot);
+            } catch (Throwable t) {
+                System.err.println("Unknown slot to load from '" + str + "'");
+                System.exit(1);
+            }
+        } else {
+            Universe.get().loadUniverse(new Start());
+        }
     }
 
     private static CommandLine parseArgs(String[] args) {
@@ -89,6 +101,7 @@ public class Hypernova {
             {"v", "version", "f", "print program version"},
             {"d", "debug",   "f", "turn on extra debugging info"},
             {"q", "quality", "t", "set display quality (0-2)"},
+            {"l", "load",    "t", "load a game (0-10)"},
             {"s", "nosound", "n", "disable sound"},
             {"r", "repl",    "n", "expose a REPL on standard IO"},
         };

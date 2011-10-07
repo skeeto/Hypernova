@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import hypernova.Universe;
 import hypernova.Ship;
+import hypernova.SaveGame;
 import hypernova.SongPlaylist;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
@@ -29,9 +30,16 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             return;
         }
 
-        switch (e.getKeyCode()) {
+        int kc = e.getKeyCode();
+        
+        // TODO: Temporary until real menus exist
+        if( kc > KeyEvent.VK_1 && kc < KeyEvent.VK_9 ) { 
+            SaveGame.save(kc - KeyEvent.VK_0);
+        } else if( kc == KeyEvent.VK_0 ) SaveGame.save(10);
+
+        switch (kc) {
         case KeyEvent.VK_L:
-            hypernova.SaveGame.autoLoad();
+            SaveGame.checkpoint();
             break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A:
@@ -72,9 +80,6 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         }
 
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_0:
-            ship.turnLeft(false);
-            break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A:
             ship.turnLeft(false);

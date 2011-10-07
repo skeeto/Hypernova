@@ -9,9 +9,11 @@ import hypernova.activities.WarpZoneTest;
 import hypernova.gui.backgrounds.EqualizerBackground;
 
 public class Test extends NewUniverse {
+   public static Test INSTANCE = new Test();
+   static final long serialVersionUID = 7533472837495L;  
    public void begin()
    {
-        SaveGame.autoSave(0, 0, SaveGame.UniName.TEST);
+        SaveGame.setCheckpoint(0, 0, SaveGame.UniName.TEST);
         Viewer.setBackground(new EqualizerBackground());
         Activity battle = new hypernova.activities.FactoryBattle();
         u.addActivity(battle, -500, -500);

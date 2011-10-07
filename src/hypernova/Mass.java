@@ -146,6 +146,11 @@ public class Mass {
         {
           zenThing();
         } else {
+          Universe u = Universe.get();
+          if(u.getPlayer().getHull() == hull) {
+             u.queueMessage("ABSOLUTE DEATH");
+             u.queueMessage("Press 'L' to revive");
+          }
           if(!"".equals(hull.getDestroySound())) MinimWrapper.playSoundAsync(hull.getDestroySound());
           if(hull.getExplosionSize() == 0)
           { 
@@ -298,6 +303,10 @@ public class Mass {
 
     public double getHP() {
         return hp;
+    }
+
+    public void setHP(double newHp) {
+        hp = newHp;
     }
 
     public double getMaxHP() {

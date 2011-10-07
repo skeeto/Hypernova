@@ -42,7 +42,7 @@ public class ActivitySimple extends Activity implements Realization {
  
     public void finish()
     {
-        m.setVisible(false);
+        if(m != null) m.setVisible(false);
     }
   
     public void addShip(String design, String faction, PilotType pilot, double sx, double sy)

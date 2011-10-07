@@ -8,7 +8,6 @@ import hypernova.DestructionListener;
 import hypernova.activities.ChuckToTheFuture;
 
 public class Beamer extends Hunter implements DestructionListener{
-    public static int beamersDead = 0;
     public Beamer(Ship ship) {
         super(ship, null);
     }
@@ -20,8 +19,7 @@ public class Beamer extends Hunter implements DestructionListener{
 
     public void destroyed(Mass m)
     {
-      beamersDead ++;
-      if(beamersDead >= 4) ChuckToTheFuture.shipsDead();
+      ChuckToTheFuture.shipDead();
     }
    
     public void fireShots(Ship ship)

@@ -136,6 +136,11 @@ public class Hull {
     public double getHP() {
         return hp;
     }
+ 
+    public void setHP(double newHP) {
+        System.out.println(hp + " -- " + newHP);
+        hp = newHP;
+    }
 
     public Hull copy() {
         Hull copy = new Hull(name, info);

@@ -101,7 +101,7 @@ public class Viewer extends JComponent implements Observer {
     private long lastFrames = 0;
     private long lastTime = System.currentTimeMillis();
     private boolean isFaded = false;
-    private static Background background;
+    private static Background background = new MusicStarfield();
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 

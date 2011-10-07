@@ -10,6 +10,7 @@ import hypernova.gui.Viewer;
 public class MusicStarfield extends Background{
     public static final int STAR_SEED = 0x9d2c5680;
     private static boolean clearScreen = true;
+    private static double lastX = 0;
     public static BackgroundType bg = BackgroundType.MOVE;
     public enum BackgroundType { ASTERIK 
                                , MOVE
@@ -26,11 +27,14 @@ public class MusicStarfield extends Background{
           else if(x > 75) g.setColor(Color.WHITE);
           else if (x < 50) g.setColor(Color.DARK_GRAY);
           else g.setColor(Color.LIGHT_GRAY);
-        } else {
+        } else { 
           g.setColor(Color.BLACK);
         }
-
-        if(clearScreen) g.fillRect(0, 0, width, height);
+ 
+        boolean tmpClear = true;
+        if(bg == BackgroundType.ROTATE && x >= lastX) tmpClear = false;
+        lastX = x;
+        if(clearScreen && tmpClear) g.fillRect(0, 0, width, height);
         g2d.translate(width / 2, height / 2); 
  //       if( bg == BackgroundType.MOVE && x < 5 ) return;
         for (int i = quality + 1; i > 0; i--) {

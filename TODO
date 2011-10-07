@@ -1,6 +1,4 @@
 Features
-  * Saving game
-  * Restart game (multiple lives, etc.) without full restart
   * Other types of collision besides bounce (And update ammo collisions)
   * Add wormholes
   * Randomly generated asteroids
@@ -22,7 +20,6 @@ Features
 
 Fixes/Polish
   * --log flag
-  * Thread savegame
   * Playlist code fixes (Changing song during crossfade)
   * Error handling for empty sound
   * Finish FFT averaging
@@ -38,3 +35,6 @@ Fixes/Polish
   * Generic pilot with destruction callback
   * Stub Audio
   * Move backgrounds out of gui
+  * Save/autosave messages
+  * Save MapMarker bug
+  * Polish SaveGame code

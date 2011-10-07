@@ -21,29 +21,32 @@ import hypernova.universes.Start;
 public class ChuckToTheFuture extends Activity implements Realization {
     private static final Random RNG = new Random();
     public static final double SPREAD = 250.0;
-    public static boolean didDead = false;
   
+    private static int totalShipsDead = 0;
     private double x, y;
     private Shape zone;
     private static MapMarker m;
 
     private static ChuckToTheFuture2 chuck2 = new hypernova.activities.ChuckToTheFuture2();
 
-    public static void shipsDead()
+    public static void shipDead()
     {
         Universe u = Universe.get();
-        if(!didDead)
+        totalShipsDead ++;
+        if(!Start.isChuckDone())
         {
-           Start.chuckDone = true;
-           u.queueMessage("The End?");
-           didDead = true;
-           m.setVisible(false);
-           u.addActivity(chuck2, 1500, 1500);
+           if(totalShipsDead >= 4)
+           {
+             Start.setChuckDone();
+             u.queueMessage("The End?");
+             m.setVisible(false);
+             u.addActivity(chuck2, 1500, 1500);
+           }
         } else {
            MusicStarfield.bg = MusicStarfield.BackgroundType.ROTATE;
            MusicStarfield.setClearScreen(true);
            chuck2.finish();
-           Start.chuck2Done = true;
+           Start.setChuck2Done();
            u.queueMessage("True End?");
         }
     }
@@ -65,6 +68,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
     public void trigger(double px, double py) {
         Universe u = Universe.get();
         u.remove(this);
+        totalShipsDead = 0;
         MinimWrapper.playSoundAsync("sounds/chuckToTheFuture.mp3");
         u.queueMessage("CHUCK TO THE FUTURE");
         for(int i = 0; i < 4; i ++)
