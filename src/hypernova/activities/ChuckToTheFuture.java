@@ -27,7 +27,7 @@ public class ChuckToTheFuture extends Activity implements Realization {
     private Shape zone;
     private static MapMarker m;
 
-    private static ChuckToTheFuture2 chuck2 = new hypernova.activities.ChuckToTheFuture2();
+    public static ChuckToTheFuture2 chuck2 = new hypernova.activities.ChuckToTheFuture2();
 
     public static void shipDead()
     {

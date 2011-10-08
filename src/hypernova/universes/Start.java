@@ -33,7 +33,7 @@ public class Start extends NewUniverse {
         u.addActivity("test", 0, 0);
 
         if( !INSTANCE.chuckDone ) u.addActivity(new ChuckToTheFuture(), 500, -500);
-        else if ( !INSTANCE.chuck2Done ) u.addActivity(new ChuckToTheFuture2(), 1500, 1500);
+        else if ( !INSTANCE.chuck2Done ) u.addActivity(ChuckToTheFuture.chuck2, 1500, 1500);
         
         WarpZoneTest w = new WarpZoneTest(new Test());
         u.addActivity(w,0,2000);

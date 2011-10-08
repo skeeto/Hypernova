@@ -27,7 +27,6 @@ Fixes/Polish
   * Cut out processing core dependency 
   * Trim strings for loading parts
   * Fix ivy dependencies for audio
-  * Full maps with waypoints
   * Weapon positions on ship
   * Java generated sounds/effects
   * Clean sound async crap, and made songs async too
@@ -36,5 +35,4 @@ Fixes/Polish
   * Stub Audio
   * Move backgrounds out of gui
   * Save/autosave messages
-  * Save MapMarker bug
   * Polish SaveGame code
