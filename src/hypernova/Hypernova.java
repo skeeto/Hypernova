@@ -4,6 +4,13 @@ package hypernova;
 import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
+import java.awt.Toolkit;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Component;
+import java.awt.MediaTracker;
+
 import javax.swing.JFrame;
 
 import org.apache.log4j.Level;
@@ -93,6 +100,21 @@ public class Hypernova {
 
         viewer = new Viewer();
         Universe.get().initialize();
+
+        /* Hide mouse cursor */
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image transCursorImage = toolkit.getImage("./1px.png");
+        MediaTracker mediaTracker = new MediaTracker(frame);
+        mediaTracker.addImage(transCursorImage, 0);
+        try {
+            mediaTracker.waitForID(0);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            System.exit(1);
+        }
+        Cursor transCursor = toolkit.createCustomCursor(transCursorImage,
+                             new Point(0,0), "blank");
+        ((Component)frame).setCursor(transCursor);
 
         /* Initiate GUI */
         frame.add(viewer);
