@@ -184,6 +184,7 @@ public class Universe extends Observable implements Runnable {
                   realizations.clear();
                   MapMarker.clear();
                   currentUniverse.begin();
+                  ActivityEvents.clear();
                   clear = false;
                   paused = false;
                 }
@@ -214,6 +215,7 @@ public class Universe extends Observable implements Runnable {
                     realizations.add(r);
                 }
             }
+            ActivityEvents.loop();
             setChanged();
             notifyObservers();
             sleep(start);

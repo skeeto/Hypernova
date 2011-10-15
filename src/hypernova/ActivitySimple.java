@@ -5,6 +5,12 @@ import java.util.Random;
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Collections;
+import java.util.List;
+
+import java.awt.Color;
 import hypernova.pilots.*;
 import hypernova.gui.MapMarker;
 
@@ -21,7 +27,6 @@ public class ActivitySimple extends Activity implements Realization {
     private double x, y;
     private Shape zone;
 
-
     public enum PilotType { BEAMER
                           , PLAYER_HUNTER
                           , CIRCLE_PILOT 
@@ -37,7 +42,12 @@ public class ActivitySimple extends Activity implements Realization {
     // Wait for a set amount of milleseconds and call the handler
     public void setTimeout(int event, int timeMillis)
     {
-       // TODO: HOW?      
+        setTimeout(event, timeMillis, "");
+    }
+
+    public void setTimeout(int event, int timeMillis, String args)
+    {
+        ActivityEvents.add(this,event,timeMillis,args);
     }
  
     public void finish()

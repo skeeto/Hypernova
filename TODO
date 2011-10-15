@@ -1,22 +1,25 @@
 Features
   * Other types of collision besides bounce (And update ammo collisions)
   * Add wormholes
+  * SVG conversion tool
   * Randomly generated asteroids
-  * Gravity
   * Make easy to add to info box
   * Cooldown bar
-  * Inventory management
+  * Inventory management 
+  * Easier ship destroy events
   * Icons when close to map marker
-  * Nice transitions between universes
+  * Screen fading
   * Looping galaxy
   * Fullscreen
+  * Hide mouse cursor
   * Options menu
   * Allow color and shape changes based on FFT
-  * Preloadable sounds
-  * Positional sounds
+  * Sounds (Preloadable and positional)
+  * Image based backgrounds
   * Allow player ship to change weapons
   * Allow player ship to change appearance
   * Volume control
+  * Gravity
 
 Fixes/Polish
   * --log flag
@@ -36,3 +39,4 @@ Fixes/Polish
   * Move backgrounds out of gui
   * Save/autosave messages
   * Polish SaveGame code
+  * Try to make fullscreen go back (Seems to be handled automatically)

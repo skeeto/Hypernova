@@ -79,8 +79,8 @@ public class Viewer extends JComponent implements Observer {
     public static final int STAR_SEED = 0x9d2c5680;
  
     /* Starting size. */
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static int WIDTH = 800;
+    public static int HEIGHT = 600;
 
     private final Universe universe;
     private Mass focus;

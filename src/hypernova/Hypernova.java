@@ -1,5 +1,9 @@
 package hypernova;
 
+
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+import java.awt.DisplayMode;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Level;
@@ -48,9 +52,31 @@ public class Hypernova {
         SongPlaylist.setShuffle(true);
         SongPlaylist.debug();
         SongPlaylist.forwardSong();
+        
+        /* Fullscreen Setup */
+        JFrame frame = new JFrame(PROGRAM);
+        if (line.hasOption("fullscreen"))
+        {
+            String str = line.getOptionValue("fullscreen");
+            try {
+                int modeNum = Integer.parseInt(str);
+                GraphicsEnvironment env = GraphicsEnvironment.
+                                          getLocalGraphicsEnvironment();
+                GraphicsDevice device = env.getDefaultScreenDevice();
+                DisplayMode[] modes = device.getDisplayModes();
+                DisplayMode newDisplayMode = modes[modeNum];
+                DisplayMode oldDisplayMode = device.getDisplayMode();
+                device.setFullScreenWindow(frame);
+                device.setDisplayMode(newDisplayMode);
+                Viewer.WIDTH  = newDisplayMode.getWidth();
+                Viewer.HEIGHT = newDisplayMode.getHeight();
+            } catch (Exception e) {
+                System.err.println("Invalid mode '" + str + "'");
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
 
-        viewer = new Viewer();
-        Universe.get().initialize();
 
         /* Determine quality settings. */
         if (line.hasOption("quality")) {
@@ -65,14 +91,15 @@ public class Hypernova {
             }
         }
 
+        viewer = new Viewer();
+        Universe.get().initialize();
+
         /* Initiate GUI */
-        JFrame frame = new JFrame(PROGRAM);
         frame.add(viewer);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         viewer.requestFocusInWindow();
-
 
         if (line.hasOption("repl")) {
             ActivityRuntime.get().startRepl();
@@ -97,13 +124,15 @@ public class Hypernova {
     private static CommandLine parseArgs(String[] args) {
         Options opts = new Options();
         String[][] str = {
-            {"h", "help",    "f", "print this message"},
-            {"v", "version", "f", "print program version"},
-            {"d", "debug",   "f", "turn on extra debugging info"},
-            {"q", "quality", "t", "set display quality (0-2)"},
-            {"l", "load",    "t", "load a game (0-10)"},
-            {"s", "nosound", "n", "disable sound"},
-            {"r", "repl",    "n", "expose a REPL on standard IO"},
+            {"h", "help",       "f", "print this message"},
+            {"v", "version",    "f", "print program version"},
+            {"m", "modes",   "f", "print available graphics modes"},
+            {"d", "debug",      "f", "turn on extra debugging info"},
+            {"q", "quality",    "t", "set display quality (0-2)"},
+            {"f", "fullscreen", "t", "fullscreen display (must specify mode"},
+            {"l", "load",       "t", "load a game (0-10)"},
+            {"s", "nosound",    "n", "disable sound"},
+            {"r", "repl",       "n", "expose a REPL on standard IO"},
         };
         for (String[] o : str) {
             opts.addOption(new Option(o[0], o[1], "t".equals(o[2]), o[3]));
@@ -123,6 +152,20 @@ public class Hypernova {
         }
         if (line.hasOption("version")) {
             printVersion();
+            System.exit(0);
+        }
+        if (line.hasOption("modes")) {
+            GraphicsEnvironment env = GraphicsEnvironment.
+                                      getLocalGraphicsEnvironment();
+            GraphicsDevice device = env.getDefaultScreenDevice();
+            DisplayMode[] modes = device.getDisplayModes();
+            for (int i = 0; i < modes.length; i++) {
+                System.out.println("Mode " + i);
+                System.out.println("  Width:   " + modes[i].getWidth());
+                System.out.println("  Height:  " + modes[i].getHeight());
+                System.out.println("  Depth:   " + modes[i].getBitDepth());
+                System.out.println("  Refresh: " + modes[i].getRefreshRate());
+            }
             System.exit(0);
         }
         return line;
