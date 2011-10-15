@@ -5,10 +5,6 @@ import java.util.Random;
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.List;
 
 import java.awt.Color;
 import hypernova.pilots.*;

@@ -1,15 +1,11 @@
 package hypernova;
 
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
 public class ActivityEvents {
     private static final int CYCLESPEED = 40; // Time in milliseconds
-   // private static ArrayList<ActivityEvents> events = new ArrayList<ActivityEvents>();
-   // private static List<ActivityEvents> events = Collections.synchronizedList(new ArrayList<ActivityEvents>());
     private static Collection<ActivityEvents> events = new HashSet<ActivityEvents>();
     private ActivitySimple activity;
     private int eventNum = 0;
