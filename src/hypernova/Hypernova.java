@@ -64,6 +64,7 @@ public class Hypernova {
         JFrame frame = new JFrame(PROGRAM);
         if (line.hasOption("fullscreen"))
         {
+            frame.setUndecorated(true);
             String str = line.getOptionValue("fullscreen");
             try {
                 int modeNum = Integer.parseInt(str);
