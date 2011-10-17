@@ -32,7 +32,8 @@ public class WarpZoneTest extends ActivitySimple {
                setTimeout(3,2000);
                break;
            case 3: 
-               u.queueMessage("New Universe");
+               u.queueMessage("Arrival");
+               Viewer.wormhole = false;
                u.loadUniverse(toLoad);
                break;
 
@@ -41,8 +42,9 @@ public class WarpZoneTest extends ActivitySimple {
 
 
     public void begin(double px, double py) {
+        Viewer.wormhole = true;
         u.queueMessage("WARP DEBUG TEST ENCOUNTERED");
-        setTimeout(0,100);
+        setTimeout(0,5000);
     }
 
 }

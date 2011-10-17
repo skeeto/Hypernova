@@ -41,6 +41,7 @@ import hypernova.MinimWrapper;
 import hypernova.gui.backgrounds.*;
 
 public class Viewer extends JComponent implements Observer {
+    public static boolean wormhole = false;  // TODO: TEMPORARY FOR DEBUGGING
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
     public static final double DEFAULT_SCALE = 2.0;
@@ -233,6 +234,8 @@ public class Viewer extends JComponent implements Observer {
         paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
         paintOverlay(g2d);
+        // TODO: Temporary for debugging
+        if(wormhole) (new Wormhole()).draw(g2d,400,400,getWidth()/2 - 200,getHeight()/2 - 200);
     }
 
     private void minimap(Collection<Mass> objects, Graphics2D g) {

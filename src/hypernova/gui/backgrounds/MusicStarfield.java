@@ -36,7 +36,6 @@ public class MusicStarfield extends Background{
         lastX = x;
         if(clearScreen && tmpClear) g.fillRect(0, 0, width, height);
         g2d.translate(width / 2, height / 2); 
- //       if( bg == BackgroundType.MOVE && x < 5 ) return;
         for (int i = quality + 1; i > 0; i--) {
             drawStars(g2d, (int) focusX / i, (int) focusY / i, i);
         }

@@ -23,10 +23,11 @@ public class SaveGame extends Thread implements Serializable
    public static void autosave() { save(0); }
 
    static final long serialVersionUID = 1027533472837495L;  
-
+  
    public enum UniName { TEST
                        , START
                        };
+
 
    public static void checkpoint(){ load(0); }
    public static void setCheckpoint(double x, double y, UniName u)

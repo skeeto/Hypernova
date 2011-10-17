@@ -175,23 +175,35 @@ public class MinimWrapper
       // TODO Other FFT averages 8/16, make the calculations for this efficient (One loop)
       // FFT Averages
       float val32 = 0;
+      instance.fft_total = 0;
       for(int i = 0; i < 32; i++, x = 0) 
       {
          for(int j = i*32; j < i*32 + 32; j ++) x += Math.floor(instance.fftCalc.getBand(i) * 0.2);
          val32 = x / 32;
          instance.fft_32[i] = val32;
+         instance.fft_total += val32;
+  // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 
+  //   1   3   5   7   9    11    13    15    17    19    21    23    25    27    29    31
+  //       3       7        11          15          19          23          27          31
+  //               7                    15                      23                      31
          if( i%2 == 1 ) 
          {
-           instance.fft_16[i/2] = (instance.fft_32[i - 1] + val32) / 2;
+           int index16 = (i - 1) / 2;
+           instance.fft_16[index16] = (instance.fft_32[i - 1] + val32) / 2;
+           if( i%4 == 3 ) 
+           {
+             int index8 = (i - 1) / 4;
+             instance.fft_8[index8] = ( instance.fft_16[index16 - 1] 
+                                      + instance.fft_16[index16]) / 2;
+             if( i%8 == 7 )
+             {
+                instance.fft_4[(i - 1) / 8] = ( instance.fft_8[index8 - 1]
+                                              + instance.fft_8[index8]) / 2;
+             }
+           }
          }
       }
-      for(int i = 0; i < 4; i ++, x = 0)
-      {
-         for(int j = 0; j < 8; j ++) x += instance.fft_32[8*i + j];
-         instance.fft_4[i] = x / 8;
-         instance.fft_total += instance.fft_4[i];
-      }
-      instance.fft_total /= 4;
+      instance.fft_total /= 32;
       instance.fftCalc.forward(instance.curSong.mix);
       
    }
@@ -210,8 +222,14 @@ public class MinimWrapper
    */
    public static float[] fft(int x)
    {
-     if(x == 32) return instance.fft_32;
-     return instance.fft_4;
+     switch(x)
+     {
+       case 32: return instance.fft_32;
+       case 16: return instance.fft_16;
+       case 8: return instance.fft_8;
+       case 4: return instance.fft_4;
+     }
+     return null;
    }
 
    public static void main (String[] args)

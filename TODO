@@ -18,21 +18,18 @@ Features
   * Allow player ship to change appearance
   * Volume control
   * Gravity
+  * Weapon positions on ship
 
 Fixes/Polish
   * --log flag
   * Playlist code fixes (Changing song during crossfade)
   * Error handling for empty sound
-  * Finish FFT averaging
   * Command-line resolution set
   * Cut out processing core dependency 
   * Trim strings for loading parts
   * Fix ivy dependencies for audio
-  * Weapon positions on ship
   * Java generated sounds/effects
   * Clean sound async crap, and made songs async too
-  * Activity timeouts
-  * Generic pilot with destruction callback
   * Stub Audio
   * Move backgrounds out of gui
   * Save/autosave messages
