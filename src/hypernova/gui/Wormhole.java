@@ -39,7 +39,6 @@ public class Wormhole
                       + 2*c[7] * f[7];
             int vp = (int) v;
             a[0] = 0; a[1] = (vp*2) % 255; a[2] = (vp*3)%255; a[3] = a[1] + a[2]; 
-           // a[3] = (a[1] + a[2]) / 10;
             if( v < 10) a[3] = 0;
             wr.setPixel(i, j, a);
             wr.setPixel(w - i - 1, w - j - 1, a);
