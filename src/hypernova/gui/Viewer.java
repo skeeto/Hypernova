@@ -206,6 +206,9 @@ public class Viewer extends JComponent implements Observer {
         if(background != null) background.drawBackground(g, g2d, focusX, focusY);
         g2d.setTransform(at);
 
+        if(true) (new Wormhole()).draw(g2d,scale,400,400,getWidth()/2 - 200,getHeight()/2 - 200,1);
+
+
         /* Set up graphics */
         if (quality > 0) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -234,8 +237,6 @@ public class Viewer extends JComponent implements Observer {
         paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
         paintOverlay(g2d);
-        // TODO: Temporary for debugging
-        if(wormhole) (new Wormhole()).draw(g2d,400,400,getWidth()/2 - 200,getHeight()/2 - 200);
     }
 
     private void minimap(Collection<Mass> objects, Graphics2D g) {
