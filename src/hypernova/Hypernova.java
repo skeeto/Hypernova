@@ -53,6 +53,12 @@ public class Hypernova {
             log.info("extra debugging information enabled");
         }
 
+        if (line.hasOption("accel")) {
+            System.setProperty("sun.java2d.opengl","true");
+            System.setProperty("sun.java2d.translaccel","true");
+            System.setProperty("sun.java2d.ddforcevram","true");
+        }
+
         /* Sound */
         MinimWrapper.init();
         SongPlaylist.addFile("mp3s/foo.m3u");
@@ -149,7 +155,8 @@ public class Hypernova {
         String[][] str = {
             {"h", "help",       "f", "print this message"},
             {"v", "version",    "f", "print program version"},
-            {"m", "modes",   "f", "print available graphics modes"},
+            {"a", "accel",      "f", "use hardware acceleration"},
+            {"m", "modes",      "f", "print available graphics modes"},
             {"d", "debug",      "f", "turn on extra debugging info"},
             {"q", "quality",    "t", "set display quality (0-2)"},
             {"f", "fullscreen", "t", "fullscreen display (must specify mode"},
