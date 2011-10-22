@@ -6,7 +6,10 @@ import hypernova.activities.ChuckToTheFuture;
 import hypernova.activities.ChuckToTheFuture2;
 import hypernova.Realization;
 import hypernova.SaveGame;
+import hypernova.UniNames;
 import hypernova.gui.Viewer;
+import hypernova.gui.Wormhole;
+import hypernova.gui.Transition;
 import hypernova.gui.backgrounds.MusicStarfield;
 import hypernova.activities.WarpZoneTest;
 
@@ -27,7 +30,7 @@ public class Start extends NewUniverse {
    {
         MusicStarfield.setClearScreen(true);
         if(INSTANCE == null) INSTANCE = new Start();
-        SaveGame.setCheckpoint(0, 0, SaveGame.UniName.START);
+        SaveGame.setCheckpoint(0, 0, UniNames.START);
         if(INSTANCE.chuck2Done) MusicStarfield.bg = MusicStarfield.BackgroundType.ROTATE;
         Viewer.setBackground(ms);
         u.addActivity("test", 0, 0);
@@ -35,8 +38,7 @@ public class Start extends NewUniverse {
         if( !INSTANCE.chuckDone ) u.addActivity(new ChuckToTheFuture(), 500, -500);
         else if ( !INSTANCE.chuck2Done ) u.addActivity(ChuckToTheFuture.chuck2, 1500, 1500);
         
-        WarpZoneTest w = new WarpZoneTest(new Test());
-        u.addActivity(w,0,2000);
+        Wormhole.add(0,1500,400,400,UniNames.TEST, Transition.Types.FADE);
    }
 
 } 

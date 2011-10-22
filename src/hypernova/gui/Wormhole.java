@@ -5,18 +5,74 @@ import java.awt.image.*;
 import java.lang.Math;
 import java.awt.geom.AffineTransform;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import hypernova.MinimWrapper;
+import hypernova.Universe;
+import hypernova.UniNames;
+import hypernova.universes.*;
 
 public class Wormhole
 {
-   double[] c = new double[8];
-   int[] a = new int[4]; 
+   public static boolean hold = false;
 
-   public double calcVal(int n, int i, int j, float[] f)
+   private static Universe u = Universe.get();
+   private static Collection<Wormhole> wormholes = new HashSet<Wormhole>();
+
+   private double[] c = new double[8];
+   private int[] a = new int[4]; 
+   private int xr = 0;
+   private int yr = 0;
+   private int x = 0;
+   private int y = 0;
+   private int w = 0;
+   private int h = 0;
+   private UniNames n = UniNames.START;
+   private Transition.Types t = Transition.Types.FADE;
+  
+   public static void add(int pX, int pY, int width, int height, 
+                          UniNames name, Transition.Types tr)
+   {
+        synchronized(wormholes) 
+        {
+            wormholes.add(new Wormhole(pX, pY, width, height, name, tr)); 
+        }
+   }
+ 
+   public static void clear()
+   {
+        synchronized(wormholes) { wormholes.clear(); }
+   }
+
+   public static void drawAll(Graphics2D g2d)
+   {
+        for (Wormhole w : wormholes) w.draw(g2d);
+   }
+
+   private Wormhole(int pX, int pY, int width, int height, 
+                    UniNames name, Transition.Types tr)
+   {
+       // 2* to compensate for scaling trickery
+       x = 2*pX - width/2;
+       y = 2*pY - height/2;
+
+       xr = pX;
+       yr = pY;
+       w = width;
+       h = height;
+       n = name;
+       t = tr;
+       
+       MapMarker.add(new MapMarker(xr,yr,new Color(255,255,255),true));
+   }  
+
+   public double calcVal(UniNames n, int i, int j, float[] f)
    {
        switch(n)
        {
-           case 0: 
+           case START: 
                return  + 2 * c[0] * f[0] * j
                        - 10 * c[1] * f[1] * j * j 
                        - 10 * c[2] * f[2] * i * i
@@ -25,7 +81,7 @@ public class Wormhole
                        + 2* c[5] * Math.sin(f[5]*i) 
                        + 2* c[6] * Math.cos(f[6]) * i 
                        + 2*c[7] * f[7];
-           case 1:
+           case TEST:
                return - c[0] * f[0] * j
                       - c[1] * f[1] * j 
                       - c[2] * f[2] * i
@@ -38,18 +94,18 @@ public class Wormhole
        return 0;
    }
 
-   public void setColors(int n, int v, int i, int j)
+   public void setColors(UniNames n, int v, int i, int j)
    {
        switch(n)
        {
-           case 0:
+           case START:
                a[0] = 0; 
                a[1] = (v*2) % 255; 
                a[2] = (v*3)%255;
                a[3] = a[1] + a[2]; 
                if( v < 10) a[3] = 0;
                break;
-           case 1:
+           case TEST:
                if(v%2 == 0) a[0] = 255; 
                else a[0] = 0; 
                if(v%3 == 0) a[1] = 255; 
@@ -63,11 +119,11 @@ public class Wormhole
       }
    }
 
-   public void setConsts(int n)
+   public void setConsts(UniNames n)
    {
        switch(n)
        {
-       case 0:
+       case START:
            c[0] = 4.9355043E-5;
            c[1] = 1.1944349E-5;
            c[2] = 9.123675E-6;
@@ -77,21 +133,56 @@ public class Wormhole
            c[6] = 2.9558503E-5;
            c[7] = 1.1900892E-5; 
            break;
-       case 1:    
-           c[0] = 1;
-           c[1] = 1;
-           c[2] = 1;
-           c[3] = 1;
-           c[4] = 1;
-           c[5] = 1;
-           c[6] = 1;
-           c[7] = 1;
+       case TEST:    
+           c[0] = 0.05;
+           c[1] = 0.01;
+           c[2] = 0.01;
+           c[3] = 0.01;
+           c[4] = 0.01;
+           c[5] = 0.01;
+           c[6] = 0.01;
+           c[7] = 0.01;
            break;
        } 
    }
 
-   public void draw(Graphics2D g2d, double s, int w, int h, int x, int y, int n)
+   private boolean checkBounds()
    {
+      double px = u.getPlayer().getX(0);
+      double py = u.getPlayer().getY(0);
+      if( hold ) return true; 
+
+      // Check if outside of viewable area
+      if(  px < xr - 650 
+        || px > xr + 650 
+        || py < yr - 650 
+        || py > yr + 650) return true;
+         
+
+      // Check if warp
+      if( px > xr - 50 && px < xr + 50 && py > yr - 50 && py < yr + 50)
+      { 
+         hold = true;
+         Transition.startTransition(t);
+         Wormhole.clear();
+         switch(n)
+         {
+             case TEST:
+                 u.loadUniverse(Test.INSTANCE);
+                 break;
+             case START:
+                 u.loadUniverse(Start.INSTANCE);
+                 break;
+         }
+         return true;
+      } 
+      return false;
+   }
+
+   public void draw(Graphics2D g2d)
+   {
+      if(checkBounds()) return;
+
       BufferedImage I = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       WritableRaster wr = I.getRaster();
   
@@ -110,14 +201,7 @@ public class Wormhole
             wr.setPixel(i, h - j - 1, a);
         }
       }
-      AffineTransform at = new AffineTransform();
-      if(s <= 1.25) at.scale(0.1, 0.1);
-      else if(s > 2.5) at.scale(1.25, 1.25);
-      else at.scale(s - 1.25, s - 1.25);
-
-      BufferedImageOp bio;
-      bio = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-      BufferedImage IP = bio.filter(I, null);
-      g2d.drawImage(IP, x*(int)s, y*(int)s, null);
+      g2d.drawImage(I, x, y, null);
    }
+   
 }

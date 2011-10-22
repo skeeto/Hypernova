@@ -4,6 +4,7 @@ import hypernova.ActivitySimple;
 import hypernova.Universe;
 import hypernova.NewUniverse;
 import hypernova.gui.Viewer;
+import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.universes.*;
 import hypernova.gui.backgrounds.EqualizerBackground;
@@ -34,7 +35,6 @@ public class WarpZoneTest extends ActivitySimple {
                break;
            case 3: 
                u.queueMessage("Arrival");
-               Viewer.wormhole = false;
                break;
 
        }
@@ -42,11 +42,11 @@ public class WarpZoneTest extends ActivitySimple {
 
 
     public void begin(double px, double py) {
-        Viewer.wormhole = true;
         if(toLoad instanceof Test) 
           Transition.startTransition(Transition.Types.FADE);
         else 
           Transition.startTransition(Transition.Types.DIAGONAL);
+
         u.loadUniverse(toLoad);
         u.queueMessage("WARP DEBUG TEST ENCOUNTERED");
         setTimeout(0,5000);

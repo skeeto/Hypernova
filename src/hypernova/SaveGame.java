@@ -16,7 +16,7 @@ public class SaveGame extends Thread implements Serializable
    private long totalPlayTime = 0;
    private double restoreX = 0;
    private double restoreY = 0;   
-   private UniName restoreU = UniName.START;
+   private UniNames restoreU = UniNames.START;
    private static int curSlot = 0;
 
    protected static SaveGame INSTANCE = new SaveGame();
@@ -24,13 +24,9 @@ public class SaveGame extends Thread implements Serializable
 
    static final long serialVersionUID = 1027533472837495L;  
   
-   public enum UniName { TEST
-                       , START
-                       };
-
 
    public static void checkpoint(){ load(0); }
-   public static void setCheckpoint(double x, double y, UniName u)
+   public static void setCheckpoint(double x, double y, UniNames u)
    {
      INSTANCE.restoreX = x;
      INSTANCE.restoreY = y;

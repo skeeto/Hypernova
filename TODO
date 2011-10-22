@@ -1,36 +1,38 @@
 Features
+  * Easier ship destroy events
   * Other types of collision besides bounce (And update ammo collisions)
-  * Add wormholes
-  * SVG conversion tool
-  * Randomly generated asteroids
   * Make easy to add to info box
+  * Menu System (Shops/Options)
   * Cooldown bar
   * Inventory management 
-  * Easier ship destroy events
-  * Icons when close to map marker
   * Looping galaxy
-  * Options menu
-  * Allow color and shape changes based on FFT
+  * SVG conversion tool
+  * Randomly generated asteroids
   * Sounds (Preloadable and positional)
-  * Image based backgrounds
-  * Allow player ship to change weapons
   * Allow player ship to change appearance
-  * Volume control
-  * Gravity
   * Weapon positions on ship
 
+Later Features
+  * Save/autosave messages
+  * Start menu
+  * Volume control
+  * Gravity
+  * Joystick support
+  * User friendly config
+  * Icons when close to map marker
+
 Fixes/Polish
+  * Clean sound async crap, and made songs async too
+  * Move backgrounds out of gui
+  * Wormhole sounds
+  * Stop player movement on transition
   * --log flag
   * Playlist code fixes (Changing song during crossfade)
   * Error handling for empty sound
-  * Command-line resolution set
   * Cut out processing core dependency 
   * Trim strings for loading parts
   * Fix ivy dependencies for audio
-  * Java generated sounds/effects
-  * Clean sound async crap, and made songs async too
   * Stub Audio
-  * Move backgrounds out of gui
-  * Save/autosave messages
   * Polish SaveGame code
   * Try to make fullscreen go back (Seems to be handled automatically)
+  * Standalone executable

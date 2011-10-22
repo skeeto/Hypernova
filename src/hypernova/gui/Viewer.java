@@ -41,9 +41,6 @@ import hypernova.MinimWrapper;
 import hypernova.gui.backgrounds.*;
 
 public class Viewer extends JComponent implements Observer {
-    public static boolean wormhole = false;  // TODO: TEMPORARY FOR DEBUGGING
-
-
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
     public static final double DEFAULT_SCALE = 2.0;
@@ -208,7 +205,6 @@ public class Viewer extends JComponent implements Observer {
         if(background != null) background.drawBackground(g, g2d, focusX, focusY);
         g2d.setTransform(at);
 
-        if(false) (new Wormhole()).draw(g2d,scale,400,400,getWidth()/2 - 200,getHeight()/2 - 200,1);
 
         /* Set up graphics */
         if (quality > 0) {
@@ -222,6 +218,14 @@ public class Viewer extends JComponent implements Observer {
                                  RenderingHints.VALUE_RENDER_QUALITY);
         }
 
+        /* Wormhole */
+        g2d.translate(-(focusX * scale - getWidth() / 2),
+                      -(focusY * scale - getHeight() / 2));
+        if(scale != 2) g2d.scale(scale/2, scale/2);
+        Wormhole.drawAll(g2d);
+        g2d.setTransform(at);
+
+        /* Models */
         g2d.translate(-(focusX * scale - getWidth() / 2),
                       -(focusY * scale - getHeight() / 2));
         g2d.scale(scale, scale);

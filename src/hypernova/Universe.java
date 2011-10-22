@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
 import hypernova.gui.MapMarker;
+import hypernova.gui.Wormhole;
 
 public class Universe extends Observable implements Runnable {
     public static final int DELAY_MSEC = 40;
@@ -187,6 +188,7 @@ public class Universe extends Observable implements Runnable {
                   ActivityEvents.clear();
                   clear = false;
                   paused = false;
+                  Wormhole.hold = false;
                 }
                 continue;
             }
