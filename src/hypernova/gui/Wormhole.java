@@ -48,7 +48,10 @@ public class Wormhole
 
    public static void drawAll(Graphics2D g2d)
    {
-        for (Wormhole w : wormholes) w.draw(g2d);
+        synchronized(wormholes) 
+        {
+            for (Wormhole w : wormholes) w.draw(g2d);
+        }
    }
 
    private Wormhole(int pX, int pY, int width, int height, 
