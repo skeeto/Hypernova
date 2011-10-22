@@ -26,6 +26,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLineParser;
 
 import hypernova.gui.Viewer;
+import hypernova.gui.Transition;
 import hypernova.universes.Start;
 
 public class Hypernova {
@@ -34,8 +35,8 @@ public class Hypernova {
 
     public static boolean debug = false;
 
-    private static Viewer viewer;
     private static Logger log = Logger.getRootLogger();
+    private static Viewer viewer;
 
     public static void main(String[] args) {
         /* Fix for poor OpenJDK performance. */
@@ -107,6 +108,7 @@ public class Hypernova {
 
         viewer = new Viewer();
         Universe.get().initialize();
+        Transition.setViewer(viewer);
 
         /* Hide mouse cursor */
         Toolkit toolkit = Toolkit.getDefaultToolkit();

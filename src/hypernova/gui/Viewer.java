@@ -42,6 +42,8 @@ import hypernova.gui.backgrounds.*;
 
 public class Viewer extends JComponent implements Observer {
     public static boolean wormhole = false;  // TODO: TEMPORARY FOR DEBUGGING
+
+
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
     public static final double DEFAULT_SCALE = 2.0;
@@ -206,8 +208,7 @@ public class Viewer extends JComponent implements Observer {
         if(background != null) background.drawBackground(g, g2d, focusX, focusY);
         g2d.setTransform(at);
 
-        if(true) (new Wormhole()).draw(g2d,scale,400,400,getWidth()/2 - 200,getHeight()/2 - 200,1);
-
+        if(false) (new Wormhole()).draw(g2d,scale,400,400,getWidth()/2 - 200,getHeight()/2 - 200,1);
 
         /* Set up graphics */
         if (quality > 0) {
@@ -236,6 +237,8 @@ public class Viewer extends JComponent implements Observer {
 
         paintInfo(g2d.create(INFO_X, INFO_Y, INFO_WIDTH, getHeight()));
         g2d.setTransform(at);
+        
+        Transition.doTransition(g2d);
         paintOverlay(g2d);
     }
 
