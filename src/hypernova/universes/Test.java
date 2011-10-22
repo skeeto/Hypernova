@@ -21,5 +21,6 @@ public class Test extends NewUniverse {
         Activity battle = new hypernova.activities.FactoryBattle();
         u.addActivity(battle, -500, -500);
         Wormhole.add(0,-1500,400,400,UniNames.START,Transition.Types.DIAGONAL);
+        u.queueMessage("You are there");
    }
 } 

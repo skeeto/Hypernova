@@ -43,6 +43,7 @@ import hypernova.gui.backgrounds.*;
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
     public static final double MESSAGE_TIME = 2.0; // seconds
+    public static final double MESSAGE_CORNER_TIME = 1.0; // seconds
     public static final double DEFAULT_SCALE = 2.0;
     public static final double SCALE_MAX = 4.0;
     public static final double SCALE_MIN = 0.75;
@@ -95,7 +96,9 @@ public class Viewer extends JComponent implements Observer {
     public BlockingQueue<File> saves = new LinkedBlockingQueue<File>(1);
 
     private double msgTime;
+    private double msgCornerTime;
     private String message;
+    private String cornerMessage;
 
     private long framesElapsed = 0;
     private long lastFrames = 0;
@@ -330,6 +333,13 @@ public class Viewer extends JComponent implements Observer {
             if (message != null)
                 log.debug("Displaying: " + message);
         }
+        if (cornerMessage == null || 
+            now() - msgCornerTime > MESSAGE_CORNER_TIME) {
+            cornerMessage = universe.nextCornerMessage();
+            msgCornerTime = now();
+            if (cornerMessage != null)
+                log.debug("Displaying: " + cornerMessage);
+        }
         if (message != null) {
             Font oldfont = g.getFont();
             g.setFont(oldfont.deriveFont(30f));
@@ -341,6 +351,21 @@ public class Viewer extends JComponent implements Observer {
             int alpha = (int) (Math.sqrt(progress) * 255);
             g.setColor(new Color(0xff, 0xff, 0xff, alpha));
             g.drawString(message, x - width / 2, y - fm.getAscent() * 2);
+        }
+
+        if(cornerMessage != null)
+        {
+            Font oldfont = g.getFont();
+            g.setFont(oldfont.deriveFont(15f));
+            FontMetrics fm = g.getFontMetrics();
+            int width = fm.stringWidth(cornerMessage);
+            int x = getWidth();
+            int y = getHeight();
+            double progress = (1 - (now() - msgCornerTime) 
+                            / MESSAGE_CORNER_TIME);
+            int alpha = (int) (Math.sqrt(progress) * 255);
+            g.setColor(new Color(0xff, 0xff, 0xB0, alpha));
+            g.drawString(cornerMessage, x - width - 5, y - fm.getAscent());
         }
     }
 

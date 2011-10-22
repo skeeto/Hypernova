@@ -2,8 +2,6 @@
   (:use hypernova.activities.api))
 
 
-(message "Let's go south-east and see what we find...")
-
 (def *station-position* (position-relative 300 300))
 
 (def artifact (atom nil))

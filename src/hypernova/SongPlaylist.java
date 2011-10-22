@@ -4,14 +4,24 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
 
-// TODO -- Add currently playing display
 public class SongPlaylist extends MinimWrapper //TODO extend some interface to get a callback to nextSong
 {
    private static ArrayList<String> toPlay  = new ArrayList<String>();
    private static ArrayList<String> didPlay = new ArrayList<String>();
    private static String curSong = "";
    private static boolean shuffle = false;
+   private static boolean showSong = true;
+   
 
+   public static void showSong(boolean v)
+   { 
+     showSong = v;
+   }
+
+   public static boolean showSong()
+   { 
+     return showSong;
+   }
 
 // TODO Super call in construct
 
@@ -120,10 +130,10 @@ public class SongPlaylist extends MinimWrapper //TODO extend some interface to g
    public static void forwardSong()
    {
       int i = 0;
-     
+      
       if("".equals(curSong)) { if(toPlay.isEmpty()) return; }
       else didPlay.add(curSong);
-        
+      
       if(toPlay.isEmpty())
       {
          ArrayList<String> toPlayOld = toPlay;
@@ -135,6 +145,7 @@ public class SongPlaylist extends MinimWrapper //TODO extend some interface to g
       curSong = toPlay.remove(i);
       instance.loadSong(curSong);
       instance.nextSong();
+      if(showSong) Universe.get().queueCornerMessage(curSong);  
    }
 
 

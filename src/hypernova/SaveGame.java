@@ -18,6 +18,7 @@ public class SaveGame extends Thread implements Serializable
    private double restoreY = 0;   
    private UniNames restoreU = UniNames.START;
    private static int curSlot = 0;
+   private static Universe u = Universe.get();
 
    protected static SaveGame INSTANCE = new SaveGame();
    public static void autosave() { save(0); }
@@ -86,7 +87,6 @@ public class SaveGame extends Thread implements Serializable
           nu = new Start();
           break;
      }     
-     Universe u = Universe.get();
      Ship p = u.getPlayer();   
      u.loadUniverse(nu);
      p.setX(INSTANCE.restoreX,0);
@@ -103,6 +103,8 @@ public class SaveGame extends Thread implements Serializable
 
    public static void save(int slot)
    { 
+     if(slot == 0) u.queueCornerMessage("Autosaving...");
+     else u.queueCornerMessage("Saved in slot: " + slot);
      curSlot = slot; 
      (new SaveGame()).start(); 
    }

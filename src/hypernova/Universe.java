@@ -39,6 +39,7 @@ public class Universe extends Observable implements Runnable {
     private NewUniverse currentUniverse;
 
     private Queue<String> messages = new ConcurrentLinkedQueue<String>();
+    private Queue<String> cornerMessages = new ConcurrentLinkedQueue<String>();
 
     private Collection<Mass> objects = new HashSet<Mass>();
     private Queue<Mass> incoming = new ConcurrentLinkedQueue<Mass>();
@@ -115,9 +116,18 @@ public class Universe extends Observable implements Runnable {
         log.info("Pause set to " + paused);
     }
 
+    public void queueCornerMessage(String msg) {
+        log.info("Queued: \"" + msg + "\"");
+        cornerMessages.offer(msg);
+    }
+
     public void queueMessage(String msg) {
         log.info("Queued: \"" + msg + "\"");
         messages.offer(msg);
+    }
+
+    public String nextCornerMessage() {
+        return cornerMessages.poll();
     }
 
     public String nextMessage() {
