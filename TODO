@@ -10,9 +10,9 @@ Features
   * Randomly generated asteroids
   * Sounds (Preloadable and positional)
   * Allow player ship to change appearance
-  * Weapon positions on ship
 
 Later Features
+  * Ship weapon visuals
   * Start menu
   * Volume control
   * Gravity

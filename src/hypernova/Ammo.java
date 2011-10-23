@@ -1,6 +1,7 @@
 package hypernova;
 
 import java.util.Properties;
+import java.awt.geom.Point2D;
 
 import org.apache.log4j.Logger;
 
@@ -51,7 +52,7 @@ public class Ammo extends Mass {
         return ammo;
     }
 
-    public Ammo copy(Mass src) {
+    public Ammo copy(Mass src, Point2D.Double p) {
         Ammo ammo = new Ammo(getHull(), name, info);
         ammo.shortlived = true;
         ammo.suffersdrag = false;
@@ -60,8 +61,17 @@ public class Ammo extends Mass {
         ammo.speed = speed;
         ammo.hull = hull.copy();
         ammo.setPosition(src);
-        ammo.x[1] = src.x[1] + Math.cos(src.getA(0)) * speed;
-        ammo.y[1] = src.y[1] + Math.sin(src.getA(0)) * speed;
+
+        // Intentionally backwards :P
+        double x = p.getY();
+        double y = p.getX();
+        double a = src.getA(0);
+        double phi = Math.atan(y / x);
+        double r   = Math.sqrt(x*x + y*y);
+        ammo.x[0] = src.x[0] + r * Math.cos(a - phi);
+        ammo.y[0] = src.y[0] + r * Math.sin(a - phi);
+        ammo.x[1] = src.x[1] + speed * Math.cos(a);
+        ammo.y[1] = src.y[1] + speed * Math.sin(a);
         ammo.setFaction(src.getFaction());
         ammo.source = src;
         return ammo;

@@ -87,6 +87,7 @@ public class Hull {
         return hull.copy();
     }
 
+
     private static Point2D.Double[] slots(String str, int n) {
         if (str == null || n == 0)
             return new Point2D.Double[0];
@@ -108,6 +109,11 @@ public class Hull {
 
     public double getDrag() {
         return drag;
+    }
+
+    public Point2D.Double getSlot(int i) {
+        if(i > weaponslots.length) return null;
+        return weaponslots[i];
     }
 
     public String getDestroySound() {
@@ -154,7 +160,10 @@ public class Hull {
         copy.numweapons = numweapons;
         copy.numengines = numengines;
         if (numweapons > 0)
+        {
             copy.weaponslots = new Point2D.Double[numweapons];
+            System.arraycopy(weaponslots, 0, copy.weaponslots, 0, numweapons);
+        }
         return copy;
     }
 }

@@ -3,6 +3,7 @@ package hypernova;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
+import java.awt.geom.Point2D;
 
 import org.apache.log4j.Logger;
 
@@ -72,10 +73,10 @@ public class Weapon {
         }
     }
 
-    public void fire(Mass src) {
+    public void fire(Mass src, Point2D.Double p) {
         if (timeout <= 0) {
             // Sound.play("fire");
-            Universe.get().add(ammo.copy(src));
+            Universe.get().add(ammo.copy(src,p));
             timeout = cooldown;
         }
     }

@@ -59,6 +59,7 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             break;
         case KeyEvent.VK_CONTROL:
             ship.setFire(0, true);
+            ship.setFire(1, true);
             break;
         case KeyEvent.VK_COMMA:
             SongPlaylist.backwardSong();
@@ -98,6 +99,7 @@ public class KeyboardPilot extends Pilot implements KeyListener {
             break;
         case KeyEvent.VK_CONTROL:
             ship.setFire(0, false);
+            ship.setFire(1, false);
             break;
         }
     }
