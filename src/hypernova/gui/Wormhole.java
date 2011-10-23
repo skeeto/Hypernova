@@ -1,9 +1,11 @@
 package hypernova.gui;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.lang.Math;
 import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 import java.util.Collection;
 import java.util.HashSet;

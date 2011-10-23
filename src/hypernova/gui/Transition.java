@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.Color;
 
 public class Transition
 {
@@ -43,6 +45,7 @@ public class Transition
             case NONE:     break;
             case DIAGONAL: diagonal(g2d); break;
             case FADE:     fade(g2d); break;
+            case BLOCKING: blocking(g2d); break;
         }
     }
    
@@ -70,5 +73,37 @@ public class Transition
        }
        g2d.drawImage(img, 0, 0, null);
        if(transCount ++ == 51) transType = Types.NONE;
+    }
+
+    private static void blocking(Graphics2D g2d)
+    {
+       int rW = img.getWidth()  / 5;
+       int rH = img.getHeight() / 5;
+       if(transCount < 30) g2d.drawImage(img, 0, 0, null);
+
+       boolean[] blocks = new boolean[25];
+       if(transCount < 30)
+       {
+         for(int i = 0; i < 25; i ++) blocks[i] = false;
+         for(int i = 1; i <= transCount; i ++) 
+           blocks[(7*(i + 1)) % 25] = true;
+       } else {                      
+         for(int i = 0; i < 25; i ++) blocks[i] = true;
+         for(int i = 1; i <= (transCount - 26); i ++) 
+           blocks[(11*(i + 1)) % 25] = false;
+       }
+       for(int i = 0; i < 25; i ++)
+       {
+          if(!blocks[i]) continue;
+          int im = i % 5;
+          int x = rW * im;
+          int y = rH * (i - im) / 5; 
+          Rectangle2D rect = new Rectangle2D.Double(x, y, rW, rH);
+          g2d.setPaint(new Color(225,225,225,125));
+          //g2d.draw(rect);
+          g2d.fill(rect);
+       }                         
+       
+       if(transCount ++ == 60) transType = Types.NONE;
     }
 }

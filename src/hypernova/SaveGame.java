@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.lang.Class;
 
 import hypernova.universes.*;
-
+import hypernova.gui.Transition;
 
 public class SaveGame extends Thread implements Serializable
 {
@@ -75,6 +75,7 @@ public class SaveGame extends Thread implements Serializable
      SaveGame.INSTANCE = loadFile(SaveGame.INSTANCE);
      Test.INSTANCE = (Test)loadFile(Test.INSTANCE);
      Start.INSTANCE = (Start)loadFile(Start.INSTANCE);
+     Transition.startTransition(Transition.Types.FADE);
 
 
      NewUniverse nu = null;
