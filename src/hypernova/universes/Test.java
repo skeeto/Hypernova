@@ -2,6 +2,7 @@ package hypernova.universes;
 
 import hypernova.NewUniverse;
 import hypernova.Activity;
+import hypernova.Faction;
 import hypernova.Realization;
 import hypernova.SaveGame;
 import hypernova.UniNames;
@@ -16,6 +17,9 @@ public class Test extends NewUniverse {
    static final long serialVersionUID = 7533472837495L;  
    public void begin()
    {
+        Faction.clear();
+        Faction.create("Humans", Faction.ColorType.TEST_HUMAN);
+        Faction.create("Invaders", Faction.ColorType.TEST_INVADER);
         SaveGame.setCheckpoint(0, 0, UniNames.TEST);
         Viewer.setBackground(new EqualizerBackground());
         Activity battle = new hypernova.activities.FactoryBattle();

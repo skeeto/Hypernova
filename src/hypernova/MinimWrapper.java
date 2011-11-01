@@ -32,10 +32,11 @@ public class MinimWrapper
    private AudioPlayer fadeIn;
  
    private float   fft_total;
-   private float[] fft_4  = new float[4];
-   private float[] fft_8  = new float[8];
-   private float[] fft_16 = new float[16];
-   private float[] fft_32 = new float[32];
+   private float[] fft_4   = new float[4];
+   private float[] fft_8   = new float[8];
+   private float[] fft_16  = new float[16];
+   private float[] fft_32  = new float[32];
+   private float[] maxSeen = new float[4];
 
    private int songCount = 0;
 
@@ -129,9 +130,19 @@ public class MinimWrapper
          instance.fftCalc = new FFT(instance.curSong.bufferSize(), instance.curSong.sampleRate());
          instance.curSong.skip(5); // TODO: Is it really synced :P
          instance.curSong.play();
+         for(int i = 0; i < 4; i ++) instance.maxSeen[0] = 0;
       } else instance.doFade = true;
     
    }
+   
+  /**
+   * Maximum fft values seen for this song (4 bands)
+   */
+   public static float[] max()
+   {
+     return instance.maxSeen;
+   }
+
 
   /**
    * Perform cleanup
@@ -178,7 +189,8 @@ public class MinimWrapper
       instance.fft_total = 0;
       for(int i = 0; i < 32; i++, x = 0) 
       {
-         for(int j = i*32; j < i*32 + 32; j ++) x += Math.floor(instance.fftCalc.getBand(i) * 0.2);
+         for(int j = i*32; j < i*32 + 32; j ++) 
+           x += Math.floor(instance.fftCalc.getBand(i) * 0.2);
          val32 = x / 32;
          instance.fft_32[i] = val32;
          instance.fft_total += val32;
@@ -200,9 +212,12 @@ public class MinimWrapper
            }
          }
       }
+
+      for(int i = 0; i < 4; i ++)
+        instance.maxSeen[i] = Math.max(instance.maxSeen[i], instance.fft_4[i]);
+
       instance.fft_total /= 32;
       instance.fftCalc.forward(instance.curSong.mix);
-      
    }
 
   /**

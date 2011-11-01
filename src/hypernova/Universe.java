@@ -63,7 +63,7 @@ public class Universe extends Observable implements Runnable {
         Faction.create("None", Color.WHITE);
         Faction.create("Humans", Color.GREEN);
         Faction.create("Aliens", new Color(0xcc, 0x00, 0xcc));
-        Faction.create("Invaders", Color.RED);
+        Faction.create("Invaders", Color.BLACK);
     }
 
     public void loadUniverse(NewUniverse n) {

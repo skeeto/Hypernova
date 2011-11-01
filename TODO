@@ -16,9 +16,9 @@ Later Features
   * Start menu
   * Volume control
   * Gravity
-  * Joystick support
   * User friendly config
   * Icons when close to map marker
+  * Joystick support
 
 Fixes/Polish
   * Clean sound async crap, and made songs async too
