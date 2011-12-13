@@ -1,10 +1,23 @@
 <?xml version="1.0"?>
 <ivy-module version="2.0">
   <info organisation="com.nullprogram" module="Hypernova"/>
+  <configurations>
+    <conf name="default"/>
+    <conf name="build" extends="default" visibility="private"/>
+    <conf name="test" extends="build" visibility="private"/>
+  </configurations>
   <dependencies>
-    <dependency org="log4j" name="log4j" rev="1.2.14"/>
-    <dependency org="commons-cli" name="commons-cli" rev="1.2"/>
-    <dependency org="com.google.guava" name="guava" rev="r09"/>
-    <dependency org="org.clojure" name="clojure" rev="1.2.1"/>
+    <dependency org="log4j" name="log4j" rev="1.2.14"
+                conf="default"/>
+    <dependency org="commons-cli" name="commons-cli" rev="1.2"
+                conf="default"/>
+    <dependency org="com.google.guava" name="guava" rev="r09"
+                conf="default"/>
+    <dependency org="org.clojure" name="clojure" rev="1.2.1"
+                conf="default"/>
+    <dependency org="junit" name="junit" rev="4.10"
+                conf="test->default"/>
+    <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.5"
+                conf="test->default"/>
   </dependencies>
 </ivy-module>
