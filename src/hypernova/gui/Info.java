@@ -24,11 +24,15 @@ public class Info {
     public static final int HP_HEIGHT = 3;
     
     public static boolean visibleHP       = true;
-    public static boolean visiblePosition = false;
+    public static boolean visiblePosition = true;
     public static boolean visibleScore    = true;
+    public static boolean visibleTimer    = false;
+    public static boolean visibleCounter  = false;
 
-    private static int stringH      = 0;
+    public static int timeLeft = 0;
+    public static int shipsLeft = 0;
 
+    private static int stringH = 0;
     private static long framesElapsed = 0;
     private static long lastFrames = 0;
     private static long lastTime = System.currentTimeMillis();
@@ -41,6 +45,8 @@ public class Info {
         if (visibleHP) totalH += HP_HEIGHT + INFO_PAD;
         if (visiblePosition) totalH += stringH + INFO_PAD;
         if (visibleScore) totalH += stringH + INFO_PAD;
+        if (visibleTimer) totalH += stringH + INFO_PAD;
+        if (visibleCounter) totalH += stringH + INFO_PAD;
         if (Hypernova.debug) totalH += 3*stringH + INFO_PAD;
         return totalH;
     }
@@ -54,7 +60,8 @@ public class Info {
         FontMetrics fm = g.getFontMetrics();
         stringH = fm.getAscent(); 
         int curH    = INFO_PAD;
- 
+        String str  = ""; 
+
         g.setColor(INFO_COLOR);
         g.fillRect(0, 0, INFO_WIDTH, totalHeight());
         g.setColor(INFO_BORDER);
@@ -85,10 +92,24 @@ public class Info {
         /* Score */
         if( visibleScore ) {
           curH += stringH + INFO_PAD;
-          String str = "Gold: " + Universe.get().getGold();
+          str = "Gold: " + Universe.get().getGold();
           g.drawString(str, INFO_PAD, curH);
         }
    
+        /* Timer */
+        if( visibleTimer ) {
+          curH += stringH + INFO_PAD;
+          str = "Time Left: " + timeLeft;
+          g.drawString(str, INFO_PAD, curH);
+        }
+
+        /* Count Down */
+        if( visibleCounter ) {
+          curH += stringH + INFO_PAD;
+          str = "Ships: " + shipsLeft;
+          g.drawString(str, INFO_PAD, curH);
+        }
+
         /* FPS */
         if(Hypernova.debug) {
            curH += 3*stringH + INFO_PAD;
@@ -99,7 +120,7 @@ public class Info {
                lastFrames = framesElapsed;
                framesElapsed = 0;
            }
-           String str = "FPS: " + lastFrames;
+           str = "FPS: " + lastFrames;
            g.drawString(str, INFO_PAD, curH);
         }
     }

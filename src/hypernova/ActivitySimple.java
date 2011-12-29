@@ -11,6 +11,7 @@ import hypernova.pilots.*;
 import hypernova.gui.MapMarker;
 
 public class ActivitySimple extends Activity implements Realization {
+    public static final int SHIP_DESTROY = -1;
     protected static final Random RNG = new Random();
     
     protected double WIDTH  = 250;
@@ -26,6 +27,7 @@ public class ActivitySimple extends Activity implements Realization {
     public enum PilotType { BEAMER
                           , PLAYER_HUNTER
                           , CIRCLE_PILOT 
+                          , EVENT_DRONE
                           };
 
 
@@ -51,29 +53,40 @@ public class ActivitySimple extends Activity implements Realization {
         if(m != null) m.setVisible(false);
     }
   
-    public void addShip(String design, String faction, PilotType pilot, double sx, double sy)
+    public Ship addShip(String design, String faction, PilotType pilot, 
+                        double sx, double sy)
     {
-           Ship s = Ship.get(design);
-           s.setFaction(faction);
-           s.setPosition(sx, sy);
-           Pilot p = null;
-           switch(pilot)
-           {
-              case BEAMER:
-                 p = new Beamer(s);
-                 break;
-              case PLAYER_HUNTER:
-                 p = new PlayerHunter(s);
-                 break;
-              case CIRCLE_PILOT:
-                 p = new CirclePilot(s, 10);
-                 break;
-              default:
-                 log.error("Invalid Ship");
-           }
-           p.setShip(s);
-           s.setPilot(p);
-           (Universe.get()).add(s);
+        return addShip(design, faction, pilot, sx, sy, SHIP_DESTROY);
+    }
+
+    public Ship addShip(String design, String faction, PilotType pilot, 
+                        double sx, double sy, int event)
+    {
+        Ship s = Ship.get(design);
+        s.setFaction(faction);
+        s.setPosition(sx, sy);
+        Pilot p = null;
+        switch(pilot)
+        {
+           case BEAMER:
+              p = new Beamer(s);
+              break;
+           case PLAYER_HUNTER:
+              p = new PlayerHunter(s);
+              break;
+           case CIRCLE_PILOT:
+              p = new CirclePilot(s, 10);
+              break;
+           case EVENT_DRONE:
+              p = new EventDrone(s, this, event);
+              break;
+           default:
+              log.error("Invalid Ship");
+        }
+        p.setShip(s);
+        s.setPilot(p);
+        (Universe.get()).add(s);
+        return s;
     }
 
     // On added to world

@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ActivityEvents {
     private static final int CYCLESPEED = 40; // Time in milliseconds
-    private static Collection<ActivityEvents> events = new HashSet<ActivityEvents>();
+    private static Collection<ActivityEvents> events = new ConcurrentLinkedQueue<ActivityEvents>();
     private ActivitySimple activity;
     private int eventNum = 0;
     private int cyclesLeft = 0;

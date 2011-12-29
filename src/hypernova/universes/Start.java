@@ -10,6 +10,7 @@ import hypernova.Realization;
 import hypernova.SaveGame;
 import hypernova.UniNames;
 import hypernova.gui.Viewer;
+import hypernova.gui.Info;
 import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.gui.backgrounds.MusicStarfield;
@@ -36,6 +37,9 @@ public class Start extends NewUniverse {
         Faction.create("Aliens", new Color(0xcc, 0x00, 0xcc));
         Faction.create("Invaders", Color.RED);
 
+        Info.visibleTimer = false;
+        Info.visibleCounter = false;
+        
         MusicStarfield.setClearScreen(true);
         if(INSTANCE == null) INSTANCE = new Start();
         SaveGame.setCheckpoint(0, 0, UniNames.START);

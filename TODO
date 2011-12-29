@@ -1,14 +1,13 @@
 Features
-  1  Easier ship destroy events
-  2  Other types of collision besides bounce (And update ammo collisions)
-  3  Menu System (Shops/Options)
-  4  Cooldown bar
-  5  Looping galaxy
-  6  Walls
-  7  Weapon Selection 
-  8  Randomly generated asteroids
-  9  Sounds (Preloadable and positional)
-  10 Allow player ship to change appearance
+  1  Other types of collision besides bounce (And update ammo collisions)
+  2  Menu System (Shops/Options)
+  3  Cooldown bar
+  4  Looping galaxy
+  5  Walls
+  6  Weapon Selection 
+  7  Randomly generated asteroids
+  8  Sounds (Preloadable and positional)
+  9 Allow player ship to change appearance
 
 Later Features
   * SVG conversion tool
@@ -35,4 +34,4 @@ Fixes/Polish
   * Polish SaveGame code
   * Try to make fullscreen go back (Seems to be handled automatically)
   * Standalone executable
-  * Info box coede is now ugly
+  * Info box code is now ugly
