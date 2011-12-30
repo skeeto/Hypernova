@@ -3,10 +3,9 @@ Features
   2  Menu System (Shops/Options)
   3  Looping galaxy
   4  Walls
-  5  Weapon Generalization 
-  6  Randomly generated asteroids
-  7  Sounds (Preloadable and positional)
-  8  Allow player ship to change appearance
+  5  Randomly generated asteroids
+  6  Sounds (Preloadable and positional)
+  7  Allow player ship to change appearance
 
 Later Features
   * SVG conversion tool

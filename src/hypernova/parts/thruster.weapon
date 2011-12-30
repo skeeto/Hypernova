@@ -3,4 +3,5 @@ info = "Zoom past galaxies at lightning speed"
 
 type     = thruster
 energy   = 0.5
+power    = 5.0
 cooldown = 0

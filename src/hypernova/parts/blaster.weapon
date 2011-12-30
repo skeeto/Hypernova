@@ -3,7 +3,7 @@ info = "Hokey religions and ancient weapons are no match for a good \
         blaster at your side, kid."
 
 type     = attack
-energy   = 0.5
+energy   = 0.25
 cooldown = 3.0
 ammo     = bolt
 mass     = 1.0

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 public class Weapon {
     public static final double DEFAULT_ENERGY = 0.0;
+    public static final double DEFAULT_POWER = 0.0;
     public static final double DEFAULT_COOLDOWN = 3.0;
     public static final double DEFAULT_MASS = 1.0;
     public static final String DEFAULT_AMMO = "bolt";
@@ -20,7 +21,7 @@ public class Weapon {
     public final String name, info, type;
 
     private boolean isThrusting = false;
-    private double cooldown, timeout, energy;
+    private double cooldown, timeout, energy, power;
     private double mass;
     private Ammo ammo;
     private int channel, note, volume;
@@ -54,6 +55,7 @@ public class Weapon {
                             props.getProperty("type"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
         weapon.energy = attempt(props, "energy", DEFAULT_ENERGY);
+        weapon.power = attempt(props, "power", DEFAULT_POWER);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
         weapon.channel = (int) Weapon.attempt(props, "channel",
                                               DEFAULT_CHANNEL);
@@ -79,21 +81,25 @@ public class Weapon {
         }
     }
 
-    public void fire(Mass src, Point2D.Double p, boolean fstate) {
+    public void fire(Mass src, Point2D.Double p, boolean fstate, int n) {
+        Ship s = null;
+        if( src instanceof Ship ) s = (Ship) src;
+
         if (timeout <= 0 && fstate && src.useEnergy(energy)) {
             // Sound.play("fire");
-            if("thruster".equals(type) && src instanceof Ship && !isThrusting){
-                Ship s = (Ship) src;
-                s.setThrustMod(10);
+            if("thruster".equals(type) && !isThrusting && s != null){
+                s.setThrustMod(power);
                 s.setEngines(true);
                 isThrusting = true;
             } else if ("attack".equals(type)) {
               Universe.get().add(ammo.copy(src,p));
+            } else if ("dual".equals(type) && s != null) {
+              s.fire( n + 1 );
+              s.fire( n + 2 );
             }
             timeout = cooldown;
-        } else if("thruster".equals(type) && isThrusting) {
-            Ship s = (Ship) src;
-            s.setThrustMod(-10);
+        } else if("thruster".equals(type) && isThrusting && s != null) {
+            s.setThrustMod(-power);
             s.setEngines(true);
             isThrusting = false;
         }
@@ -114,6 +120,7 @@ public class Weapon {
         weapon.mass = mass;
         weapon.cooldown = cooldown;
         weapon.energy = energy;
+        weapon.power = power;
         weapon.channel = channel;
         weapon.note = note;
         weapon.volume = volume;

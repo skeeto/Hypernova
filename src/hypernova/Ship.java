@@ -199,8 +199,7 @@ public class Ship extends Mass {
         for (int i = 0; i < weapons.length; i++) {
             if (weapons[i] != null) {
                 weapons[i].step(t);
-                if(hull.getSlot(i) != null)
-                fire(i, firestate[i]);
+                if(hull.getSlot(i) != null) fire(i, firestate[i]);
             }
         }
     }
@@ -218,7 +217,7 @@ public class Ship extends Mass {
      */
     public void fire(int n, boolean fstate) {
         Weapon w = weapons[n];
-        if (w != null) w.fire(this, hull.getSlot(n), fstate);
+        if (w != null) w.fire(this, hull.getSlot(n), fstate, n);
     }
 
     /** Set a weapon as currently firing or not.
