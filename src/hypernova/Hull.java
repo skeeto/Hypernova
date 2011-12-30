@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import hypernova.gui.Model;
 
 public class Hull {
-    public static final double NO_BATT    = -1000;
+    public static final double DEFAULT_BATT = 0.0;
     public static final double DEFAULT_REGEN = 0.0;
     public static final double DEFAULT_HP = 5.0;
     public static final double DEFAULT_MASS = 5.0;
@@ -22,7 +22,7 @@ public class Hull {
 
     public final String name, info;
 
-    private double batt = NO_BATT;
+    private double batt = DEFAULT_BATT;
     private double energyRegen = DEFAULT_REGEN;
     private double hp = DEFAULT_HP;
     private double mass = DEFAULT_MASS;
@@ -64,7 +64,7 @@ public class Hull {
         }
 
         hull = new Hull(props.getProperty("name"), props.getProperty("info"));
-        hull.batt = Weapon.attempt(props, "batt", NO_BATT);
+        hull.batt = Weapon.attempt(props, "batt", DEFAULT_BATT);
         hull.energyRegen= Weapon.attempt(props, "regen", DEFAULT_REGEN);
         hull.hp = Weapon.attempt(props, "hp", DEFAULT_HP);
         hull.mass = Weapon.attempt(props, "mass", DEFAULT_MASS);

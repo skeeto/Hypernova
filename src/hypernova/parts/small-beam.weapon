@@ -1,6 +1,7 @@
 name = Small beam
 info = Small beam with little damage but fast repeat
 
+type     = attack
 cooldown = 1.0
 ammo     = small-beam
 mass     = 0.1

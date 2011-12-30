@@ -2,5 +2,5 @@ name = Thruster
 info = "Zoom past galaxies at lightning speed"
 
 type     = thruster
-energy   = 0.2
+energy   = 0.5
 cooldown = 0

@@ -23,7 +23,7 @@ public class Ship extends Mass {
 
     public String name, info;
 
-    private boolean canMove = true;
+    private boolean canMove  = true;
     private Weapon[] weapons;
     private Engine[] engines;
     private double enginestate;
@@ -36,7 +36,7 @@ public class Ship extends Mass {
     private double goldrate, goldmean, goldvar;
 
     /* Derived from the above. */
-    private double thrust, maneuverability;
+    private double thrust, maneuverability, thrustMod;
     private double mass;
 
     public Ship(String hullname) {
@@ -159,13 +159,18 @@ public class Ship extends Mass {
         super.destruct();
     }
 
+    public void setThrustMod(double val)
+    {
+        thrust += val;
+    }
+
     private void calc() {
         thrust = 0;
         maneuverability = 0;
         mass = hull.getMass();
         for (Engine e : engines) {
             if (e != null) {
-                thrust += e.getThrust();
+                thrust += e.getThrust() + thrustMod;
                 maneuverability += e.getManeuverability();
                 mass += e.getMass();
             }
@@ -195,7 +200,7 @@ public class Ship extends Mass {
             if (weapons[i] != null) {
                 weapons[i].step(t);
                 if(hull.getSlot(i) != null)
-                if (firestate[i]) fire(i);
+                fire(i, firestate[i]);
             }
         }
     }
@@ -204,8 +209,16 @@ public class Ship extends Mass {
      * @param n  weapon number
      */
     public void fire(int n) {
+        fire(n, true);
+    }
+
+    /** Fire a single shot.
+     * @param n  weapon number
+     * @param fstate weather the weapon is firing
+     */
+    public void fire(int n, boolean fstate) {
         Weapon w = weapons[n];
-        if (w != null) w.fire(this, hull.getSlot(n));
+        if (w != null) w.fire(this, hull.getSlot(n), fstate);
     }
 
     /** Set a weapon as currently firing or not.
@@ -244,6 +257,7 @@ public class Ship extends Mass {
     }
 
     public double getThrust() {
+        System.out.println("thrust: " + thrust);
         return thrust;
     }
 

@@ -1,6 +1,7 @@
 name = Large beam
 info = Large beam with fast repeat and heavy damage
 
+type     = attack
 cooldown = 1.0
 ammo     = large-beam
 mass     = 0.1

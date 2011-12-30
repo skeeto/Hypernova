@@ -200,7 +200,6 @@ public class Mass {
         for(int i = 0; i < count; i++) {
             Mass spark = new Mass(new Hull(Model.get("spark")));
             spark.setPosition(this).setFaction(getFaction());
-            double r = RNG.nextDouble() * Math.PI / 4;
             double ap = a[0] + 7*Math.PI/8 + RNG.nextDouble() * Math.PI / 4;
             spark.a[0] = ap;
             double speed = THRUST_SPEED + RNG.nextGaussian() * THRUST_SPEED_VAR;
@@ -211,7 +210,7 @@ public class Mass {
             spark.hull.setDrag(SPARK_DRAG);
             spark.suffersdrag = false;
             spark.shortlived = true;
-            spark.ttl = 1;
+            spark.ttl = -1;
             u.add(spark);
         }
     }

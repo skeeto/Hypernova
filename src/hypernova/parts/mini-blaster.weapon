@@ -1,6 +1,7 @@
 name = Mini-blaster
 info = Tiny, lightweight version of the Blaster.
 
+type     = attack
 cooldown = 10.0
 ammo     = mini-bolt
 mass     = 0.1

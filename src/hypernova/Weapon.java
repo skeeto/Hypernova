@@ -8,15 +8,18 @@ import java.awt.geom.Point2D;
 import org.apache.log4j.Logger;
 
 public class Weapon {
+    public static final double DEFAULT_ENERGY = 0.0;
     public static final double DEFAULT_COOLDOWN = 3.0;
     public static final double DEFAULT_MASS = 1.0;
     public static final String DEFAULT_AMMO = "bolt";
+    public static final String DEFAULT_TYPE = "attack";
     public static final int DEFAULT_CHANNEL = 0;
     public static final int DEFAULT_NOTE = 40;
     public static final int DEFAULT_VOLUME = 75;
 
-    public final String name, info;
+    public final String name, info, type;
 
+    private boolean isThrusting = false;
     private double cooldown, timeout, energy;
     private double mass;
     private Ammo ammo;
@@ -25,9 +28,10 @@ public class Weapon {
     private static Map<String, Weapon> cache = new HashMap<String, Weapon>();
     private static Logger log = Logger.getLogger("Weapon");
 
-    protected Weapon(String name, String info) {
+    protected Weapon(String name, String info, String type) {
         this.name = name;
         this.info = info;
+        this.type = type;
     }
 
     public static Weapon get(String name) {
@@ -46,9 +50,10 @@ public class Weapon {
         }
 
         weapon = new Weapon(props.getProperty("name"),
-                            props.getProperty("info"));
+                            props.getProperty("info"),
+                            props.getProperty("type"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
-        weapon.energy = attempt(props, "energy", DEFAULT_COOLDOWN);
+        weapon.energy = attempt(props, "energy", DEFAULT_ENERGY);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
         weapon.channel = (int) Weapon.attempt(props, "channel",
                                               DEFAULT_CHANNEL);
@@ -74,11 +79,23 @@ public class Weapon {
         }
     }
 
-    public void fire(Mass src, Point2D.Double p) {
-        if (timeout <= 0 && src.useEnergy(energy)) {
+    public void fire(Mass src, Point2D.Double p, boolean fstate) {
+        if (timeout <= 0 && fstate && src.useEnergy(energy)) {
             // Sound.play("fire");
-            Universe.get().add(ammo.copy(src,p));
+            if("thruster".equals(type) && src instanceof Ship && !isThrusting){
+                Ship s = (Ship) src;
+                s.setThrustMod(10);
+                s.setEngines(true);
+                isThrusting = true;
+            } else if ("attack".equals(type)) {
+              Universe.get().add(ammo.copy(src,p));
+            }
             timeout = cooldown;
+        } else if("thruster".equals(type) && isThrusting) {
+            Ship s = (Ship) src;
+            s.setThrustMod(-10);
+            s.setEngines(true);
+            isThrusting = false;
         }
     }
 
@@ -91,8 +108,9 @@ public class Weapon {
     }
 
     public Weapon copy() {
-        Weapon weapon = new Weapon(name, info);
+        Weapon weapon = new Weapon(name, info, type);
         weapon.ammo = ammo;
+        weapon.isThrusting = isThrusting;
         weapon.mass = mass;
         weapon.cooldown = cooldown;
         weapon.energy = energy;
