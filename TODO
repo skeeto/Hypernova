@@ -1,13 +1,12 @@
 Features
   1  Other types of collision besides bounce (And update ammo collisions)
   2  Menu System (Shops/Options)
-  3  Cooldown bar
-  4  Looping galaxy
-  5  Walls
-  6  Weapon Selection 
-  7  Randomly generated asteroids
-  8  Sounds (Preloadable and positional)
-  9 Allow player ship to change appearance
+  3  Looping galaxy
+  4  Walls
+  5  Weapon Generalization 
+  6  Randomly generated asteroids
+  7  Sounds (Preloadable and positional)
+  8  Allow player ship to change appearance
 
 Later Features
   * SVG conversion tool

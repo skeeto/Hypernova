@@ -57,8 +57,10 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         case KeyEvent.VK_S:
             ship.setEngines(-1.0);
             break;
-        case KeyEvent.VK_CONTROL:
+        case KeyEvent.VK_Z:
             ship.setFire(0, true);
+            break;
+        case KeyEvent.VK_X:
             ship.setFire(1, true);
             break;
         case KeyEvent.VK_COMMA:
@@ -97,8 +99,10 @@ public class KeyboardPilot extends Pilot implements KeyListener {
         case KeyEvent.VK_S:
             ship.setEngines(false);
             break;
-        case KeyEvent.VK_CONTROL:
+        case KeyEvent.VK_Z:
             ship.setFire(0, false);
+            break;
+        case KeyEvent.VK_X:
             ship.setFire(1, false);
             break;
         }

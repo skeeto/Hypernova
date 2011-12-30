@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import hypernova.gui.Model;
 
 public class Hull {
+    public static final double NO_BATT    = -1000;
+    public static final double DEFAULT_REGEN = 0.0;
     public static final double DEFAULT_HP = 5.0;
     public static final double DEFAULT_MASS = 5.0;
     public static final String DEFAULT_MODEL = "simple";
@@ -20,6 +22,8 @@ public class Hull {
 
     public final String name, info;
 
+    private double batt = NO_BATT;
+    private double energyRegen = DEFAULT_REGEN;
     private double hp = DEFAULT_HP;
     private double mass = DEFAULT_MASS;
     private Model model;
@@ -60,6 +64,8 @@ public class Hull {
         }
 
         hull = new Hull(props.getProperty("name"), props.getProperty("info"));
+        hull.batt = Weapon.attempt(props, "batt", NO_BATT);
+        hull.energyRegen= Weapon.attempt(props, "regen", DEFAULT_REGEN);
         hull.hp = Weapon.attempt(props, "hp", DEFAULT_HP);
         hull.mass = Weapon.attempt(props, "mass", DEFAULT_MASS);
  
@@ -139,18 +145,31 @@ public class Hull {
         return mass;
     }
 
+    public double getEnergyRegen() {
+        return energyRegen;
+    }
+ 
+    public double getBatt() {
+        return batt;
+    }
+ 
+    public void setBatt(double newBatt) {
+        batt = newBatt;
+    }
+
     public double getHP() {
         return hp;
     }
  
     public void setHP(double newHP) {
-        System.out.println(hp + " -- " + newHP);
         hp = newHP;
     }
 
     public Hull copy() {
         Hull copy = new Hull(name, info);
         copy.hp = hp;
+        copy.batt = batt;
+        copy.energyRegen = energyRegen;
         copy.mass = mass;
         copy.model = model.copy();
         copy.size = size;

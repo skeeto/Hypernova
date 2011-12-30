@@ -11,7 +11,8 @@ You can grab a working copy by doing:
 
 KEYS:
   WASD: Movement (Arrow keys work as well)
-  CTRL: Shoot
+  X:    Shoot First Weapon
+  Z:    Shoot Second Weapon
   PGUP: Zoom out
   PGDN: Zoom in
   .   : Next track

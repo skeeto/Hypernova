@@ -17,7 +17,7 @@ public class Weapon {
 
     public final String name, info;
 
-    private double cooldown, timeout;
+    private double cooldown, timeout, energy;
     private double mass;
     private Ammo ammo;
     private int channel, note, volume;
@@ -48,6 +48,7 @@ public class Weapon {
         weapon = new Weapon(props.getProperty("name"),
                             props.getProperty("info"));
         weapon.cooldown = attempt(props, "cooldown", DEFAULT_COOLDOWN);
+        weapon.energy = attempt(props, "energy", DEFAULT_COOLDOWN);
         weapon.mass = attempt(props, "mass", DEFAULT_MASS);
         weapon.channel = (int) Weapon.attempt(props, "channel",
                                               DEFAULT_CHANNEL);
@@ -74,7 +75,7 @@ public class Weapon {
     }
 
     public void fire(Mass src, Point2D.Double p) {
-        if (timeout <= 0) {
+        if (timeout <= 0 && src.useEnergy(energy)) {
             // Sound.play("fire");
             Universe.get().add(ammo.copy(src,p));
             timeout = cooldown;
@@ -94,6 +95,7 @@ public class Weapon {
         weapon.ammo = ammo;
         weapon.mass = mass;
         weapon.cooldown = cooldown;
+        weapon.energy = energy;
         weapon.channel = channel;
         weapon.note = note;
         weapon.volume = volume;

@@ -21,9 +21,14 @@ public class Info {
     public static final Color INFO_TEXT = Color.WHITE;
     public static final Color HP_BACK = new Color(0x00, 0x4f, 0x00);
     public static final Color HP_FRONT = new Color(0x00, 0xbf, 0x00);
+    public static final Color BATT_BACK = new Color(0x00, 0x4f, 0x00);
+    public static final Color HIGH_FRONT = new Color(0x00, 0x4f, 0xbf);
+    public static final Color LOW_FRONT = new Color(0xbf, 0x4f, 0x00);
     public static final int HP_HEIGHT = 3;
+    public static final int BATT_HEIGHT = 3;
     
     public static boolean visibleHP       = true;
+    public static boolean visibleCooldown = true;
     public static boolean visiblePosition = true;
     public static boolean visibleScore    = true;
     public static boolean visibleTimer    = false;
@@ -42,6 +47,7 @@ public class Info {
     private static int totalHeight()
     {
         int totalH = 2*INFO_PAD;
+        if (visibleCooldown) totalH += HP_HEIGHT + INFO_PAD;
         if (visibleHP) totalH += HP_HEIGHT + INFO_PAD;
         if (visiblePosition) totalH += stringH + INFO_PAD;
         if (visibleScore) totalH += stringH + INFO_PAD;
@@ -67,15 +73,26 @@ public class Info {
         g.setColor(INFO_BORDER);
         g.drawRect(0, 0, INFO_WIDTH, totalHeight());
          
-
         /* Health bar */
         if( visibleHP ) {
           g.setColor(HP_BACK);
           int hpWMax = INFO_WIDTH - INFO_PAD * 2;
-          g.fillRect(INFO_PAD, INFO_PAD, hpWMax, HP_HEIGHT);
+          g.fillRect(INFO_PAD, curH, hpWMax, HP_HEIGHT);
           int hpW = (int) (player.getHP() * 1d / player.getMaxHP() * hpWMax);
           g.setColor(HP_FRONT);
-          g.fillRect(INFO_PAD, INFO_PAD, hpW, HP_HEIGHT);
+          g.fillRect(INFO_PAD, curH, hpW, HP_HEIGHT);
+          g.setColor(INFO_TEXT);
+          curH += HP_HEIGHT+ INFO_PAD;
+        }
+
+        /* Cooldown Bar*/
+        if( visibleCooldown ) {
+          g.setColor(BATT_BACK);
+          int battWMax = INFO_WIDTH - INFO_PAD * 2;
+          g.fillRect(INFO_PAD, curH, battWMax, BATT_HEIGHT);
+          int battW = (int) (player.getBatt() * 1d / player.getMaxBatt() * battWMax);
+          g.setColor(HIGH_FRONT);
+          g.fillRect(INFO_PAD, curH, battW, BATT_HEIGHT);
           g.setColor(INFO_TEXT);
           curH += HP_HEIGHT+ INFO_PAD;
         }

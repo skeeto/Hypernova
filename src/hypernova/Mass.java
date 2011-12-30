@@ -34,6 +34,8 @@ public class Mass {
     protected double[] y = new double[3];
     protected double[] a = new double[3];
     protected double hp;
+    protected double batt;
+    protected double energyRegen;
     protected Hull hull;
     private double size;
     private Faction faction;
@@ -56,6 +58,8 @@ public class Mass {
         this.hull = hull;
         setSize(hull.getSize());
         hp = hull.getHP();
+        batt = hull.getBatt();
+        energyRegen = hull.getEnergyRegen();
         faction = Faction.getDefault();
     }
 
@@ -72,6 +76,10 @@ public class Mass {
             zenThing();
             return;
         }
+
+        /* Regenerate Energy */
+        if(energyRegen > 0) batt += energyRegen;
+        if(batt > getMaxBatt()) batt = getMaxBatt();
 
         /* Add drag. */
         if (suffersdrag) {
@@ -131,11 +139,21 @@ public class Mass {
         return getModel().getHit();
     }
 
+    public boolean useEnergy(double val) {
+        if (batt >= val) {
+          batt -= val;
+          return true;
+        } 
+        return false;
+    } 
+
     public void damage(double val) {
         hp -= val;
         if (hp <= 0) {
             destruct();
             return;
+        } else if(hp >= getMaxHP()) {
+            hp = getMaxHP();
         }
     }
 
@@ -299,6 +317,18 @@ public class Mass {
 
     public boolean isActive() {
         return active;
+    }
+
+    public double getBatt() {
+        return batt;
+    }
+
+    public void setBatt(double newBatt) {
+        batt = newBatt;
+    }
+
+    public double getMaxBatt() {
+        return hull.getBatt();
     }
 
     public double getHP() {
