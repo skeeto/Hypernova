@@ -116,9 +116,7 @@ public class Mass {
         }
     }
 
-    public void collision(Mass m)
-    {
-               //  damage(1000);
+    protected void collision(Mass m) {
                  x[1] = -x[1];
                  y[1] = -y[1];
     }

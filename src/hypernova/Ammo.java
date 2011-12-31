@@ -14,7 +14,7 @@ public class Ammo extends Mass {
     public static final String DEFAULT_MODEL = "bolt";
     public static final double HIT_DIVISION = 8.0;
 
-    public final String name, info;
+    public final String name, info, type;
 
     private double damage;
     private double speed;
@@ -22,10 +22,11 @@ public class Ammo extends Mass {
 
     private static Logger log = Logger.getLogger("Ammo");
 
-    private Ammo(Hull hull, String name, String info) {
+    private Ammo(Hull hull, String name, String info, String type) {
         super(hull);
         this.name = name;
         this.info = info;
+        this.type = type;
     }
 
     public static Ammo get(String name) {
@@ -45,7 +46,8 @@ public class Ammo extends Mass {
             hullname = DEFAULT_MODEL;
         Hull hull = Hull.get(hullname);
         Ammo ammo = new Ammo(hull, props.getProperty("name"),
-                             props.getProperty("info"));
+                                   props.getProperty("info"),
+                                   props.getProperty("type"));
         ammo.ttl = (int) Weapon.attempt(props, "ttl", DEFAULT_TTL);
         ammo.damage = Weapon.attempt(props, "damage", DEFAULT_DAMAGE);
         ammo.speed = Weapon.attempt(props, "speed", DEFAULT_SPEED);
@@ -53,7 +55,7 @@ public class Ammo extends Mass {
     }
 
     public Ammo copy(Mass src, Point2D.Double p) {
-        Ammo ammo = new Ammo(getHull(), name, info);
+        Ammo ammo = new Ammo(getHull(), name, info, type);
         ammo.shortlived = true;
         ammo.suffersdrag = false;
         ammo.ttl = ttl;
@@ -81,24 +83,13 @@ public class Ammo extends Mass {
         boolean teamDamage = Config.teamDamage();
         Faction team = getFaction();
              
-        if (m != source && (teamDamage || m.getFaction() != team)) hit(m);
-    }
-
-    private void hit(Mass m) {
-        /* TODO: calculate damage
-                 remove object from the universe if below 0. */
-        m.damage(damage);
-        if (Config.showDamage()) {
-            Mass txt = new Mass(new Hull(new Model("" + damage)));
-            txt.setPosition(this);
-            txt.setFaction(getFaction());
-            txt.shortlived = true;
-            txt.ttl = 15;
-            txt.setA(0, 0);
-            txt.setY(-0.7, 1);
-            txt.setSize(2.0);
-            Universe.get().add(txt);
+        if (m != source && (teamDamage || m.getFaction() != team)) {
+          if ("stop".equals(type) ) {
+            m.setX(0, 1);
+            m.setY(0, 1); 
+          } else {
+            Collision.hit(m,this,damage,true);
+          }
         }
-        zenThing();
     }
 }

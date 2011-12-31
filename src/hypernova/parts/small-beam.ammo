@@ -1,6 +1,7 @@
 name = Small Plasma Beam
 info = Weak plasma beam
 
+type   = stop
 speed  = 5
 damage = 0.05
 ttl    = 35

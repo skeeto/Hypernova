@@ -5,6 +5,9 @@ hull    = beamer
 weapons = large-beam small-beam small-beam small-beam
 engines = microshove
 
+collision  = damage
+collamount = 0.5
+
 goldmean = 100
 goldvar  = 10
 goldrate = 1.0

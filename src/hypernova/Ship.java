@@ -21,7 +21,7 @@ public class Ship extends Mass {
     private static Logger log = Logger.getLogger("Ship");
     private static final Random RNG = new Random();
 
-    public String name, info;
+    public String name, info, collision;
 
     private boolean canMove  = true;
     private Weapon[] weapons;
@@ -33,7 +33,7 @@ public class Ship extends Mass {
     private Collection<Mass> hold = new HashSet<Mass>();
     private long gold;
 
-    private double goldrate, goldmean, goldvar;
+    private double goldrate, goldmean, goldvar, collAmount;
 
     /* Derived from the above. */
     private double thrust, maneuverability;
@@ -68,6 +68,7 @@ public class Ship extends Mass {
         ship = new Ship(props.getProperty("hull"));
         ship.name = props.getProperty("name");
         ship.info = props.getProperty("info");
+        ship.collision = props.getProperty("collision");
         String weapons = props.getProperty("weapons");
         if (weapons != null) {
             int i = 0;
@@ -85,20 +86,34 @@ public class Ship extends Mass {
         ship.goldrate = Weapon.attempt(props, "goldrate", 0);
         ship.goldmean = Weapon.attempt(props, "goldmean", 0);
         ship.goldvar = Weapon.attempt(props, "goldvar", 0);
+        ship.collAmount = Weapon.attempt(props, "collamount", 0);
         cache.put(name, ship);
         return ship.copy();
+    }
+ 
+    public void collision(Mass m) {
+        if("damage".equals(collision) && m.getFaction() != this.getFaction()){
+            Collision.hit(m,this,collAmount,false);
+            x[1] = -x[1];
+            y[1] = -y[1];
+        } else {
+            x[1] = -x[1];
+            y[1] = -y[1];
+        }
     }
 
     public Ship copy() {
         Ship copy = new Ship(hull.copy());
         copy.name = name;
         copy.info = info;
+        copy.collision = collision;
         for (int i = 0; i < weapons.length; i++)
             copy.setWeapon(weapons[i].copy(), i);
         for (int i = 0; i < engines.length; i++)
             copy.setEngine(engines[i], i);
         copy.goldrate = goldrate;
         copy.goldmean = goldmean;
+        copy.collAmount = collAmount;
         copy.goldvar = goldvar;
         if (RNG.nextDouble() < goldrate) {
             double r = RNG.nextGaussian();
