@@ -4,9 +4,7 @@ import hypernova.gui.Model;
 
 /* Helper functions for collisions */
 public class Collision {
-    public static void hit(Mass m, Mass src, double damage, boolean destroy) {
-        /* TODO: calculate damage
-                 remove object from the universe if below 0. */
+   public static void hit(Mass m, Mass src, double damage, boolean destroy) {
         m.damage(damage);
         if (Config.showDamage()) {
             Mass txt = new Mass(new Hull(new Model("" + damage)));
@@ -22,5 +20,11 @@ public class Collision {
         if(destroy) {
             Universe.get().remove(src); 
         }
+    }
+  
+    public static void bounce(Mass src) {
+        // TODO: Make this more robust    
+        src.setY(-src.getY(1),1);
+        src.setX(-src.getX(1),1);
     }
 }

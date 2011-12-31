@@ -94,11 +94,9 @@ public class Ship extends Mass {
     public void collision(Mass m) {
         if("damage".equals(collision) && m.getFaction() != this.getFaction()){
             Collision.hit(m,this,collAmount,false);
-            x[1] = -x[1];
-            y[1] = -y[1];
+            Collision.bounce(this);
         } else {
-            x[1] = -x[1];
-            y[1] = -y[1];
+            Collision.bounce(this);
         }
     }
 
