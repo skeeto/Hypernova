@@ -36,6 +36,7 @@ public class Model {
     private Shape hit;
     private AffineTransform at = new AffineTransform();
     private double size = 1.0;
+    private double angleMod = 0.0;
 
     private static Map<String, Model> cache = new HashMap<String, Model>();
     private static Logger log = Logger.getLogger("gui.Model");
@@ -139,6 +140,11 @@ public class Model {
         size = val;
     }
 
+    public void setAngleMod(double val) {
+        angleMod = val;
+    }
+
+
     public Shape getShape() {
         return at.createTransformedShape(shapes);
     }
@@ -154,7 +160,7 @@ public class Model {
     public void transform(double x, double y, double rotate) {
         at.setToTranslation(x, y);
         at.scale(size, size);
-        at.rotate(rotate);
+        at.rotate(rotate + angleMod);
     }
 
     public void transform(Mass src) {
@@ -168,6 +174,7 @@ public class Model {
         copy.filled = filled;
         copy.hit = hit;
         copy.size = size;
+        copy.angleMod = angleMod;
         return copy;
     }
 

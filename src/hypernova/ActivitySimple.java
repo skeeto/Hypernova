@@ -28,6 +28,7 @@ public class ActivitySimple extends Activity implements Realization {
                           , PLAYER_HUNTER
                           , CIRCLE_PILOT 
                           , EVENT_DRONE
+                          , BEAT_DETECT 
                           };
 
 
@@ -79,6 +80,9 @@ public class ActivitySimple extends Activity implements Realization {
               break;
            case EVENT_DRONE:
               p = new EventDrone(s, this, event);
+              break;
+           case BEAT_DETECT:
+              p = new BeatDetect(s, this, event);
               break;
            default:
               log.error("Invalid Ship");
