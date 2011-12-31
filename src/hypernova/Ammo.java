@@ -77,25 +77,11 @@ public class Ammo extends Mass {
         return ammo;
     }
 
-    public void step(double t) {
-        super.step(t);
-
+    public void collision(Mass m) {
         boolean teamDamage = Config.teamDamage();
         Faction team = getFaction();
-        for (Mass m : Universe.get().getObjects()) {
-            if (!m.shortlived && m.isActive()) {
-                if (m != source && (teamDamage || m.getFaction() != team)) {
-                    for (double dt = t; dt > 0; dt -= t / HIT_DIVISION) {
-                        double tx = x[0] - x[1] * dt;
-                        double ty = y[0] - y[1] * dt;
-                        if (m.getHit().contains(tx, ty)) {
-                            hit(m);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+             
+        if (m != source && (teamDamage || m.getFaction() != team)) hit(m);
     }
 
     private void hit(Mass m) {

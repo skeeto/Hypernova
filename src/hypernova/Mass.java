@@ -102,18 +102,25 @@ public class Mass {
         if(!shortlived) {
           int accVector =(int) (25 * ( Math.abs(x[2]) + Math.abs(y[2]) ));
           if(accVector > 1) thrust(accVector);
-          for (Mass m : Universe.get().getObjects()) {
-            if ( !m.shortlived && m.isActive() && m != this
-                 && this.getHit().intersects(m.getHit().getBounds2D())) {
-              Area a = new Area(this.getHit());
-              a.intersect(new Area(m.getHit()));
-              if(!a.isEmpty()) {
-                 x[1] = -x[1];
-                 y[1] = -y[1];
-              }
+        }
+
+        for (Mass m : Universe.get().getObjects()) {
+          if ( !m.shortlived && m.isActive() && m != this
+               && this.getHit().intersects(m.getHit().getBounds2D())) {
+            Area a = new Area(this.getHit());
+            a.intersect(new Area(m.getHit()));
+            if(!a.isEmpty()) {
+              this.collision(m);
             }
           }
         }
+    }
+
+    public void collision(Mass m)
+    {
+               //  damage(1000);
+                 x[1] = -x[1];
+                 y[1] = -y[1];
     }
 
     private double drag(double v) {
