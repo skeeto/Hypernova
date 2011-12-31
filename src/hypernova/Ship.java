@@ -36,7 +36,7 @@ public class Ship extends Mass {
     private double goldrate, goldmean, goldvar;
 
     /* Derived from the above. */
-    private double thrust, maneuverability, thrustMod;
+    private double thrust, maneuverability;
     private double mass;
 
     public Ship(String hullname) {
@@ -170,7 +170,7 @@ public class Ship extends Mass {
         mass = hull.getMass();
         for (Engine e : engines) {
             if (e != null) {
-                thrust += e.getThrust() + thrustMod;
+                thrust += e.getThrust();
                 maneuverability += e.getManeuverability();
                 mass += e.getMass();
             }
