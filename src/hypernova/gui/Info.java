@@ -91,7 +91,8 @@ public class Info {
           int battWMax = INFO_WIDTH - INFO_PAD * 2;
           g.fillRect(INFO_PAD, curH, battWMax, BATT_HEIGHT);
           int battW = (int) (player.getBatt() * 1d / player.getMaxBatt() * battWMax);
-          g.setColor(HIGH_FRONT);
+          if( player.getBatt() < player.getMaxBatt()/4) g.setColor(LOW_FRONT);
+          else g.setColor(HIGH_FRONT);
           g.fillRect(INFO_PAD, curH, battW, BATT_HEIGHT);
           g.setColor(INFO_TEXT);
           curH += HP_HEIGHT+ INFO_PAD;
