@@ -33,4 +33,5 @@ Fixes/Polish
   * Standalone executable
   * Info box code is now ugly
   * Model breakup does not scale
+  * Wormhole concurrency error
   * Thrust boost stays on if not pressing a direction
