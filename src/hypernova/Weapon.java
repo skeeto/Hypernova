@@ -91,6 +91,9 @@ public class Weapon {
                 s.setThrustMod(power);
                 s.setEngines(true);
                 isThrusting = true;
+            } else if("fullstop".equals(type)) {
+                s.setX(0,1);
+                s.setY(0,1);
             } else if ("attack".equals(type)) {
               Universe.get().add(ammo.copy(src,p));
             } else if ("dual".equals(type) && s != null) {

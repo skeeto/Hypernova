@@ -1,0 +1,6 @@
+name = Thruster
+info = "Zoom past galaxies at lightning speed"
+
+type     = fullstop
+energy   = 1.0
+cooldown = 10.0

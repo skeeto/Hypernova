@@ -13,6 +13,7 @@ KEYS:
   WASD: Movement (Arrow keys work as well)
   X:    Shoot First Weapon
   Z:    Shoot Second Weapon
+  C:    Shoot Third Weapon
   PGUP: Zoom out
   PGDN: Zoom in
   .   : Next track
