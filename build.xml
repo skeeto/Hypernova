@@ -44,13 +44,17 @@
   </target>
 
   <target name="resolve" unless="lib.present"
-	  description="Retrieve dependencies with ivy.">
+	  description="Retrieve dependencies">
     <ivy:retrieve type="jar,bundle"/>
+    <get src="http://devrand.org:8080/hypernovaLibs.tar" dest="./hypernovaLibs.tar"/>
+    <untar src="hypernovaLibs.tar" dest="${lib.dir}"/>
+    <delete file="hypernovaLibs.tar"/>
   </target>
 
   <target name="music">
-    <get src="http://devrand.org:8080/mp3s.tar" dest="."/>
+    <get src="http://devrand.org:8080/mp3s.tar" dest="./mp3s.tar"/>
     <untar src="mp3s.tar" dest="."/>
+    <delete file="mp3s.tar"/>
   </target>
 
   <target name="compile" depends="init,resolve"
