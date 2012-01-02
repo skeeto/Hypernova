@@ -1,8 +1,10 @@
-package hypernova;
+package hypernova.audio;
 
 import java.util.ArrayList; 
 import java.io.*;
 import java.util.Collections;
+
+import hypernova.Universe;
 
 public class SongPlaylist extends MinimWrapper //TODO extend some interface to get a callback to nextSong
 {

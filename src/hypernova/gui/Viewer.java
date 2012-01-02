@@ -37,7 +37,7 @@ import hypernova.Mass;
 import hypernova.Universe;
 import hypernova.Hypernova;
 import hypernova.pilots.KeyboardPilot;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 import hypernova.gui.backgrounds.*;
 
 public class Viewer extends JComponent implements Observer {

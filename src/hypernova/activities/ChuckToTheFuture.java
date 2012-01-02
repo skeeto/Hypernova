@@ -10,7 +10,7 @@ import hypernova.Ship;
 import hypernova.Universe;
 import hypernova.Activity;
 import hypernova.Realization;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 import hypernova.pilots.Beamer;
 import hypernova.pilots.Pilot;
 import hypernova.gui.backgrounds.MusicStarfield;

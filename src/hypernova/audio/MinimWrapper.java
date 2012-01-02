@@ -1,4 +1,4 @@
-package hypernova;
+package hypernova.audio;
 
 import processing.core.PApplet;
 import ddf.minim.*;

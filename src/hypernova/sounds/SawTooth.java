@@ -1,6 +1,6 @@
 package hypernova.sounds;
 
-import hypernova.AudioCode;
+import hypernova.audio.AudioCode;
 public class SawTooth extends AudioCode
 {
   private int count = 0;

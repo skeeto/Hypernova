@@ -3,7 +3,7 @@ package hypernova;
 import java.awt.Color;
 import java.util.Map;
 import java.util.HashMap;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 
 public class Faction {
     private static Map<String, Faction> store = new HashMap<String, Faction>();

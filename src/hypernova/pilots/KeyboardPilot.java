@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import hypernova.Universe;
 import hypernova.Ship;
 import hypernova.SaveGame;
-import hypernova.SongPlaylist;
+import hypernova.audio.SongPlaylist;
 
 public class KeyboardPilot extends Pilot implements KeyListener {
     private static Logger log = Logger.getLogger("KeyboardPilot");

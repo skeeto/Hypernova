@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 import hypernova.Universe;
 import hypernova.UniNames;
 import hypernova.universes.*;

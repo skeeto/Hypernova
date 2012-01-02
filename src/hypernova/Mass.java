@@ -7,6 +7,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 
 import hypernova.gui.Model;
+import hypernova.audio.MinimWrapper;
 
 public class Mass {
     public static final double BREAKUP_SPEED = 0.25;

@@ -1,7 +1,7 @@
 package hypernova.activities;
 
 import hypernova.ActivitySimple;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 import hypernova.gui.Viewer;
 import hypernova.gui.backgrounds.MusicStarfield;
 

@@ -3,7 +3,7 @@ package hypernova.gui.backgrounds;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 import hypernova.gui.Background;
 import hypernova.gui.Viewer;
 

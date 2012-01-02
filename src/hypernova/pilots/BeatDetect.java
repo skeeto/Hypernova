@@ -4,7 +4,7 @@ import hypernova.Mass;
 import hypernova.Ship;
 import hypernova.Universe;;
 import hypernova.ActivitySimple;
-import hypernova.MinimWrapper;
+import hypernova.audio.MinimWrapper;
 
 public class BeatDetect extends EventPilot {
     protected Mass target = Universe.get().getPlayer();

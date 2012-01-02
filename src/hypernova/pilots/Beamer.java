@@ -2,9 +2,9 @@ package hypernova.pilots;
 
 import hypernova.Ship;
 import hypernova.Universe;
-import hypernova.MinimWrapper;
 import hypernova.Mass;
 import hypernova.DestructionListener;
+import hypernova.audio.MinimWrapper;
 import hypernova.activities.ChuckToTheFuture;
 
 public class Beamer extends Hunter implements DestructionListener{

@@ -28,6 +28,8 @@ import org.apache.commons.cli.CommandLineParser;
 import hypernova.gui.Viewer;
 import hypernova.gui.Transition;
 import hypernova.universes.Start;
+import hypernova.audio.SongPlaylist;
+import hypernova.audio.MinimWrapper;
 
 public class Hypernova {
     public static final String PROGRAM = "Hypernova";
