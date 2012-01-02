@@ -97,6 +97,16 @@ public class MinimWrapper
    }
  
   /**
+   * Play a code defined sound
+   */
+   public static void playSound(AudioCode s)
+   {
+     AudioOutput out = instance.minim.getLineOut(Minim.STEREO, 2048);
+     s.setOut(out);
+     out.addSignal(s);
+   }
+
+  /**
    * Play a sound once from a file location
    * Meant for sounds that only happen once (efficiency)
    */

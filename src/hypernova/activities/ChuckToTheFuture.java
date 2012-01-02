@@ -5,6 +5,7 @@ import java.util.Random;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+import hypernova.sounds.SawTooth;
 import hypernova.Ship;
 import hypernova.Universe;
 import hypernova.Activity;
@@ -69,7 +70,8 @@ public class ChuckToTheFuture extends Activity implements Realization {
         Universe u = Universe.get();
         u.remove(this);
         totalShipsDead = 0;
-        MinimWrapper.playSoundAsync("sounds/chuckToTheFuture.mp3");
+        MinimWrapper.playSound(new SawTooth());
+ //       MinimWrapper.playSoundAsync("sounds/chuckToTheFuture.mp3");
         u.queueMessage("CHUCK TO THE FUTURE");
         for(int i = 0; i < 4; i ++)
         {
