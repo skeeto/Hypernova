@@ -1,6 +1,10 @@
 package hypernova.gui;
+
 import java.awt.event.KeyEvent;
+import javax.swing.JFileChooser;
+
 import hypernova.Universe;
+import hypernova.Hypernova;
 
 
 // align : img: name : function
@@ -25,6 +29,10 @@ public class Menu
           break;
         case KeyEvent.VK_Q:
           System.exit(0);
+          break;
+        case KeyEvent.VK_F:
+          JFileChooser fc = new JFileChooser();
+          int returnVal = fc.showOpenDialog(Hypernova.getViewer());
           break;
       }
     } 
