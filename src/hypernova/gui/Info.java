@@ -30,6 +30,7 @@ public class Info {
     public static boolean visibleHP       = true;
     public static boolean visibleCooldown = true;
     public static boolean visiblePosition = true;
+    public static boolean visibleVelocity = true;
     public static boolean visibleScore    = true;
     public static boolean visibleTimer    = false;
     public static boolean visibleCounter  = false;
@@ -50,6 +51,7 @@ public class Info {
         if (visibleCooldown) totalH += HP_HEIGHT + INFO_PAD;
         if (visibleHP) totalH += HP_HEIGHT + INFO_PAD;
         if (visiblePosition) totalH += stringH + INFO_PAD;
+        if (visibleVelocity) totalH += stringH + INFO_PAD;
         if (visibleScore) totalH += stringH + INFO_PAD;
         if (visibleTimer) totalH += stringH + INFO_PAD;
         if (visibleCounter) totalH += stringH + INFO_PAD;
@@ -105,7 +107,18 @@ public class Info {
                           + COORD_FMT.format(focusY) + ")";
           int coordsW = fm.stringWidth(coords);
           g.drawString(coords, INFO_WIDTH / 2 - coordsW / 2, curH);
+        }
+ 
+        /* Velocity */
+        if( visibleVelocity) {
+          curH += stringH + INFO_PAD;
+          int oneNorm = (int) (100*Math.abs(player.getX(1)) 
+                        + Math.abs(100*player.getY(1)));
+          String coords = oneNorm + " km/h";
+          int coordsW = fm.stringWidth(coords);
+          g.drawString(coords, INFO_WIDTH / 2 - coordsW / 2, curH);
         } 
+
 
         /* Score */
         if( visibleScore ) {
