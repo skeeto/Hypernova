@@ -104,28 +104,32 @@ public class Viewer extends JComponent implements Observer {
             @Override
             public void keyPressed(KeyEvent e) {
                 log.trace("keyPressed() " + e.getKeyCode());
-                switch (e.getKeyCode()) {
-                case KeyEvent.VK_PAGE_UP:
+                if(Menu.inMenu()) {
+                  Menu.handleKeys(e.getKeyCode());
+                } else {
+                  switch (e.getKeyCode()) {
+                  case KeyEvent.VK_PAGE_UP:
                     setScale(getScale() * ZOOM_RATE);
                     break;
-                case KeyEvent.VK_PAGE_DOWN:
+                  case KeyEvent.VK_PAGE_DOWN:
                     setScale(getScale() * (1 / ZOOM_RATE));
                     break;
-                case KeyEvent.VK_P:
+                  case KeyEvent.VK_P:
                     skipCornerProgress = true;
                     cornerMessage = "Paused";
                     repaint();
                     universe.togglePause();
                     break;
-                case KeyEvent.VK_ESCAPE:
-                    Transition.startTransition(Transition.Types.MENU_IN);
+                  case KeyEvent.VK_ESCAPE:
+                    Menu.begin();
                     break;
-                case KeyEvent.VK_R:
+                  case KeyEvent.VK_R:
                     record ^= true;
                     log.info("Recording set to " + record);
                     break;
-                default:
+                  default:
                     log.trace("Unkown key " + e.getKeyCode());
+                  }
                 }
             }
             @Override

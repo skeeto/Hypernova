@@ -129,8 +129,6 @@ public class Transition
        g2d.drawImage(img, 0, 0, null);
        if(transCount ++ == 10) {
          Universe.get().togglePause(true);
-         transType = Types.NONE;
-         System.exit(0);
-       }
+       } else if( transCount == 13 ) transType = Types.NONE;
     }
 }
