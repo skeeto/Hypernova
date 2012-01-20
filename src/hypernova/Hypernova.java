@@ -208,4 +208,8 @@ public class Hypernova {
     private static void printVersion() {
         System.out.println(PROGRAM + " " + VERSION);
     }
+  
+    public static Viewer getViewer() {
+      return viewer;
+    }
 }
