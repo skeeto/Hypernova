@@ -1,6 +1,7 @@
 package hypernova.gui;
 
 import hypernova.Hypernova;
+import hypernova.Universe;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -15,6 +16,7 @@ public class Transition
                       , DIAGONAL
 		      , BLOCKING
                       , FADE
+                      , MENU_IN
                       };
 
     private static BufferedImage img = null;
@@ -46,6 +48,7 @@ public class Transition
             case DIAGONAL: diagonal(g2d); break;
             case FADE:     fade(g2d); break;
             case BLOCKING: blocking(g2d); break;
+            case MENU_IN:  menu(g2d); break;
         }
     }
    
@@ -105,5 +108,29 @@ public class Transition
        }                         
        
        if(transCount ++ == 60) transType = Types.NONE;
+    }
+
+    private static void menu(Graphics2D g2d)
+    {
+       int[] a = new int[4]; 
+       WritableRaster wr = img.getRaster();
+
+       for (int y = 0; y < img.getHeight(); y++) 
+       {
+           for (int x = 0; x < img.getWidth(); x++) 
+           {
+               wr.getPixel(x,y,a);
+               a[0] = 10*a[0] / 12;
+               a[1] = 10*a[1] / 12;
+               a[2] = 10*a[2] / 12;
+               wr.setPixel(x, y, a);
+           }
+       }
+       g2d.drawImage(img, 0, 0, null);
+       if(transCount ++ == 10) {
+         Universe.get().togglePause(true);
+         transType = Types.NONE;
+         System.exit(0);
+       }
     }
 }

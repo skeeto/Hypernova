@@ -118,8 +118,7 @@ public class Viewer extends JComponent implements Observer {
                     universe.togglePause();
                     break;
                 case KeyEvent.VK_ESCAPE:
-                    universe.togglePause(true);
-                    System.exit(0);
+                    Transition.startTransition(Transition.Types.MENU_IN);
                     break;
                 case KeyEvent.VK_R:
                     record ^= true;
@@ -270,6 +269,7 @@ public class Viewer extends JComponent implements Observer {
     }
 
     private void paintOverlay(Graphics2D g) {
+        if(universe.getPause()) return;
         /* Display messages to the screen. */
         if (message == null || now() - msgTime > MESSAGE_TIME) {
             message = universe.nextMessage();
