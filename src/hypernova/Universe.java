@@ -111,6 +111,11 @@ public class Universe extends Observable implements Runnable {
         INSTANCE.thread.start();
     }
 
+    public void togglePause(boolean val) {
+        paused = val;
+        log.info("Pause set to " + paused);
+    }
+
     public void togglePause() {
         paused ^= true;
         log.info("Pause set to " + paused);

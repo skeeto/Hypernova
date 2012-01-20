@@ -113,6 +113,10 @@ public class Viewer extends JComponent implements Observer {
                 case KeyEvent.VK_P:
                     universe.togglePause();
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    universe.togglePause(true);
+                    System.exit(0);
+                    break;
                 case KeyEvent.VK_R:
                     record ^= true;
                     log.info("Recording set to " + record);
