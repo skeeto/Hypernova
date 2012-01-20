@@ -87,7 +87,6 @@ public class Viewer extends JComponent implements Observer {
     private double msgCornerTime;
     private String message;
     private String cornerMessage;
-    private boolean skipCornerProgress;
 
     private boolean isFaded = false;
     private static Background background = new MusicStarfield();
@@ -113,12 +112,6 @@ public class Viewer extends JComponent implements Observer {
                     break;
                   case KeyEvent.VK_PAGE_DOWN:
                     setScale(getScale() * (1 / ZOOM_RATE));
-                    break;
-                  case KeyEvent.VK_P:
-                    skipCornerProgress = true;
-                    cornerMessage = "Paused";
-                    repaint();
-                    universe.togglePause();
                     break;
                   case KeyEvent.VK_ESCAPE:
                     Menu.begin();
@@ -309,10 +302,6 @@ public class Viewer extends JComponent implements Observer {
             int width = fm.stringWidth(cornerMessage);
             int x = getWidth();
             int y = getHeight();
-            if(skipCornerProgress) {
-              msgCornerTime = now();
-              skipCornerProgress = false;
-            }
             double progress = (1 - (now() - msgCornerTime) 
                             / MESSAGE_CORNER_TIME);
             int alpha = (int) (Math.sqrt(progress) * 255);
