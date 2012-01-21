@@ -5,6 +5,7 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 import java.lang.Math;
 
+import hypernova.sounds.*;
 
 /**
  * An audio wrapper for minim with the following features
@@ -39,6 +40,8 @@ public class MinimWrapper
    private float[] maxSeen = new float[4];
 
    private int songCount = 0;
+   private AudioEffect[] effects = new AudioEffect[5];
+   private int effectCount = 0;
 
    private class Embedded extends PApplet 
    {
@@ -104,6 +107,28 @@ public class MinimWrapper
      AudioOutput out = instance.minim.getLineOut(Minim.STEREO, 2048);
      s.setOut(out);
      out.addSignal(s);
+   }
+
+  /** 
+   * Add an effect to a song
+   * Only up to 5 total
+   * return Integer for removeEffect
+   */
+   public static int addEffect(AudioEffect e)
+   {
+     removeEffect(instance.effectCount);
+     instance.effects[instance.effectCount] = e;
+     instance.curSong.addEffect(e);
+     return instance.effectCount ++;
+   }
+
+  /** 
+   * Remove an effect from a song
+   */
+   public static void removeEffect(int x)
+   {
+     AudioEffect e = instance.effects[x];
+     if(e != null) instance.curSong.removeEffect(e);
    }
 
   /**
