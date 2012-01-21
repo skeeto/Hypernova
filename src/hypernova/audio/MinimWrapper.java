@@ -132,6 +132,14 @@ public class MinimWrapper
    }
 
   /**
+   * Remove all effects
+   */
+   public static void removeAllEffects()
+   {
+     for(int i = 0; i < instance.effects.length; i ++) removeEffect(i);
+   }
+
+  /**
    * Play a sound once from a file location
    * Meant for sounds that only happen once (efficiency)
    */
@@ -155,12 +163,12 @@ public class MinimWrapper
             instance.fadeStop = 0;
             instance.fadeOut.pause();
          }
-         if(instance.curSong == null) instance.curSong = instance.song0;
+         if(instance.curSong == null) swapSong(instance.song0);
          else {
            instance.curSong.pause();
            SongPlaylist.forwardSong();
-           if(instance.curSong == instance.song0) instance.curSong = instance.song1;
-           else instance.curSong = instance.song0;
+           if(instance.curSong == instance.song0) swapSong(instance.song1);
+           else swapSong(instance.song0);
          }
          instance.fftCalc = new FFT(instance.curSong.bufferSize(), instance.curSong.sampleRate());
          instance.curSong.skip(5); // TODO: Is it really synced :P
@@ -183,6 +191,15 @@ public class MinimWrapper
    * Perform cleanup
    */
    public static void close() {/* TODO instance.minim.close(); */}
+
+   private static void swapSong(AudioPlayer n)
+   {
+     removeAllEffects();
+     instance.curSong = n;
+     for(int i = 0; i < instance.effects.length; i ++)
+       if(instance.effects[i] != null) 
+         instance.curSong.addEffect(instance.effects[i]);
+   }
 
   /**
    * Must be called in your programs main loop
@@ -207,7 +224,7 @@ public class MinimWrapper
              int t = (instance.fadeStop- instance.fadeOut.position()) / 400;
              instance.fadeIn.setGain(-t);
              instance.fadeOut.setGain(-20 + t);
-             if(-t > (-20 + t)) instance.curSong = instance.fadeIn;
+             if(-t > (-20 + t)) swapSong(instance.fadeIn);
              if(t <= 0) 
              {
                  instance.fadeOut.pause();
