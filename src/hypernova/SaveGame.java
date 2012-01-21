@@ -10,6 +10,7 @@ import java.lang.Class;
 
 import hypernova.universes.*;
 import hypernova.gui.Transition;
+import hypernova.audio.MinimWrapper;
 
 public class SaveGame extends Thread implements Serializable
 {
@@ -71,6 +72,7 @@ public class SaveGame extends Thread implements Serializable
 
    public static void load(int slot)
    {
+     MinimWrapper.removeAllEffects();
      curSlot = slot;
      SaveGame.INSTANCE = loadFile(SaveGame.INSTANCE);
      Test.INSTANCE = (Test)loadFile(Test.INSTANCE);
