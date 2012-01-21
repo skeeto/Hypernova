@@ -6,7 +6,6 @@ public class ChopEffect implements AudioEffect
 {
   public void process(float[] samp)
   {
-    System.out.println(samp.length);
     for (int i = 0; i < samp.length; i++) samp[i] = samp[i % (samp.length / 3)];
   }
   

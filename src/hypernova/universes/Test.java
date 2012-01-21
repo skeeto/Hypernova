@@ -8,6 +8,7 @@ import hypernova.SaveGame;
 import hypernova.UniNames;
 import hypernova.activities.CountDown;
 import hypernova.gui.Viewer;
+import hypernova.sounds.VolumeEffect;
 import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.activities.WarpZoneTest;
@@ -33,5 +34,6 @@ public class Test extends NewUniverse {
         if( !INSTANCE.countDone ) u.addActivity(new CountDown(), 500, -500);
         Wormhole.add(0,-1500,400,400,UniNames.START,Transition.Types.DIAGONAL);
         u.queueMessage("You are there");
+        // MinimWrapper.addEffect
    }
 } 
