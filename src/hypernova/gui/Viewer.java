@@ -39,6 +39,7 @@ import hypernova.Hypernova;
 import hypernova.pilots.KeyboardPilot;
 import hypernova.audio.MinimWrapper;
 import hypernova.gui.backgrounds.*;
+import hypernova.gui.menus.Pause;
 
 public class Viewer extends JComponent implements Observer {
     public static final long serialVersionUID = 850159523722721935l;
@@ -114,7 +115,7 @@ public class Viewer extends JComponent implements Observer {
                     setScale(getScale() * (1 / ZOOM_RATE));
                     break;
                   case KeyEvent.VK_ESCAPE:
-                    Menu.begin();
+                    Menu.begin(new Pause());
                     break;
                   case KeyEvent.VK_R:
                     record ^= true;
