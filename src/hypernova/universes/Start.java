@@ -53,6 +53,7 @@ public class Start extends NewUniverse {
         else if ( !INSTANCE.chuck2Done ) u.addActivity(ChuckToTheFuture.chuck2, 1500, 1500);
         
         Wormhole.add(0,1500,400,400,UniNames.TEST, Transition.Types.BLOCKING);
+        Wormhole.add(-1500,0,400,400, UniNames.ALTER, Transition.Types.BLOCKING);
         u.queueMessage("You are here");
         MinimWrapper.addEffect(new VolumeEffect());
    }

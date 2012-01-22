@@ -94,7 +94,10 @@ public class Wormhole
                       + c[4] * f[4] * i * i 
                       + c[5] * f[5] * j * j 
                       + c[6] * Math.sin(f[6]) 
-                      - c[7] * Math.cos(f[7]);  
+                      - c[7] * Math.cos(f[7]);
+           case ALTER:
+               return c[0]*(f[0] + 1)*i*i + c[0]*(f[1] + 1)*j*j;
+           
        }    
        return 0;
    }
@@ -120,7 +123,14 @@ public class Wormhole
                if(v%57 == 0) a[3] = 255; 
                else a[3] = 0; 
                if(i < 100 && j < 100) a[3] = 0;
-           break;
+               break;
+           case ALTER:
+               a[0] = v%255;
+               a[1] = 2*v%255;
+               a[2] = 4*v%255;
+               a[3] = 255;
+               if( v % 2 == 0) a[3] = 0;
+               break;
       }
    }
 
@@ -147,6 +157,9 @@ public class Wormhole
            c[5] = 0.01;
            c[6] = 0.01;
            c[7] = 0.01;
+           break;
+       case ALTER:
+           c[0] = 0.01;
            break;
        } 
    }
@@ -177,6 +190,9 @@ public class Wormhole
                  break;
              case START:
                  u.loadUniverse(Start.INSTANCE);
+                 break;
+             case ALTER:
+                 u.loadUniverse(Alter.INSTANCE);
                  break;
          }
          return true;
