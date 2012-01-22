@@ -194,49 +194,52 @@ public class Viewer extends JComponent implements Observer {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        AffineTransform at = g2d.getTransform();
-        if(background != null) background.drawBackground(g, g2d, focusX, focusY);
-        g2d.setTransform(at);
+        if(!universe.getPause()){ 
+          AffineTransform at = g2d.getTransform();
+          if(background != null) background.drawBackground(g, g2d, focusX, focusY);
+          g2d.setTransform(at);
 
 
-        /* Set up graphics */
-        if (quality > 0) {
+          /* Set up graphics */
+          if (quality > 0) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                  RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                                  RenderingHints.VALUE_STROKE_PURE);
-        }
-        if (quality > 1) {
+          }
+          if (quality > 1) {
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                                  RenderingHints.VALUE_RENDER_QUALITY);
-        }
+          }
 
-        /* Wormhole */
-        g2d.translate(-(focusX * scale - getWidth() / 2),
-                      -(focusY * scale - getHeight() / 2));
-        if(scale != 2) g2d.scale(scale/2, scale/2);
-        Wormhole.drawAll(g2d);
-        g2d.setTransform(at);
+          /* Wormhole */
+          g2d.translate(-(focusX * scale - getWidth() / 2),
+                        -(focusY * scale - getHeight() / 2));
+          if(scale != 2) g2d.scale(scale/2, scale/2);
+          Wormhole.drawAll(g2d);
+          g2d.setTransform(at);
 
-        /* Models */
-        g2d.translate(-(focusX * scale - getWidth() / 2),
-                      -(focusY * scale - getHeight() / 2));
-        g2d.scale(scale, scale);
-        Collection<Mass> objects = universe.getObjects();
-        for (Mass m : objects) {
+          /* Models */
+          g2d.translate(-(focusX * scale - getWidth() / 2),
+                        -(focusY * scale - getHeight() / 2));
+          g2d.scale(scale, scale);
+          Collection<Mass> objects = universe.getObjects();
+          for (Mass m : objects) {
             drawMass(g2d, m);
-        }
-        g2d.setTransform(at);
+          }
+          g2d.setTransform(at);
 
-        /* Minimap */
-        minimap(objects, (Graphics2D) g2d.create(getWidth() - MM_PAD - MM_SIZE,
-                MM_PAD, MM_SIZE, MM_SIZE));
+          /* Minimap */
+          minimap(objects, (Graphics2D) g2d.create(getWidth() - MM_PAD - MM_SIZE,
+                  MM_PAD, MM_SIZE, MM_SIZE));
 
-        Info.paintInfo(g2d, getHeight(), focusX, focusY);
-        g2d.setTransform(at);
+          Info.paintInfo(g2d, getHeight(), focusX, focusY);
+          g2d.setTransform(at);
         
-        Transition.doTransition(g2d);
-        paintOverlay(g2d);
+          Transition.doTransition(g2d);
+          paintOverlay(g2d); 
+        }
+          if(Menu.inMenu()) Menu.render(g2d);
     }
 
     private void minimap(Collection<Mass> objects, Graphics2D g) {

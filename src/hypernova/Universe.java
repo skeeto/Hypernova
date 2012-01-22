@@ -211,6 +211,8 @@ public class Universe extends Observable implements Runnable {
                   paused = false;
                   Wormhole.hold = false;
                 }
+                setChanged();
+                notifyObservers();
                 continue;
             }
             synchronized (objects) {
