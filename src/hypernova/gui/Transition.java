@@ -16,6 +16,7 @@ public class Transition
                       , DIAGONAL
 		      , BLOCKING
                       , FADE
+                      , FOUR
                       , MENU_IN
                       };
 
@@ -45,6 +46,7 @@ public class Transition
         switch (transType)
         {
             case NONE:     break;
+            case FOUR:     fourSquare(g2d); break;
             case DIAGONAL: diagonal(g2d); break;
             case FADE:     fade(g2d); break;
             case BLOCKING: blocking(g2d); break;
@@ -52,6 +54,16 @@ public class Transition
         }
     }
    
+    private static void fourSquare(Graphics2D g2d)
+    {
+        int w = v.getWidth();
+        int h = v.getHeight();
+        g2d.drawImage(img, transCount *(w/50), transCount*(h/50), null);
+        g2d.drawImage(img, -transCount *(w/50), transCount*(h/50), null);
+        g2d.drawImage(img, transCount *(w/50), -transCount*(h/50), null);
+        g2d.drawImage(img, -transCount *(w/50), -transCount*(h/50), null);
+        if(transCount ++ == 50) transType = Types.NONE;
+    }
     private static void diagonal(Graphics2D g2d)
     {
         int w = v.getWidth();
