@@ -4,7 +4,7 @@ import java.awt.Color;
 import hypernova.NewUniverse;
 import hypernova.Activity;
 import hypernova.Faction;
-import hypernova.gui.backgrounds.EqualizerBackground;
+import hypernova.gui.backgrounds.BlankBackground;
 import hypernova.Realization;
 import hypernova.SaveGame;
 import hypernova.UniNames;
@@ -25,7 +25,7 @@ public class Alter extends NewUniverse {
         Faction.create("None", Color.BLUE);
         Faction.create("Humans", Color.WHITE);
         Faction.create("Invaders", Color.WHITE);
-        Viewer.setBackground(new EqualizerBackground());
+        Viewer.setBackground(new BlankBackground());
 
         Info.visibleTimer = false;
         Info.visibleCounter = false;
