@@ -91,6 +91,9 @@ public class SaveGame extends Thread implements Serializable
         case START:
           nu = new Start();
           break;
+        case ALTER:
+          nu = new Alter();
+          break;
      }     
      Ship p = u.getPlayer();   
      u.loadUniverse(nu);

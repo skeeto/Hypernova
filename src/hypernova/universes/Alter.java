@@ -25,13 +25,13 @@ public class Alter extends NewUniverse {
         Faction.create("None", Color.BLUE);
         Faction.create("Humans", Color.WHITE);
         Faction.create("Invaders", Color.WHITE);
-        SaveGame.setCheckpoint(0, 0, UniNames.ALTER);
         Viewer.setBackground(new EqualizerBackground());
 
         Info.visibleTimer = false;
         Info.visibleCounter = false;
         
         Wormhole.add(-1500,100,400,400,UniNames.START, Transition.Types.DIAGONAL);
+        SaveGame.setCheckpoint(0, 0, UniNames.ALTER);
    }
 
 } 

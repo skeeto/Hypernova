@@ -189,9 +189,11 @@ public class Wormhole
                  u.loadUniverse(Test.INSTANCE);
                  break;
              case START:
+                 System.out.println("START: " + Start.INSTANCE);
                  u.loadUniverse(Start.INSTANCE);
                  break;
              case ALTER:
+                 System.out.println("ALTER: " + Alter.INSTANCE);
                  u.loadUniverse(Alter.INSTANCE);
                  break;
          }
