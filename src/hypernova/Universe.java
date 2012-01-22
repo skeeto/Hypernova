@@ -20,6 +20,7 @@ import hypernova.pilots.KeyboardPilot;
 import hypernova.pilots.EmptyCockpit;
 import hypernova.gui.MapMarker;
 import hypernova.gui.Wormhole;
+import hypernova.audio.MinimWrapper;
 
 public class Universe extends Observable implements Runnable {
     public static final int DELAY_MSEC = 40;
@@ -67,6 +68,7 @@ public class Universe extends Observable implements Runnable {
     }
 
     public void loadUniverse(NewUniverse n) {
+      MinimWrapper.removeAllEffects();
       currentUniverse = n;
       clear = true;
       paused = true;

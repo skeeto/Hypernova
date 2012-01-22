@@ -22,6 +22,8 @@ public class Hunter extends Pilot {
       ship.fire(0);
     }
 
+    public void noFire() {}
+
     @Override
     public void drive(double dt) {
         if (target == null) return;
@@ -36,6 +38,7 @@ public class Hunter extends Pilot {
 
         double diff = dir - ship.getA(0);
         if (Math.abs(diff) < 0.05 && target.isActive()) fireShots(ship);
+        else noFire();
 
         double dist = Math.sqrt((px - x) * (px - x) + (py - y) * (py - y));
         ship.setEngines((dist - TARGET_DIST) / 250);

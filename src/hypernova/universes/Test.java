@@ -7,12 +7,14 @@ import hypernova.Realization;
 import hypernova.SaveGame;
 import hypernova.UniNames;
 import hypernova.activities.CountDown;
+import hypernova.activities.OneBeamer;
 import hypernova.gui.Viewer;
-import hypernova.sounds.VolumeEffect;
 import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.activities.WarpZoneTest;
 import hypernova.gui.backgrounds.EqualizerBackground;
+import hypernova.sounds.WarbleEffect;
+import hypernova.audio.MinimWrapper;
 
 public class Test extends NewUniverse {
    public static Test INSTANCE = new Test();
@@ -20,8 +22,10 @@ public class Test extends NewUniverse {
 
    private boolean countDone = false;
    
-   public static void setCountDone(){INSTANCE.countDone = true;}
-   
+   private static OneBeamer oneBeamer;
+   public static void finishOneBeamer(){INSTANCE.oneBeamer.finish();}
+   public static void setCountDone(){INSTANCE.countDone = true;}   
+
    public void begin()
    {
         Faction.clear();
@@ -34,6 +38,10 @@ public class Test extends NewUniverse {
         if( !INSTANCE.countDone ) u.addActivity(new CountDown(), 500, -500);
         Wormhole.add(0,-1500,400,400,UniNames.START,Transition.Types.DIAGONAL);
         u.queueMessage("You are there");
-        // MinimWrapper.addEffect
+        oneBeamer = new hypernova.activities.OneBeamer();
+        u.addActivity(oneBeamer, 0, 2000);
+        MinimWrapper.addEffect(new WarbleEffect());
+        WarbleEffect.l = false;
+        WarbleEffect.r = false;
    }
 } 
