@@ -114,7 +114,7 @@ public class Hypernova {
 
         /* Hide mouse cursor */
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image transCursorImage = toolkit.getImage("./1px.png");
+        Image transCursorImage = toolkit.getImage("./images/1px.png");
         MediaTracker mediaTracker = new MediaTracker(frame);
         mediaTracker.addImage(transCursorImage, 0);
         try {
