@@ -37,6 +37,7 @@ public class Test extends NewUniverse {
         u.addActivity(battle, -500, -500);
         if( !INSTANCE.countDone ) u.addActivity(new CountDown(), 500, -500);
         Wormhole.add(0,-1500,400,400,UniNames.START,Transition.Types.DIAGONAL);
+        Wormhole.add(1500,0,400,400, UniNames.ALTER, Transition.Types.FOUR);
         u.queueMessage("You are there");
         oneBeamer = new hypernova.activities.OneBeamer();
         u.addActivity(oneBeamer, 0, 2000);

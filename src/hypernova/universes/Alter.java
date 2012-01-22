@@ -31,6 +31,7 @@ public class Alter extends NewUniverse {
         Info.visibleCounter = false;
         
         Wormhole.add(-1500,100,400,400,UniNames.START, Transition.Types.DIAGONAL);
+        Wormhole.add(1500,100,400,400,UniNames.TEST, Transition.Types.BLOCKING);
         SaveGame.setCheckpoint(0, 0, UniNames.ALTER);
    }
 
