@@ -15,6 +15,8 @@ import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.gui.backgrounds.MusicStarfield;
 import hypernova.activities.WarpZoneTest;
+import hypernova.sounds.VolumeEffect;
+import hypernova.audio.MinimWrapper;
 
 public class Start extends NewUniverse {
    public static Start INSTANCE = new Start();
@@ -52,6 +54,7 @@ public class Start extends NewUniverse {
         
         Wormhole.add(0,1500,400,400,UniNames.TEST, Transition.Types.BLOCKING);
         u.queueMessage("You are here");
+        MinimWrapper.addEffect(new VolumeEffect());
    }
 
 } 

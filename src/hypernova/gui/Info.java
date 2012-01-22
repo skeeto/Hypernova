@@ -10,6 +10,8 @@ import java.awt.FontMetrics;
 import hypernova.Universe;
 import hypernova.Ship;
 import hypernova.Hypernova;
+import hypernova.sounds.VolumeEffect;
+
 
 public class Info {
     public static final int INFO_WIDTH = 120;
@@ -115,6 +117,7 @@ public class Info {
           int oneNorm = (int) (100*Math.abs(player.getX(1)) 
                         + Math.abs(100*player.getY(1)));
           String coords = oneNorm + " km/h";
+          VolumeEffect.amount = oneNorm;
           int coordsW = fm.stringWidth(coords);
           g.drawString(coords, INFO_WIDTH / 2 - coordsW / 2, curH);
         } 
