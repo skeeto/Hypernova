@@ -13,6 +13,7 @@
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="dist.dir" value="dist"/>
   <property name="save.dir" value="saves"/>
+  <property name="movie.dir" value="movies"/>
   <property name="lib.dir" value="lib"/>
   <property name="doc.dir" value="doc"/>
 
@@ -55,6 +56,13 @@
     <get src="http://devrand.org:8080/mp3s.tar" dest="./mp3s.tar"/>
     <untar src="mp3s.tar" dest="."/>
     <delete file="mp3s.tar"/>
+  </target>
+  
+  <target name="testMovie">
+    <mkdir dir="${movie.dir}"/>
+    <get src="http://devrand.org:8080/testMovie.tar" dest="./testMovie.tar"/>
+    <untar src="testMovie.tar" dest="movies"/>
+    <delete file="testMovie.tar"/>
   </target>
 
   <target name="compile" depends="init,resolve"
