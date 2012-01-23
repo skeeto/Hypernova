@@ -238,8 +238,10 @@ public class Viewer extends JComponent implements Observer {
         
           Transition.doTransition(g2d);
           paintOverlay(g2d); 
-        }
+        } else {
           if(Menu.inMenu()) Menu.render(g2d);
+          else if(Movie.inMovie()) Movie.render(g2d);
+        }
     }
 
     private void minimap(Collection<Mass> objects, Graphics2D g) {

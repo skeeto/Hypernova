@@ -15,6 +15,9 @@ public class Movie
     private static int frame = 0;
     private static int w = 0;
     private static int h = 0;
+    private static boolean inMovie = false;
+    public static boolean inMovie() { return inMovie; }
+    public static void setInMovie(boolean x) { inMovie = x; }
 
     public static void render(Graphics2D g2d) {
       File f;
@@ -34,6 +37,8 @@ public class Movie
       movie = m;
       w = Hypernova.getViewer().getWidth();
       h = Hypernova.getViewer().getHeight();
+      inMovie = true;
+      Transition.startTransition(Transition.Types.MENU_IN);
       frame = 0;
     }
 }

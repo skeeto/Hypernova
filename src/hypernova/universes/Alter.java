@@ -12,8 +12,8 @@ import hypernova.gui.Viewer;
 import hypernova.gui.Info;
 import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
-import hypernova.sounds.VolumeEffect;
 import hypernova.audio.MinimWrapper;
+import hypernova.activities.MovieEvent;
 
 public class Alter extends NewUniverse {
    public static Alter INSTANCE = new Alter();
@@ -30,6 +30,7 @@ public class Alter extends NewUniverse {
         Info.visibleTimer = false;
         Info.visibleCounter = false;
         
+        u.addActivity(new MovieEvent(), 0, -1500);
         Wormhole.add(-1500,100,400,400,UniNames.START, Transition.Types.DIAGONAL);
         Wormhole.add(1500,100,400,400,UniNames.TEST, Transition.Types.BLOCKING);
         SaveGame.setCheckpoint(0, 0, UniNames.ALTER);
