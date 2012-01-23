@@ -12,7 +12,7 @@ import java.io.File;
 public class Movie
 {
     private static String movie = "";
-    private static int frame = 0;
+    private static int frame = 1;
     private static int w = 0;
     private static int h = 0;
     private static boolean inMovie = false;
@@ -29,7 +29,10 @@ public class Movie
                     + (frame++) + ".png"
                     );
        img = ImageIO.read(f);
-     } catch (Exception e) {}
+     } catch (Exception e) {
+       inMovie = false;
+       Universe.get().togglePause(false);
+     }
      g2d.drawImage(img, 0, 0, w, h, null);
     }
 
@@ -39,6 +42,6 @@ public class Movie
       h = Hypernova.getViewer().getHeight();
       inMovie = true;
       Transition.startTransition(Transition.Types.MENU_IN);
-      frame = 0;
+      frame = 1;
     }
 }
