@@ -106,6 +106,12 @@ public class Viewer extends JComponent implements Observer {
                 log.trace("keyPressed() " + e.getKeyCode());
                 if(Menu.inMenu()) {
                   Menu.handleKeys(e.getKeyCode());
+                } else if (Movie.inMovie()) {
+                  if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                  {   
+                    Movie.setInMovie(false);
+                    Universe.get().togglePause(false);
+                  }
                 } else {
                   switch (e.getKeyCode()) {
                   case KeyEvent.VK_PAGE_UP:
