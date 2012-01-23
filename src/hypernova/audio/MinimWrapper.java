@@ -116,6 +116,7 @@ public class MinimWrapper
    */
    public static int addEffect(AudioEffect e)
    {
+     if(instance.effectCount == 5) instance.effectCount = 0;
      removeEffect(instance.effectCount);
      instance.effects[instance.effectCount] = e;
      instance.curSong.addEffect(e);
