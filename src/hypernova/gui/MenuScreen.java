@@ -12,8 +12,8 @@ import hypernova.Hypernova;
 
 public abstract class MenuScreen
 {
-  public static final int MENU_PAD = 100;
-  public static final int ITEM_PAD = 10;
+  public static final int MENU_PAD = 10;
+  public static final int ITEM_PAD = 15;
   public MenuScreen parent = null;
 
   private class ItemTuple {
@@ -22,7 +22,10 @@ public abstract class MenuScreen
     public String    name;
     public String    value;
     public int       func;
-    public boolean   ext; 
+    public int       cost;  // Check if player can afford
+    public boolean   viewOnly; // Just text, not an actual option
+    public boolean   disabled; // Item is not available at this time
+    public boolean   ext; // Will bring up another screen
     ItemTuple( Alignment align
              , String    img
              , String    name
@@ -112,13 +115,21 @@ public abstract class MenuScreen
     g2d.setFont(oldfont.deriveFont(45f));
     FontMetrics fm = g2d.getFontMetrics();
     int height = fm.getAscent() + ITEM_PAD; 
+    int totalHeight = height * items.size();
+    int uHeight  = Hypernova.getViewer().getHeight();
+    int startH = uHeight/2 - totalHeight/2;
     
     for (int i = 0; i < items.size(); i ++) {
       ItemTuple x = items.get(i);
-      int width  = fm.stringWidth(x.name);
+      int width   = fm.stringWidth(x.name);
+      int uWidth  = Hypernova.getViewer().getWidth();
       if(x.isNamed(selected)) g2d.setColor(new Color(0xff, 0xff, 0x77));
       else g2d.setColor(new Color(0xff, 0xff, 0xff));
-      g2d.drawString(x.name, 10, MENU_PAD + i*height);
+ 
+      int posHrz = MENU_PAD;
+      if( x.align == Alignment.CENTER ) posHrz = uWidth / 2 - width / 2;
+      else if (x.align == Alignment.RIGHT) posHrz = uWidth - MENU_PAD- width;
+      g2d.drawString(x.name, posHrz, i*height + startH);
     }
   }
  
