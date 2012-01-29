@@ -17,8 +17,7 @@ public class Intro extends MenuScreen
   }
 
   public void loadMenu() {
-    addText(Alignment.CENTER, "HyperNova");
-    addText(Alignment.CENTER, " ");
+    addImg(Alignment.CENTER, "images/logo.png", 550, 250);
     addItem(Alignment.CENTER, "Continue", null, 0);
     addItem(Alignment.CENTER, "New Game", null, 1);
     addItem(Alignment.CENTER, "Load", null, 2);
