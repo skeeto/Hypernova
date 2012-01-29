@@ -15,8 +15,11 @@ public class Menu
     private static MenuScreen screen = null;
     private static boolean clearScreen = false;
     private static boolean inMenu = false;
+    private static boolean keepBg = true;
     public static boolean inMenu() { return inMenu; }
+    public static boolean keepBg() { return keepBg; }
     public static void setInMenu(boolean x) { inMenu = x; }
+    public static void setKeepBg(boolean x) { keepBg = x; }
  
     public static void render(Graphics2D g2d) {
       if(clearScreen)

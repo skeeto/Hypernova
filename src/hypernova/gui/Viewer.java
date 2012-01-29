@@ -52,6 +52,7 @@ public class Viewer extends JComponent implements Observer {
     public static final int QUALITY_MAX = 2;
 
     /* Minimap */
+    public static boolean showMinimap = false;
     public static final int MM_PAD = 10;
     public static final int MM_SIZE = 150;
     public static final double MM_SCALE = 0.025;
@@ -90,7 +91,7 @@ public class Viewer extends JComponent implements Observer {
     private String cornerMessage;
 
     private boolean isFaded = false;
-    private static Background background = new MusicStarfield();
+    private static Background background = new BlankBackground();
 
     private static Logger log = Logger.getLogger("gui.Viewer");
 
@@ -236,16 +237,21 @@ public class Viewer extends JComponent implements Observer {
           g2d.setTransform(at);
 
           /* Minimap */
-          minimap(objects, (Graphics2D) g2d.create(getWidth() - MM_PAD - MM_SIZE,
-                  MM_PAD, MM_SIZE, MM_SIZE));
+          if(showMinimap) minimap(objects, (Graphics2D) g2d.create(getWidth() 
+                                  - MM_PAD - MM_SIZE, MM_PAD, MM_SIZE, 
+                                  MM_SIZE));
 
-          Info.paintInfo(g2d, getHeight(), focusX, focusY);
+          if(Info.showInfo) Info.paintInfo(g2d, getHeight(), focusX, focusY);
           g2d.setTransform(at);
         
           Transition.doTransition(g2d);
           paintOverlay(g2d); 
         } else {
-          if(Menu.inMenu()) Menu.render(g2d);
+          if(Menu.inMenu()) {
+            if(Menu.keepBg() && background != null) 
+              background.drawBackground(g, g2d, 0, 0);
+            Menu.render(g2d);
+          }
           else if(Movie.inMovie()) Movie.render(g2d);
         }
     }

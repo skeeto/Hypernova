@@ -2,6 +2,8 @@ package hypernova.gui.menus;
 
 import hypernova.gui.MenuScreen;
 import hypernova.gui.Menu;
+import hypernova.gui.Info;
+import hypernova.gui.Viewer;
 import hypernova.SaveGame;
 import hypernova.Universe;
 
@@ -19,6 +21,9 @@ public class Load extends MenuScreen
     {
       Universe.get().togglePause(false);
       Menu.setInMenu(false);
+      Viewer.showMinimap = true;
+      Info.showInfo = true;
+      Menu.setKeepBg(false);
       SaveGame.load(func);
     } else back();
   }

@@ -29,6 +29,7 @@ public class Info {
     public static final int HP_HEIGHT = 3;
     public static final int BATT_HEIGHT = 3;
     
+    public static boolean showInfo        = false;
     public static boolean visibleHP       = true;
     public static boolean visibleCooldown = true;
     public static boolean visiblePosition = true;

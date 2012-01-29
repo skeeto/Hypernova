@@ -27,7 +27,6 @@ import org.apache.commons.cli.CommandLineParser;
 
 import hypernova.gui.Viewer;
 import hypernova.gui.Transition;
-import hypernova.universes.Alter;
 import hypernova.audio.SongPlaylist;
 import hypernova.audio.MinimWrapper;
 
@@ -150,7 +149,7 @@ public class Hypernova {
                 System.exit(1);
             }
         } else {
-            Universe.get().loadUniverse(new Alter());
+            Universe.get().loadUniverse(new StartScreen());
         }
     }
 
