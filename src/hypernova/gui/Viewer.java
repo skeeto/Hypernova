@@ -333,6 +333,16 @@ public class Viewer extends JComponent implements Observer {
         return Calendar.getInstance().getTimeInMillis() / 1000.0d;
     }
 
+    public BufferedImage getImage()
+    {
+        BufferedImage img = new BufferedImage(getWidth(), getHeight(),
+                                              BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        paintComponent(g);
+        g.dispose();
+        return img;
+    }
+
     public void screenshot(File file) {
         try {
             saves.put(file);
@@ -345,21 +355,11 @@ public class Viewer extends JComponent implements Observer {
         @Override
         public void run() {
             BufferedImage img = null;
-            int w = 0, h = 0;
             File file = null;
             while (true) {
                 try {
                     file = saves.take();
-                    if (w != getWidth() || h != getHeight()) {
-                        img = new BufferedImage(getWidth(), getHeight(),
-                                                BufferedImage.TYPE_INT_RGB);
-                        w = getWidth();
-                        h = getHeight();
-                    }
-                    Graphics g = img.getGraphics();
-                    paintComponent(g);
-                    g.dispose();
-                    ImageIO.write(img, "PNG", file);
+                    ImageIO.write(getImage(), "PNG", file);
                     log.info("Wrote " + file);
                 } catch (Exception e) {
                     log.error("Failed to save screenshot: " + file + ": " + e);

@@ -32,11 +32,7 @@ public class Transition
   
     public static void startTransition(Types t)
     {
-        img = new BufferedImage(v.getWidth(), v.getHeight(),
-                                BufferedImage.TYPE_INT_ARGB);
-        Graphics gImg = img.getGraphics();
-        v.paintComponent(gImg);
-        gImg.dispose();
+        img = v.getImage();
         transCount = 0;
         transType = t;
     }
