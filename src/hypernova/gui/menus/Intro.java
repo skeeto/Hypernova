@@ -24,6 +24,7 @@ public class Intro extends MenuScreen
     addItem(Alignment.CENTER, "Load", null, 2);
     addItem(Alignment.CENTER, "Options", null, 3);
     addItem(Alignment.CENTER, "Exit", null, 4);
+    if(!SaveGame.hasAutoSave()) updateItem("Continue", null, true);
   }
  
   public void functions(int func, String value) {

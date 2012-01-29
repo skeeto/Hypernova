@@ -45,7 +45,12 @@ public class SaveGame extends Thread implements Serializable
      autosave();
    }
 
-   
+   public static boolean hasAutoSave()
+   {
+     File file=new File("saves/0/hypernova.SaveGame.dat");
+     return file.exists();
+   }
+  
    public static UniNames getUniName() 
    {
       return INSTANCE.restoreU;
