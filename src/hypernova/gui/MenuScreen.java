@@ -31,14 +31,12 @@ public abstract class MenuScreen
              , String    name
              , String    value
              , int       func
-             , boolean   ext 
              ) {
       this.align = align;
       this.img   = img;
       this.name  = name;
       this.value = value;
       this.func  = func;
-      this.ext   = ext;
     }
 
     public boolean isNamed(String x) {
@@ -63,9 +61,8 @@ public abstract class MenuScreen
                      , String    name
                      , String    value
                      , int       func
-                     , boolean   ext 
                      ) {
-    items.add(new ItemTuple(align, img, name, value, func, ext));
+    items.add(new ItemTuple(align, img, name, value, func));
     if(selected == null) selected = name;
   }
 
@@ -129,7 +126,8 @@ public abstract class MenuScreen
       int posHrz = MENU_PAD;
       if( x.align == Alignment.CENTER ) posHrz = uWidth / 2 - width / 2;
       else if (x.align == Alignment.RIGHT) posHrz = uWidth - MENU_PAD- width;
-      g2d.drawString(x.name, posHrz, i*height + startH);
+      String n = x.name;
+      g2d.drawString(n, posHrz, i*height + startH);
     }
   }
  
