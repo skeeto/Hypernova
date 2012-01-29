@@ -37,6 +37,18 @@ public abstract class MenuScreen
       this.name  = name;
       this.value = value;
       this.func  = func;
+      this.disabled = false;
+      this.viewOnly = false;
+    }
+
+    ItemTuple( Alignment align
+             , String img
+             , String name
+             ) {
+      this.align = align;
+      this.img   = img;
+      this.name  = name;
+      this.viewOnly = true;
     }
 
     public boolean isNamed(String x) {
@@ -56,6 +68,14 @@ public abstract class MenuScreen
                         , CENTER
                         };
  
+  public void addText( Alignment align
+                     , String    img
+                     , String    name
+                     ) {
+    items.add(new ItemTuple(align, img, name));
+  }
+
+
   public void addItem( Alignment align
                      , String    img
                      , String    name
@@ -66,6 +86,14 @@ public abstract class MenuScreen
     if(selected == null) selected = name;
   }
 
+  private boolean isViewOnly(String n) {
+    for (int i = 0; i < items.size(); i ++) {
+      ItemTuple x = items.get(i);
+      if( x.isNamed(n) && x.viewOnly) return true;
+    }
+    return false;
+  }
+
   public void goUp() {
     String newSelect = null;
     for (int i = 1; i < items.size(); i ++) {
@@ -74,6 +102,8 @@ public abstract class MenuScreen
     }
     if (newSelect == null) newSelect = items.get(items.size() - 1).name;
     selected = newSelect;
+    if ( isViewOnly(newSelect) ) goUp();
+    
   }
 
   public void goDown() {
@@ -84,6 +114,7 @@ public abstract class MenuScreen
     }
     if (newSelect == null) newSelect = items.get(0).name;
     selected = newSelect;
+    if ( isViewOnly(newSelect) ) goDown();
   }
 
   public void select() {
