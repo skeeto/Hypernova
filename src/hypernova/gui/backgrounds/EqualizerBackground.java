@@ -21,6 +21,5 @@ public class EqualizerBackground extends Background{
             g.fillRect(i*(width/32), height/2, width/32, c);
             g.fillRect(i*(width/32), height/2 - c, width/32, c);
         }
-        g2d.translate(width / 2, height / 2);
     }
 }
