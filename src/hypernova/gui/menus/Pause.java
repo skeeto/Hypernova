@@ -5,7 +5,6 @@ import hypernova.gui.Menu;
 import hypernova.gui.Viewer;
 import hypernova.Universe;
 import hypernova.Hypernova;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Pause extends MenuScreen
@@ -39,7 +38,7 @@ public class Pause extends MenuScreen
       case 2:
         break;
       case 3:
-        System.exit(0);
+        newScreen(new YesNoQuit());       
         break;
     }
   }

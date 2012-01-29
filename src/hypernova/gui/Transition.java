@@ -137,6 +137,7 @@ public class Transition
        g2d.drawImage(img, 0, 0, null);
        if(transCount ++ == 10) {
          Universe.get().togglePause(true);
+         Menu.load(img);
        } else if( transCount == 13 ) transType = Types.NONE;
     }
 }

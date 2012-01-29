@@ -61,7 +61,7 @@ public abstract class MenuScreen
   }
 
   private ArrayList<ItemTuple> items = new ArrayList<ItemTuple>();
-  private String selected = null;
+  protected String selected = null;
 
   public enum Alignment { LEFT
                         , RIGHT
@@ -124,8 +124,13 @@ public abstract class MenuScreen
     }
   }
   
+  public void newScreen(MenuScreen n) {
+     n.parent = this;
+     Menu.newMenu(n, true);
+  }
+ 
   public void back() {
-    // TODO: Should pop up a level if not null parent
+    if (parent != null) Menu.newMenu(parent, false);
   }
 
   public void updateItem(String name, String value) {
