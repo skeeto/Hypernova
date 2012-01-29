@@ -38,3 +38,4 @@ Fixes/Polish
   * Model breakup does not scale
   * Wormhole concurrency error
   * Thrust boost stays on if not pressing a direction
+  * Make sure screen redraws for menus
