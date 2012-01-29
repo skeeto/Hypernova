@@ -19,7 +19,7 @@ public class Save extends MenuScreen
     {
       Universe.get().togglePause(false);
       Menu.setInMenu(false);
-      SaveGame.save(func);
+      SaveGame.save(func, Menu.getScreenshot());
     } else back();
   }
 }

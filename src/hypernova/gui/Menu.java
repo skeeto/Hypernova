@@ -11,6 +11,7 @@ import java.awt.Graphics;
 public class Menu
 {
     private static BufferedImage img = null;
+    private static BufferedImage screenshot = null;
     private static MenuScreen screen = null;
     private static boolean clearScreen = false;
     private static boolean inMenu = false;
@@ -33,6 +34,7 @@ public class Menu
     }
 
     public static void begin(MenuScreen m) {
+      Menu.screenshot = Hypernova.getViewer().getImage();
       screen = m;
       inMenu = true;
       Transition.startTransition(Transition.Types.MENU_IN);
@@ -41,6 +43,10 @@ public class Menu
     public static void load(BufferedImage img) {
       Menu.img = img;
       screen.loadMenu();
+    }
+
+    public static BufferedImage getScreenshot() {
+      return screenshot;
     }
 
     public static void handleKeys(int k) {

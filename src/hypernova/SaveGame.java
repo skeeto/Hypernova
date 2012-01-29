@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.File;
+import javax.imageio.ImageIO;
 import java.io.ObjectOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
 import java.lang.Class;
 
@@ -13,6 +16,7 @@ import hypernova.gui.Transition;
 
 public class SaveGame extends Thread implements Serializable
 {
+   private static BufferedImage screenshot = null;
    private long totalPlayTime = 0;
    private double restoreX = 0;
    private double restoreY = 0;   
@@ -21,7 +25,6 @@ public class SaveGame extends Thread implements Serializable
    private static Universe u = Universe.get();
 
    protected static SaveGame INSTANCE = new SaveGame();
-   public static void autosave() { save(0); }
    private GameStats stats = new GameStats();
    private class GameStats implements Serializable {
      static final long serialVersionUID = 1027472837L;  
@@ -32,6 +35,7 @@ public class SaveGame extends Thread implements Serializable
 
    static final long serialVersionUID = 1027533472837495L;  
 
+   public static void autosave() { save(0, null);}
    public static void checkpoint(){ load(0); }
    public static void setCheckpoint(double x, double y, UniNames u)
    {
@@ -40,6 +44,7 @@ public class SaveGame extends Thread implements Serializable
      INSTANCE.restoreU = u;
      autosave();
    }
+
    
    public static UniNames getUniName() 
    {
@@ -133,8 +138,9 @@ public class SaveGame extends Thread implements Serializable
      return ret;
    }
 
-   public static void save(int slot)
+   public static void save(int slot, BufferedImage img)
    { 
+     SaveGame.INSTANCE.screenshot = img;
      if(slot == 0) u.queueCornerMessage("Autosaving...");
      else u.queueCornerMessage("Saved in slot: " + slot);
      curSlot = slot; 
@@ -154,6 +160,10 @@ public class SaveGame extends Thread implements Serializable
      writeFile(Start.INSTANCE);
      writeFile(Test.INSTANCE);
      writeFile(Alter.INSTANCE);
+     try {
+       File f = new File("saves/" + curSlot + "/screenshot.png");
+       if(screenshot != null) ImageIO.write(screenshot, "PNG", f);
+     } catch(Exception e) { e.printStackTrace(); }
    }
 
 }
