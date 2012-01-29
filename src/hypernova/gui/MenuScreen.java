@@ -22,32 +22,41 @@ public abstract class MenuScreen
     public String    name;
     public String    value;
     public int       func;
+    public int       size;
     public int       cost;  // Check if player can afford
     public boolean   viewOnly; // Just text, not an actual option
     public boolean   disabled; // Item is not available at this time
     public boolean   ext; // Will bring up another screen
     ItemTuple( Alignment align
              , String    img
+             , int       size
              , String    name
              , String    value
              , int       func
              ) {
       this.align = align;
       this.img   = img;
+      this.size  = size;
       this.name  = name;
       this.value = value;
       this.func  = func;
-      this.disabled = false;
-      this.viewOnly = false;
+    }
+
+    ItemTuple( Alignment align
+             , String name
+             ) {
+      this.align = align;
+      this.name  = name;
+      this.viewOnly = true;
     }
 
     ItemTuple( Alignment align
              , String img
-             , String name
+             , int imgSize
              ) {
       this.align = align;
       this.img   = img;
-      this.name  = name;
+      this.size  = imgSize;
       this.viewOnly = true;
     }
 
@@ -69,20 +78,35 @@ public abstract class MenuScreen
                         };
  
   public void addText( Alignment align
-                     , String    img
                      , String    name
                      ) {
-    items.add(new ItemTuple(align, img, name));
+    items.add(new ItemTuple(align, name));
   }
 
+  public void addImg( Alignment align
+                    , String img
+                    , int imgSize
+                    ) {
+    items.add(new ItemTuple(align, img, imgSize));
+  }
 
   public void addItem( Alignment align
-                     , String    img
+                     , String img
+                     , int imgSize 
+                     , String name
+                     , String value
+                     , int func
+                     ) {
+    items.add(new ItemTuple(align, img, imgSize, name, value, func));
+
+  }
+
+  public void addItem( Alignment align
                      , String    name
                      , String    value
                      , int       func
                      ) {
-    items.add(new ItemTuple(align, img, name, value, func));
+    items.add(new ItemTuple(align, null, 0, name, value, func));
     if(selected == null) selected = name;
   }
 

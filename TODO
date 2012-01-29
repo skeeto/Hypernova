@@ -39,3 +39,4 @@ Fixes/Polish
   * Wormhole concurrency error
   * Thrust boost stays on if not pressing a direction
   * Make sure screen redraws for menus
+  * Menu goDown bug, hard to reproduce

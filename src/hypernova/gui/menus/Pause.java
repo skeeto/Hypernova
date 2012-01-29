@@ -21,10 +21,10 @@ public class Pause extends MenuScreen
   }
 
   public void loadMenu() {
-    addItem(Alignment.CENTER, null, "Continue", null, 0);
-    addItem(Alignment.CENTER, null, "Save", null, 1);
-    addItem(Alignment.CENTER, null, "Load", null, 2);
-    addItem(Alignment.CENTER, null, "Exit", null, 3);
+    addItem(Alignment.CENTER, "Continue", null, 0);
+    addItem(Alignment.CENTER, "Save", null, 1);
+    addItem(Alignment.CENTER, "Load", null, 2);
+    addItem(Alignment.CENTER, "Exit", null, 3);
   }
  
   public void functions(int func, String value) {

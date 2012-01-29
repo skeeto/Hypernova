@@ -9,9 +9,9 @@ public class Save extends MenuScreen
 {
   public void loadMenu() {
     for(int i = 1; i <= 5; i ++)
-      addItem(Alignment.LEFT, null, SaveGame.saveStats(i), null, i);
+      addItem(Alignment.LEFT, SaveGame.saveStats(i), null, i);
     
-    addItem(Alignment.RIGHT, null, "Back", null, 6);
+    addItem(Alignment.RIGHT, "Back", null, 6);
   }
  
   public void functions(int func, String value) {
