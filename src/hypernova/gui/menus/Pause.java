@@ -36,6 +36,7 @@ public class Pause extends MenuScreen
       case 1:
         break;
       case 2:
+        newScreen(new Load());       
         break;
       case 3:
         newScreen(new YesNoQuit());       

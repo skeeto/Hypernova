@@ -22,6 +22,13 @@ public class SaveGame extends Thread implements Serializable
 
    protected static SaveGame INSTANCE = new SaveGame();
    public static void autosave() { save(0); }
+   private GameStats stats = new GameStats();
+   private class GameStats implements Serializable {
+     static final long serialVersionUID = 1027472837L;  
+     public long playTime;
+     public String uni;
+     public int percent;
+   }
 
    static final long serialVersionUID = 1027533472837495L;  
 
@@ -39,7 +46,7 @@ public class SaveGame extends Thread implements Serializable
       return INSTANCE.restoreU;
    }
 
-   public static void writeFile(SaveGame obj)
+   public static void writeFile(Object obj)
    {
       String filename = obj.getClass().getName() + ".dat";
       FileOutputStream fos = null;
@@ -55,9 +62,9 @@ public class SaveGame extends Thread implements Serializable
       }
    }
 
-   public static SaveGame loadFile(SaveGame obj)
+   public static Object loadFile(Object obj)
    {
-      SaveGame ret = null;
+      Object ret = null;
       String filename = obj.getClass().getName() + ".dat";
       FileInputStream fis = null;
       ObjectInputStream in = null;
@@ -65,8 +72,10 @@ public class SaveGame extends Thread implements Serializable
       {
          fis = new FileInputStream("saves/" + curSlot + "/" + filename);
          in = new ObjectInputStream(fis);
-         ret = (SaveGame)in.readObject();
+         ret = in.readObject();
          in.close();
+      } catch(java.io.FileNotFoundException ex) {
+         /* Do Nothing */
       } catch(Exception ex) {
          ex.printStackTrace();
       }
@@ -76,9 +85,10 @@ public class SaveGame extends Thread implements Serializable
    public static void load(int slot)
    {
      curSlot = slot;
-     SaveGame.INSTANCE = loadFile(SaveGame.INSTANCE);
+     SaveGame.INSTANCE = (SaveGame)loadFile(SaveGame.INSTANCE);
      Test.INSTANCE = (Test)loadFile(Test.INSTANCE);
      Start.INSTANCE = (Start)loadFile(Start.INSTANCE);
+     Alter.INSTANCE = (Alter)loadFile(Alter.INSTANCE);
      Transition.startTransition(Transition.Types.FADE);
 
 
@@ -109,6 +119,20 @@ public class SaveGame extends Thread implements Serializable
      p.setHP(p.getMaxHP());
    }
 
+   public static String saveStats(int slot)
+   {
+     String ret = "(" + slot + ") Empty";
+     int prevSlot = curSlot;
+     curSlot = slot;
+     GameStats s = (GameStats)loadFile(SaveGame.INSTANCE.stats);
+     curSlot = prevSlot;
+     
+     // TODO: Calculate a time
+     if( s != null ) ret = "(" + slot + ") 11.5 hrs : " + s.uni 
+                         + " -- " + s.percent + "%";
+     return ret;
+   }
+
    public static void save(int slot)
    { 
      if(slot == 0) u.queueCornerMessage("Autosaving...");
@@ -118,9 +142,18 @@ public class SaveGame extends Thread implements Serializable
    }
      
    public void run() {
+     GameStats s = SaveGame.INSTANCE.stats;
+     s.uni = (SaveGame.INSTANCE.restoreU).toString();
+      
+     // TODO: Debug values
+     s.playTime = 100;
+     s.percent = 10;
+
+     writeFile(SaveGame.INSTANCE.stats);
      writeFile(SaveGame.INSTANCE);
      writeFile(Start.INSTANCE);
      writeFile(Test.INSTANCE);
+     writeFile(Alter.INSTANCE);
    }
 
 }

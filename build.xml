@@ -37,11 +37,6 @@
     <mkdir dir="${save.dir}/3"/>
     <mkdir dir="${save.dir}/4"/>
     <mkdir dir="${save.dir}/5"/>
-    <mkdir dir="${save.dir}/6"/>
-    <mkdir dir="${save.dir}/7"/>
-    <mkdir dir="${save.dir}/8"/>
-    <mkdir dir="${save.dir}/9"/>
-    <mkdir dir="${save.dir}/10"/>
   </target>
 
   <target name="resolve" unless="lib.present"

@@ -17,6 +17,7 @@ Later Features
   * Randomly generated asteroids
 
 Fixes/Polish
+  * Font size should be based on screen size
   * Song transitions somehow revive dead effects
   * FFT dies horribly if song transitions while in menu
   * Clean sound async crap, and made songs async too

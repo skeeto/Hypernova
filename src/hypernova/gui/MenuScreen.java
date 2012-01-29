@@ -145,7 +145,7 @@ public abstract class MenuScreen
   
   public void render(Graphics2D g2d) {
     Font oldfont = g2d.getFont();
-    g2d.setFont(oldfont.deriveFont(45f));
+    g2d.setFont(oldfont.deriveFont(40f));
     FontMetrics fm = g2d.getFontMetrics();
     int height = fm.getAscent() + ITEM_PAD; 
     int totalHeight = height * items.size();
