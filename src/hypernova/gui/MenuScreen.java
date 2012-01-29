@@ -64,9 +64,6 @@ public abstract class MenuScreen
         return this.name.equals(x); 
     }
    
-    public void changeValue(String x) {
-        this.value = x;
-    }
   }
 
   private ArrayList<ItemTuple> items = new ArrayList<ItemTuple>();
@@ -113,7 +110,7 @@ public abstract class MenuScreen
   private boolean isViewOnly(String n) {
     for (int i = 0; i < items.size(); i ++) {
       ItemTuple x = items.get(i);
-      if( x.isNamed(n) && x.viewOnly) return true;
+      if( x.isNamed(n) && (x.viewOnly || x.disabled)) return true;
     }
     return false;
   }
@@ -157,11 +154,13 @@ public abstract class MenuScreen
     if (parent != null) Menu.newMenu(parent, false);
   }
 
-  public void updateItem(String name, String value) {
+  public void updateItem(String name, String value, boolean disabled) {
     for (int i = 0; i < items.size(); i ++) {
       ItemTuple x = items.get(i);
       if( x.isNamed(name) ) {
-        x.changeValue(value);
+        x.value = value;
+        x.disabled = disabled;
+        if(disabled && x.isNamed(selected)) goDown();
         break;
       }
     }
@@ -181,6 +180,7 @@ public abstract class MenuScreen
       int width   = fm.stringWidth(x.name);
       int uWidth  = Hypernova.getViewer().getWidth();
       if(x.isNamed(selected)) g2d.setColor(new Color(0xff, 0xff, 0x77));
+      else if(x.disabled) g2d.setColor(new Color(0x50, 0x50, 0x50));
       else g2d.setColor(new Color(0xff, 0xff, 0xff));
  
       int posHrz = MENU_PAD;
