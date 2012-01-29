@@ -32,11 +32,6 @@ public class KeyboardPilot extends Pilot implements KeyListener {
 
         int kc = e.getKeyCode();
         
-        // TODO: Temporary until real menus exist
-        if( kc > KeyEvent.VK_1 && kc < KeyEvent.VK_9 ) { 
-            SaveGame.save(kc - KeyEvent.VK_0);
-        } else if( kc == KeyEvent.VK_0 ) SaveGame.save(10);
-
         switch (kc) {
         case KeyEvent.VK_L:
             SaveGame.checkpoint();

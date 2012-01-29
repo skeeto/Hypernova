@@ -19,4 +19,3 @@ KEYS:
   .   : Next track
   ,   : Previous Track
   l   : Respawn at last checkpoint
-  0-9 : Save in slots
