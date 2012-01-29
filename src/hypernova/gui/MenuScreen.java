@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Color;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 import hypernova.Universe;
 import hypernova.Hypernova;
@@ -22,21 +25,25 @@ public abstract class MenuScreen
     public String    name;
     public String    value;
     public int       func;
-    public int       size;
+    public int       imgW;
+    public int       imgH;
     public int       cost;  // Check if player can afford
     public boolean   viewOnly; // Just text, not an actual option
+    public boolean   imageOnly; // Just an image, no text
     public boolean   disabled; // Item is not available at this time
     public boolean   ext; // Will bring up another screen
     ItemTuple( Alignment align
              , String    img
-             , int       size
+             , int       imgW
+             , int       imgH
              , String    name
              , String    value
              , int       func
              ) {
       this.align = align;
       this.img   = img;
-      this.size  = size;
+      this.imgW  = imgW;
+      this.imgH  = imgH;
       this.name  = name;
       this.value = value;
       this.func  = func;
@@ -52,15 +59,20 @@ public abstract class MenuScreen
 
     ItemTuple( Alignment align
              , String img
-             , int imgSize
+             , int imgW
+             , int imgH
              ) {
       this.align = align;
+      this.name  = img;
       this.img   = img;
-      this.size  = imgSize;
+      this.imgW  = imgW;
+      this.imgH  = imgH;
       this.viewOnly = true;
+      this.imageOnly = true;
     }
 
     public boolean isNamed(String x) {
+        if(this.name == null) return false;
         return this.name.equals(x); 
     }
    
@@ -82,19 +94,21 @@ public abstract class MenuScreen
 
   public void addImg( Alignment align
                     , String img
-                    , int imgSize
+                    , int imgW
+                    , int imgH
                     ) {
-    items.add(new ItemTuple(align, img, imgSize));
+    items.add(new ItemTuple(align, img, imgW, imgH));
   }
 
   public void addItem( Alignment align
                      , String img
-                     , int imgSize 
+                     , int imgW
+                     , int imgH
                      , String name
                      , String value
                      , int func
                      ) {
-    items.add(new ItemTuple(align, img, imgSize, name, value, func));
+    items.add(new ItemTuple(align, img, imgW, imgH, name, value, func));
 
   }
 
@@ -103,7 +117,7 @@ public abstract class MenuScreen
                      , String    value
                      , int       func
                      ) {
-    items.add(new ItemTuple(align, null, 0, name, value, func));
+    items.add(new ItemTuple(align, null, 0, 0, name, value, func));
     if(selected == null) selected = name;
   }
 
@@ -166,17 +180,42 @@ public abstract class MenuScreen
     }
   }
   
+  private void drawImage(Graphics2D g2d, ItemTuple x, int h) {
+    try {
+      BufferedImage tmpImg = ImageIO.read(new File(x.img));
+      int uWidth  = Hypernova.getViewer().getWidth();
+      int posHrz = MENU_PAD;
+      if( x.align == Alignment.CENTER ) posHrz = uWidth / 2 - x.imgW / 2;
+      else if (x.align == Alignment.RIGHT) posHrz = uWidth - MENU_PAD - x.imgW;
+
+      g2d.drawImage(tmpImg, posHrz, h, x.imgW, x.imgH, null);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   public void render(Graphics2D g2d) {
     Font oldfont = g2d.getFont();
     g2d.setFont(oldfont.deriveFont(40f));
     FontMetrics fm = g2d.getFontMetrics();
-    int height = fm.getAscent() + ITEM_PAD; 
-    int totalHeight = height * items.size();
-    int uHeight  = Hypernova.getViewer().getHeight();
-    int startH = uHeight/2 - totalHeight/2;
     
+    int totalHeight = 0;
     for (int i = 0; i < items.size(); i ++) {
       ItemTuple x = items.get(i);
+      if(x.imageOnly) totalHeight += x.imgH + ITEM_PAD;
+      else if(x.img == null) totalHeight += fm.getAscent() + ITEM_PAD;
+    }
+    int uHeight  = Hypernova.getViewer().getHeight();
+    int startH = uHeight/2 - totalHeight/2;
+    int curHeight = startH;    
+
+    for (int i = 0; i < items.size(); i ++) {
+      ItemTuple x = items.get(i);
+      if(x.imageOnly) {
+        drawImage(g2d, x, curHeight);
+        curHeight += x.imgH + ITEM_PAD;
+        continue;
+      }
       int width   = fm.stringWidth(x.name);
       int uWidth  = Hypernova.getViewer().getWidth();
       if(x.isNamed(selected)) g2d.setColor(new Color(0xff, 0xff, 0x77));
@@ -187,7 +226,8 @@ public abstract class MenuScreen
       if( x.align == Alignment.CENTER ) posHrz = uWidth / 2 - width / 2;
       else if (x.align == Alignment.RIGHT) posHrz = uWidth - MENU_PAD- width;
       String n = x.name;
-      g2d.drawString(n, posHrz, i*height + startH);
+      g2d.drawString(n, posHrz, curHeight);
+      curHeight += fm.getAscent() + ITEM_PAD;
     }
   }
  
