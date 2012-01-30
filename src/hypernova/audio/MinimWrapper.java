@@ -130,6 +130,7 @@ public class MinimWrapper
    {
      AudioEffect e = instance.effects[x];
      if(e != null) instance.curSong.removeEffect(e);
+     instance.effects[x] = null;
    }
 
   /**
