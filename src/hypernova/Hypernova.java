@@ -61,13 +61,6 @@ public class Hypernova {
             System.setProperty("sun.java2d.ddforcevram","true");
         }
 
-        /* Sound */
-        MinimWrapper.init();
-        SongPlaylist.addFile("mp3s/foo.m3u");
-        SongPlaylist.setShuffle(true);
-        SongPlaylist.debug();
-        SongPlaylist.forwardSong();
-        
         /* Fullscreen Setup */
         JFrame frame = new JFrame(PROGRAM);
         if (line.hasOption("fullscreen"))
@@ -137,6 +130,13 @@ public class Hypernova {
             ActivityRuntime.get().startRepl();
         }
 
+        /* Sound */
+        MinimWrapper.init();
+        SongPlaylist.addFile("mp3s/foo.m3u");
+        SongPlaylist.setShuffle(true);
+        SongPlaylist.debug();
+        SongPlaylist.forwardSong();
+        
         Universe.start();
         if (line.hasOption("load")) {
             String str = line.getOptionValue("load");
