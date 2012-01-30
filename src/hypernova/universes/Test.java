@@ -29,6 +29,7 @@ public class Test extends NewUniverse {
    public void begin()
    {
         Faction.clear();
+        Faction.create("None", Color.WHITE);
         Faction.create("Humans", Faction.ColorType.TEST_HUMAN);
         Faction.create("Invaders", Faction.ColorType.TEST_INVADER);
         SaveGame.setCheckpoint(0, 0, UniNames.TEST);
