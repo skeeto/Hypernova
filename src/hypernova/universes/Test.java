@@ -1,5 +1,6 @@
 package hypernova.universes;
 
+import java.awt.Color;
 import hypernova.NewUniverse;
 import hypernova.Activity;
 import hypernova.Faction;
