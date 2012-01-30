@@ -200,24 +200,25 @@ public class Viewer extends JComponent implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        /* Set up graphics */
         Graphics2D g2d = (Graphics2D) g;
-        if(!universe.getPause()){ 
+        if (quality > 0) {
+          g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                               RenderingHints.VALUE_ANTIALIAS_ON);
+          g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                               RenderingHints.VALUE_STROKE_PURE);
+        }
+        if (quality > 1) {
+          g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                               RenderingHints.VALUE_RENDER_QUALITY);
+        }
+
+        if(!universe.getPause()){
           AffineTransform at = g2d.getTransform();
           if(background != null) background.drawBackground(g, g2d, focusX, focusY);
           g2d.setTransform(at);
 
-
-          /* Set up graphics */
-          if (quality > 0) {
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                 RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-                                 RenderingHints.VALUE_STROKE_PURE);
-          }
-          if (quality > 1) {
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                                 RenderingHints.VALUE_RENDER_QUALITY);
-          }
 
           /* Wormhole */
           g2d.translate(-(focusX * scale - getWidth() / 2),
