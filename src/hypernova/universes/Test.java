@@ -12,7 +12,7 @@ import hypernova.gui.Viewer;
 import hypernova.gui.Wormhole;
 import hypernova.gui.Transition;
 import hypernova.activities.WarpZoneTest;
-import hypernova.gui.backgrounds.EqualizerBackground;
+import hypernova.gui.backgrounds.LineField;
 import hypernova.sounds.WarbleEffect;
 import hypernova.audio.MinimWrapper;
 
@@ -32,7 +32,7 @@ public class Test extends NewUniverse {
         Faction.create("Humans", Faction.ColorType.TEST_HUMAN);
         Faction.create("Invaders", Faction.ColorType.TEST_INVADER);
         SaveGame.setCheckpoint(0, 0, UniNames.TEST);
-        Viewer.setBackground(new EqualizerBackground());
+        Viewer.setBackground(new LineField());
         Activity battle = new hypernova.activities.FactoryBattle();
         u.addActivity(battle, -500, -500);
         if( !INSTANCE.countDone ) u.addActivity(new CountDown(), 500, -500);
